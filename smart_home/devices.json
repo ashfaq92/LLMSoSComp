@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Washing Machine",
+    "td": "http://localhost:8080/washingmachine"
+  },
+  {
+    "name": "Door Bell",
+    "td": "http://localhost:8080/doorbell"
+  },
+  {
+    "name": "Alarm",
+    "td": "http://localhost:8080/alarm"
+  },
+  {
+    "name": "Heater",
+    "td": "http://localhost:8080/heater"
+  },
+  {
+    "name": "Main Room Light",
+    "td": "http://localhost:8080/mainroomlight"
+  },
+  {
+    "name": "LEDs",
+    "td": "http://localhost:8080/leds"
+  },
+  {
+    "name": "Motion Sensor",
+    "td": "http://localhost:8080/motionsensor"
+  },
+  {
+    "name": "Speaker",
+    "td": "http://localhost:8080/speaker"
+  },
+  {
+    "name": "Smart Assistant",
+    "td": "http://localhost:8080/smartassistant"
+  }
+]

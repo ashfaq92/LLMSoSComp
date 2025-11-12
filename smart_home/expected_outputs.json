@@ -1,0 +1,300 @@
+[
+    {
+        "id": "f9b3862c37de7540",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "217abbfc1f693172",
+        "type": "system-event-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingEvent": "finishedCycle",
+        "thingEventValue": "{\"uri\":\"http://localhost:8080/washingmachine\",\"output\":{},\"description\":\"Sends a notification at the end of a wash cycle\",\"title\":\"Wash cycle complete\",\"event\":\"finishedCycle\"}",
+        "outputToMsg": true,
+        "redeploy": "true",
+        "x": 130,
+        "y": 180,
+        "wires": [
+            [
+                "2f3782618f258063"
+            ]
+        ]
+    },
+    {
+        "id": "2f3782618f258063",
+        "type": "system-action-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingAction": "blink",
+        "thingActionValue": "{\"uri\":\"http://localhost:8080/leds\",\"params\":{},\"description\":\"Blinks the LEDs\",\"title\":\"Blink LEDs\",\"action\":\"blink\"}",
+        "outputToMsg": false,
+        "redeploy": "false",
+        "x": 290,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "05f45c7e3bb710aa",
+        "type": "system-event-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingEvent": "motionDetected",
+        "thingEventValue": "{\"uri\":\"http://localhost:8080/motionsensor\",\"output\":{},\"description\":\"An event made when motion is detected\",\"title\":\"Motion detected\",\"event\":\"motionDetected\"}",
+        "outputToMsg": true,
+        "redeploy": "true",
+        "x": 120,
+        "y": 240,
+        "wires": [
+            [
+                "f7dabb5eca2b6431"
+            ]
+        ]
+    },
+    {
+        "id": "f7dabb5eca2b6431",
+        "type": "system-action-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingAction": "lightOn",
+        "thingActionValue": "{\"uri\":\"http://localhost:8080/mainroomlight\",\"params\":{},\"description\":\"Turns the light on\",\"title\":\"Turn light on\",\"action\":\"lightOn\"}",
+        "outputToMsg": true,
+        "redeploy": "false",
+        "x": 300,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1c5fde08fe6eb27b",
+        "type": "system-event-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingEvent": "bellRung",
+        "thingEventValue": "{\"uri\":\"http://localhost:8080/doorbell\",\"output\":{},\"description\":\"The bell was rung\",\"title\":\"Bell rung\",\"event\":\"bellRung\"}",
+        "outputToMsg": true,
+        "redeploy": "false",
+        "x": 140,
+        "y": 300,
+        "wires": [
+            [
+                "6cea9c151241fb5a"
+            ]
+        ]
+    },
+    {
+        "id": "6cea9c151241fb5a",
+        "type": "system-action-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingAction": "getVolume",
+        "thingActionValue": "{\"uri\":\"http://localhost:8080/speaker\",\"params\":{},\"output\":{\"type\":\"integer\"},\"description\":\"Gets the volume of this speaker\",\"title\":\"Get volume\",\"action\":\"getVolume\"}",
+        "outputToMsg": true,
+        "redeploy": "false",
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "ed691035b7ee9bf0"
+            ]
+        ]
+    },
+    {
+        "id": "f7981790f6b20a49",
+        "type": "system-action-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingAction": "say",
+        "thingActionValue": "{\"uri\":\"http://localhost:8080/smartassistant\",\"params\":{\"phrase\":\"string\"},\"description\":\"Makes the assistant say the given phrase\",\"title\":\"Say phrase\",\"action\":\"say\"}",
+        "outputToMsg": true,
+        "redeploy": "true",
+        "x": 470,
+        "y": 380,
+        "wires": [
+            [
+                "0d56f275daf443a2"
+            ]
+        ]
+    },
+    {
+        "id": "df740718fcfc0f27",
+        "type": "system-action-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingAction": "setVolume",
+        "thingActionValue": "{\"uri\":\"http://localhost:8080/speaker\",\"params\":{\"percentage\":\"integer\"},\"description\":\"Sets the volume of this speaker\",\"title\":\"Set volume\",\"action\":\"setVolume\"}",
+        "outputToMsg": false,
+        "redeploy": "true",
+        "x": 490,
+        "y": 340,
+        "wires": [
+            [
+                "a1db2dee1bad5c9e"
+            ]
+        ]
+    },
+    {
+        "id": "ed9d721063fa0df3",
+        "type": "system-action-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingAction": "setVolume",
+        "thingActionValue": "{\"uri\":\"http://localhost:8080/speaker\",\"params\":{\"percentage\":\"integer\"},\"description\":\"Sets the volume of this speaker\",\"title\":\"Set volume\",\"action\":\"setVolume\"}",
+        "outputToMsg": false,
+        "redeploy": "true",
+        "x": 510,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ed691035b7ee9bf0",
+        "type": "function",
+        "z": "f9b3862c37de7540",
+        "name": "Store initial value",
+        "func": "msg.initialValue = msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 300,
+        "wires": [
+            [
+                "19d0e775158873f0"
+            ]
+        ]
+    },
+    {
+        "id": "19d0e775158873f0",
+        "type": "function",
+        "z": "f9b3862c37de7540",
+        "name": "Quiet Volume",
+        "func": "msg.payload = 10;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 340,
+        "wires": [
+            [
+                "df740718fcfc0f27"
+            ]
+        ]
+    },
+    {
+        "id": "a1db2dee1bad5c9e",
+        "type": "function",
+        "z": "f9b3862c37de7540",
+        "name": "Create Phrase",
+        "func": "msg.payload = \"The door bell has been rung\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 380,
+        "wires": [
+            [
+                "f7981790f6b20a49"
+            ]
+        ]
+    },
+    {
+        "id": "0d56f275daf443a2",
+        "type": "function",
+        "z": "f9b3862c37de7540",
+        "name": "Restore initial value",
+        "func": "msg.payload = msg.initialValue;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 420,
+        "wires": [
+            [
+                "ed9d721063fa0df3"
+            ]
+        ]
+    },
+    {
+        "id": "84d971f80ab03d50",
+        "type": "system-event-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingEvent": "alarmRinging",
+        "thingEventValue": "{\"uri\":\"http://localhost:8080/alarm\",\"output\":{},\"description\":\"This alarm has started ringing\",\"title\":\"Alarm Ringing\",\"event\":\"alarmRinging\"}",
+        "outputToMsg": true,
+        "redeploy": "false",
+        "x": 130,
+        "y": 480,
+        "wires": [
+            [
+                "b3603706ef0b253a"
+            ]
+        ]
+    },
+    {
+        "id": "b3603706ef0b253a",
+        "type": "function",
+        "z": "f9b3862c37de7540",
+        "name": "Set params",
+        "func": "msg.payload = [30, 20]\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 480,
+        "wires": [
+            [
+                "b6804e63dd953322"
+            ]
+        ]
+    },
+    {
+        "id": "b6804e63dd953322",
+        "type": "system-action-node",
+        "z": "f9b3862c37de7540",
+        "name": "",
+        "thingDirectoryURI": "http://localhost:8080/thingdirectory",
+        "thingAction": "startHeater",
+        "thingActionValue": "{\"uri\":\"http://localhost:8080/heater\",\"params\":{\"temperature\":\"integer\",\"timeHeating\":\"integer\"},\"description\":\"Starts the heater at the given temperature for the given time\",\"title\":\"Start heater\",\"action\":\"startHeater\"}",
+        "outputToMsg": true,
+        "redeploy": "false",
+        "x": 470,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    }
+]

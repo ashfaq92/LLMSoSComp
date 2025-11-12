@@ -1,0 +1,528 @@
+[
+    {
+        "id": "n3_motion_detected",
+        "type": "websocket in",
+        "z": "884a6474ca06ebd3",
+        "name": "",
+        "server": "",
+        "client": "91c8ec522b374b97",
+        "x": 330,
+        "y": 340,
+        "wires": [
+            [
+                "n4_light_on"
+            ]
+        ]
+    },
+    {
+        "id": "n4_light_on",
+        "type": "http request",
+        "z": "884a6474ca06ebd3",
+        "name": "Turn Main Room Light On",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:8080/things/mainroomlight/on",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 710,
+        "y": 340,
+        "wires": [
+            [
+                "beb18f02d4914e95"
+            ]
+        ]
+    },
+    {
+        "id": "n6_get_volume",
+        "type": "http request",
+        "z": "884a6474ca06ebd3",
+        "name": "Get Speaker Volume",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:8080/things/speaker/volume",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 260,
+        "y": 680,
+        "wires": [
+            [
+                "n7_store_volume",
+                "94079233a707c01d"
+            ]
+        ]
+    },
+    {
+        "id": "n7_store_volume",
+        "type": "function",
+        "z": "884a6474ca06ebd3",
+        "name": "Store Volume",
+        "func": "flow.set('prevVolume', msg.payload);\nmsg.payload = {\"percentage\": 10}\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 740,
+        "wires": [
+            [
+                "n8_set_low_volume"
+            ]
+        ]
+    },
+    {
+        "id": "n8_set_low_volume",
+        "type": "http request",
+        "z": "884a6474ca06ebd3",
+        "name": "Set Speaker Volume Low",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:8080/things/speaker/setVolume",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 250,
+        "y": 800,
+        "wires": [
+            [
+                "b5ad05a01ef47912",
+                "363aaeed881bc84d"
+            ]
+        ]
+    },
+    {
+        "id": "n9_say_doorbell",
+        "type": "http request",
+        "z": "884a6474ca06ebd3",
+        "name": "SmartAssistant Say Doorbell",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:8080/things/smartassistant/say",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 240,
+        "y": 960,
+        "wires": [
+            [
+                "n10_restore_volume",
+                "c2c7e445eb8b8101"
+            ]
+        ]
+    },
+    {
+        "id": "n10_restore_volume",
+        "type": "function",
+        "z": "884a6474ca06ebd3",
+        "name": "Restore Volume Payload",
+        "func": "var prev = flow.get('prevVolume');\nif (typeof prev === 'object' && prev !== null && prev.hasOwnProperty('volume')) {\n    msg.payload = { \"percentage\": prev.volume };\n} else if (typeof prev === 'number') {\n    msg.payload = { \"percentage\": prev };\n} else {\n    msg.payload = { \"percentage\": 50 };\n}\nreturn msg;",
+        "outputs": 1,
+        "x": 250,
+        "y": 1020,
+        "wires": [
+            [
+                "n11_set_restore_volume"
+            ]
+        ]
+    },
+    {
+        "id": "n11_set_restore_volume",
+        "type": "http request",
+        "z": "884a6474ca06ebd3",
+        "name": "Restore Speaker Volume",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:8080/things/speaker/setVolume",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 250,
+        "y": 1080,
+        "wires": [
+            [
+                "7772f383032adf6d"
+            ]
+        ]
+    },
+    {
+        "id": "n13_start_heater",
+        "type": "http request",
+        "z": "884a6474ca06ebd3",
+        "name": "Start Heater 30C 20min",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:8080/things/heater/start",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 460,
+        "wires": [
+            [
+                "2eb5592b3e331dc8"
+            ]
+        ]
+    },
+    {
+        "id": "e7f0e6696fc45206",
+        "type": "websocket in",
+        "z": "884a6474ca06ebd3",
+        "name": "",
+        "server": "",
+        "client": "c53c11b411a8dbad",
+        "x": 350,
+        "y": 220,
+        "wires": [
+            [
+                "d54d7e2b17b5b6cf"
+            ]
+        ]
+    },
+    {
+        "id": "d54d7e2b17b5b6cf",
+        "type": "http request",
+        "z": "884a6474ca06ebd3",
+        "name": "Blink LEDs",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:8080/things/leds/blink",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 690,
+        "y": 200,
+        "wires": [
+            [
+                "1e28f9495e35705c"
+            ]
+        ]
+    },
+    {
+        "id": "1e28f9495e35705c",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 20",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 880,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "d174306ab43da204",
+        "type": "inject",
+        "z": "884a6474ca06ebd3",
+        "name": "Manual blink (test)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "payload": "",
+        "payloadType": "date",
+        "x": 450,
+        "y": 180,
+        "wires": [
+            [
+                "d54d7e2b17b5b6cf"
+            ]
+        ]
+    },
+    {
+        "id": "beb18f02d4914e95",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 21",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "4c6d6713bf9f27a0",
+        "type": "inject",
+        "z": "884a6474ca06ebd3",
+        "name": "Manual Test",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 350,
+        "y": 400,
+        "wires": [
+            [
+                "4f317d9f70b6a0bb"
+            ]
+        ]
+    },
+    {
+        "id": "6a82f47ba7f6d6be",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 22",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "2eb5592b3e331dc8",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "60dcc738f1b793a5",
+        "type": "websocket in",
+        "z": "884a6474ca06ebd3",
+        "name": "",
+        "server": "",
+        "client": "91c8ec522b374b97",
+        "x": 210,
+        "y": 460,
+        "wires": [
+            [
+                "6a82f47ba7f6d6be",
+                "4f317d9f70b6a0bb"
+            ]
+        ]
+    },
+    {
+        "id": "4f317d9f70b6a0bb",
+        "type": "function",
+        "z": "884a6474ca06ebd3",
+        "name": "set params",
+        "func": "msg.payload = {\n    \"temperature\": 30,\n    \"timeHeating\": 30\n}",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 460,
+        "wires": [
+            [
+                "n13_start_heater"
+            ]
+        ]
+    },
+    {
+        "id": "34d007d424e5561a",
+        "type": "websocket in",
+        "z": "884a6474ca06ebd3",
+        "name": "",
+        "server": "19b93c24ab8e2161",
+        "client": "",
+        "x": 210,
+        "y": 620,
+        "wires": [
+            [
+                "n6_get_volume",
+                "351060c42d2d5285"
+            ]
+        ]
+    },
+    {
+        "id": "351060c42d2d5285",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "94079233a707c01d",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 25",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "b5ad05a01ef47912",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 26",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "c2c7e445eb8b8101",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 27",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "7772f383032adf6d",
+        "type": "debug",
+        "z": "884a6474ca06ebd3",
+        "name": "debug 28",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "363aaeed881bc84d",
+        "type": "function",
+        "z": "884a6474ca06ebd3",
+        "name": "function 38",
+        "func": "msg.payload = {\"phrase\": \"somebody at the door!\"}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 880,
+        "wires": [
+            [
+                "n9_say_doorbell"
+            ]
+        ]
+    },
+    {
+        "id": "91c8ec522b374b97",
+        "type": "websocket-client",
+        "path": "ws://localhost:8080/things/alarm/ringing",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "c53c11b411a8dbad",
+        "type": "websocket-client",
+        "path": "ws:http://localhost:8080/things/wm/finishedCycle",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "19b93c24ab8e2161",
+        "type": "websocket-listener",
+        "path": "ws://localhost:8080/things/doorbell/rung",
+        "wholemsg": "false"
+    }
+]

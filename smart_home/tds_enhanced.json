@@ -1,0 +1,84 @@
+{
+    "@context": "http://www.w3.org/ns/td",
+    "@type": ["Thing"],
+    "title": "WashingMachine",
+    "securityDefinitions": {
+        "no_sec": {
+            "scheme": "nosec"
+        }
+    },
+    "security": "no_sec",
+    "properties": {
+        "status": {
+            "title": "Machine Status",
+            "description": "Current state of the washing machine",
+            "type": "string",
+            "enum": ["idle", "running", "finished"],
+            "readOnly": true,
+            "forms": [
+                {
+                    "href": "http://localhost:8080/things/wm/status",
+                    "contentType": "application/json",
+                    "op": ["readproperty"]
+                }
+            ]
+        },
+        "remainingTime": {
+            "title": "Time Left",
+            "description": "Remaining wash cycle time in minutes",
+            "type": "integer",
+            "unit": "minutes",
+            "readOnly": true,
+            "forms": [
+                {
+                    "href": "http://localhost:8080/things/wm/remainingTime",
+                    "contentType": "application/json",
+                    "op": ["readproperty"]
+                }
+            ]
+        }
+    },
+    "actions": {
+        "start": {
+            "title": "Start Washing Cycle",
+            "description": "Start a new wash program",
+            "input": {
+                "type": "string",
+                "enum": ["quick", "cotton", "wool"]
+            },
+            "forms": [
+                {
+                    "href": "http://localhost:8080/things/wm/start",
+                    "contentType": "application/json",
+                    "op": ["invokeaction"]
+                }
+            ]
+        },
+        "stop": {
+            "title": "Stop Cycle",
+            "description": "Immediately stop the wash program",
+            "forms": [
+                {
+                    "href": "http://localhost:8080/things/wm/stop",
+                    "contentType": "application/json",
+                    "op": ["invokeaction"]
+                }
+            ]
+        }
+    },
+    "events": {
+        "finishedCycle": {
+            "title": "Wash cycle complete",
+            "description": "Sends a notification at the end of a wash cycle",
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "http://localhost:8080/things/wm/finishedCycle",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
+}
