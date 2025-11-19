@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@node-red-contrib-themes/theme-collection": "^4.1.0"
+  }
+}

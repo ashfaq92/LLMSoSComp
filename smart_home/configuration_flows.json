@@ -1,77 +1,5 @@
 [
     {
-        "id": "2f8fa64411c4e91f",
-        "type": "tab",
-        "label": "web-requests",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "1086946b1acd1c45",
-        "type": "tab",
-        "label": "RSS Reader",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "25f9976e4245e54a",
-        "type": "tab",
-        "label": "db-admin",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "cc64ed2b39bf39cc",
-        "type": "tab",
-        "label": "Coffee Machine",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "ff0f90c1e6ac2159",
-        "type": "tab",
-        "label": "Light",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "292a46ef9ad25949",
-        "type": "tab",
-        "label": "smart home",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "cc58a035b207933b",
-        "type": "tab",
-        "label": "virtual things",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "a97c70509c313bc5",
-        "type": "tab",
-        "label": "Flow 2",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "03751bef0ed5432b",
-        "type": "tab",
-        "label": "Flow 1",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "7e0f78b972841d3a",
         "type": "tab",
         "label": "SmartHome Setup",
@@ -91,7 +19,7 @@
         "id": "consumedThing1",
         "type": "consumed-thing",
         "tdLink": "/things/thing1",
-        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:virtual-thing1\",\"title\":\"LED\",\"security\":[\"nosec\"],\"properties\":{\"status\":{\"type\":\"object\",\"properties\":{\"status\":{\"type\":\"number\"}},\"description\":\"LED 0 (OFF) / 1 (ON) status\",\"observable\":false,\"forms\":[{\"href\":\"http://localhost:8080/things/thing1/properties/status\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]}]}},\"actions\":{\"toggle\":{\"description\":\"Toggle LED state\",\"forms\":[{\"href\":\"http://localhost:8080/things/thing1/actions/toggle\",\"contentType\":\"application/json\",\"op\":\"invokeaction\"}],\"output\":{\"type\":\"object\",\"properties\":{\"result\":{\"type\":\"number\"}},\"required\":[\"result\"]}}},\"forms\":[{\"href\":\"http://localhost:8080/things/thing1\",\"contentType\":\"application/td+json\"}]}",
+        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:virtual-thing1\",\"title\":\"LED\",\"security\":[\"nosec\"],\"properties\":{\"status\":{\"type\":\"object\",\"properties\":{\"status\":{\"type\":\"number\"}},\"description\":\"LED 0 (OFF) / 1 (ON) status\",\"observable\":false,\"forms\":[{\"href\":\"http://localhost:1880/things/thing1/properties/status\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]}]}},\"actions\":{\"toggle\":{\"description\":\"Toggle LED state\",\"forms\":[{\"href\":\"http://localhost:1880/things/thing1/actions/toggle\",\"contentType\":\"application/json\",\"op\":\"invokeaction\"}],\"output\":{\"type\":\"object\",\"properties\":{\"result\":{\"type\":\"number\"}},\"required\":[\"result\"]}}},\"forms\":[{\"href\":\"http://localhost:1880/things/thing1\",\"contentType\":\"application/td+json\"}]}",
         "http": true,
         "ws": false,
         "coap": false,
@@ -105,8 +33,8 @@
     {
         "id": "6b22e72718942046",
         "type": "consumed-thing",
-        "tdLink": "http://localhost:8080/things/thing2",
-        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:virtual-thing1\",\"title\":\"Thing2\",\"security\":[\"nosec\"],\"properties\":{\"level\":{\"type\":\"object\",\"forms\":[{\"href\":\"http://localhost:8080/things/thing2/properties/level\",\"contentType\":\"application/json\"}]}},\"actions\":{\"set\":{\"input\":{\"level\":{\"type\":\"number\"}},\"output\":{\"type\":\"object\",\"properties\":{\"result\":{\"type\":\"number\"}},\"required\":[\"result\"]},\"forms\":[{\"href\":\"http://localhost:8080/things/thing2/actions/set\",\"contentType\":\"application/json\"}]}},\"forms\":[{\"href\":\"http://localhost:8080/things/thing2\",\"contentType\":\"application/td+json\"}]}",
+        "tdLink": "http://localhost:1880/things/thing2",
+        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:virtual-thing1\",\"title\":\"Thing2\",\"security\":[\"nosec\"],\"properties\":{\"level\":{\"type\":\"object\",\"forms\":[{\"href\":\"http://localhost:1880/things/thing2/properties/level\",\"contentType\":\"application/json\"}]}},\"actions\":{\"set\":{\"input\":{\"level\":{\"type\":\"number\"}},\"output\":{\"type\":\"object\",\"properties\":{\"result\":{\"type\":\"number\"}},\"required\":[\"result\"]},\"forms\":[{\"href\":\"http://localhost:1880/things/thing2/actions/set\",\"contentType\":\"application/json\"}]}},\"forms\":[{\"href\":\"http://localhost:1880/things/thing2\",\"contentType\":\"application/td+json\"}]}",
         "http": true,
         "ws": false,
         "coap": false,
@@ -121,7 +49,7 @@
         "id": "2805a003dbd2b617",
         "type": "consumed-thing",
         "tdLink": "/things/thing3",
-        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:thing1-temperature\",\"title\":\"Temperature Sensor\",\"@type\":\"TemperatureSensor\",\"securityDefinitions\":{\"nosec_sc\":{\"scheme\":\"nosec\"}},\"security\":\"nosec_sc\",\"properties\":{\"temperature\":{\"type\":\"number\",\"description\":\"Current temperature in Celsius\",\"observable\":false,\"readOnly\":true,\"forms\":[{\"href\":\"http://localhost:8080/things/thing3/properties/temperature\",\"contentType\":\"application/json\",\"op\":\"readproperty\"}]}}}",
+        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:thing1-temperature\",\"title\":\"Temperature Sensor\",\"@type\":\"TemperatureSensor\",\"securityDefinitions\":{\"nosec_sc\":{\"scheme\":\"nosec\"}},\"security\":\"nosec_sc\",\"properties\":{\"temperature\":{\"type\":\"number\",\"description\":\"Current temperature in Celsius\",\"observable\":false,\"readOnly\":true,\"forms\":[{\"href\":\"http://localhost:1880/things/thing3/properties/temperature\",\"contentType\":\"application/json\",\"op\":\"readproperty\"}]}}}",
         "http": true,
         "ws": false,
         "coap": false,
@@ -183,7 +111,7 @@
     {
         "id": "63485395a50b29c0",
         "type": "websocket-client",
-        "path": "ws:http://localhost:8080/things/doorbell/bellrung",
+        "path": "ws:http://localhost:1880/things/doorbell/bellrung",
         "tls": "",
         "wholemsg": "false",
         "hb": "0",
@@ -223,7 +151,7 @@
     {
         "id": "c53c11b411a8dbad",
         "type": "websocket-client",
-        "path": "ws:http://localhost:8080/things/wm/finishedCycle",
+        "path": "ws:http://localhost:1880/things/wm/finishedCycle",
         "tls": "",
         "wholemsg": "false",
         "hb": "0",
@@ -233,7 +161,7 @@
     {
         "id": "91c8ec522b374b97",
         "type": "websocket-client",
-        "path": "ws://localhost:8080/things/alarm/ringing",
+        "path": "ws://localhost:1880/things/alarm/ringing",
         "tls": "",
         "wholemsg": "false",
         "hb": "0",
@@ -255,27 +183,10 @@
     {
         "id": "19b93c24ab8e2161",
         "type": "websocket-listener",
-        "path": "ws://localhost:8080/things/doorbell/rung",
+        "path": "ws://localhost:1880/things/doorbell/rung",
         "wholemsg": "false"
     },
-    {
-        "id": "e53a62303d308de7",
-        "type": "http in",
-        "z": "2f8fa64411c4e91f",
-        "name": "",
-        "url": "/monitor/feed",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 250,
-        "y": 400,
-        "wires": [
-            [
-                "307dbda4d8a76975"
-            ]
-        ]
-    },
+   
     {
         "id": "a6b14e74ad9fe7ac",
         "type": "http response",
@@ -287,25 +198,8 @@
         "y": 400,
         "wires": []
     },
-    {
-        "id": "cc3a889258fa43f5",
-        "type": "template",
-        "z": "2f8fa64411c4e91f",
-        "name": "",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "<!DOCTYPE html>\n<html>\n    <head>\n        <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/slate/bootstrap.min.css\" integrity=\"sha384-8iuq0iaMHpnH2vSyvZMSIqQuUnQA7QM+f6srIdlgBrTSEyd//AWNMyEaSF2yPzNQ\" crossorigin=\"anonymous\">\n    </head>\n    <body class=\"container\">\n        <div class=\"row\">\n            <h1>Feed</h1>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-md-6\">\n                <div class=\"table-responsive\">\n                    <table class=\"table table-sm\">\n                        <thead>\n                            <tr>\n                                <th scope=\"col\">Name</th>\n                                <th scope=\"col\">URL</th>\n                                <th scope=\"col\">Actions</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            {{#payload}}\n                            <tr class=\"table-primary\">\n                                <td>{{name}}</th>\n                                <td>{{url}}</td>\n                                <td>\n                                    <a href=\"/monitor/feed/delete/{{rowid}}\" class=\"btn btn-outline-danger\">Delete</a>\n                                </td>\n                            </tr>\n                            {{/payload}}\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <div class=\"col-md-6\">\n                <form method=\"post\" action=\"/monitor/feed\">\n                    <label for=\"name\" class=\"col-form-label\">Name</label>\n                    <input type=\"text\" class=\"form-control\" id=\"name\" name=\"name\">\n\n                    <label for=\"url\" class=\"col-form-label\">URL</label>\n                    <input type=\"text\" class=\"form-control\" id=\"url\" name=\"url\">\n                    <button type=\"submit\" class=\"btn btn-primary\">Add</button>\n\n                </form>\n            </div>\n        </div>\n    </body>\n</html>",
-        "output": "str",
-        "x": 580,
-        "y": 400,
-        "wires": [
-            [
-                "a6b14e74ad9fe7ac"
-            ]
-        ]
-    },
+  
+    
     {
         "id": "307dbda4d8a76975",
         "type": "sqlite",
@@ -339,24 +233,7 @@
         "y": 520,
         "wires": []
     },
-    {
-        "id": "80fe5eb505233305",
-        "type": "http in",
-        "z": "2f8fa64411c4e91f",
-        "name": "",
-        "url": "/monitor/feed",
-        "method": "post",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 230,
-        "y": 460,
-        "wires": [
-            [
-                "4210a65b74195fd6"
-            ]
-        ]
-    },
+    
     {
         "id": "4210a65b74195fd6",
         "type": "template",
@@ -392,82 +269,7 @@
             ]
         ]
     },
-    {
-        "id": "7889f917e3e89641",
-        "type": "http in",
-        "z": "2f8fa64411c4e91f",
-        "name": "",
-        "url": "/monitor/feed/delete/:rowid",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 190,
-        "y": 520,
-        "wires": [
-            [
-                "3ecf1fbe82d0684a"
-            ]
-        ]
-    },
-    {
-        "id": "3ecf1fbe82d0684a",
-        "type": "template",
-        "z": "2f8fa64411c4e91f",
-        "name": "DELETE",
-        "field": "topic",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "DELETE FROM feed WHERE rowid = {{req.params.rowid}}",
-        "output": "str",
-        "x": 440,
-        "y": 520,
-        "wires": [
-            [
-                "acf2916d00c75435",
-                "ce30774f5d0ea9e9"
-            ]
-        ]
-    },
-    {
-        "id": "b98c5489c7a9100d",
-        "type": "comment",
-        "z": "2f8fa64411c4e91f",
-        "name": "monitor/feed",
-        "info": "",
-        "x": 210,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "c37f29a95c56cc33",
-        "type": "comment",
-        "z": "2f8fa64411c4e91f",
-        "name": "monitor/keyword",
-        "info": "",
-        "x": 200,
-        "y": 680,
-        "wires": []
-    },
-    {
-        "id": "5b82f3c27011e01b",
-        "type": "http in",
-        "z": "2f8fa64411c4e91f",
-        "name": "",
-        "url": "/monitor/keyword",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 220,
-        "y": 720,
-        "wires": [
-            [
-                "2495b60ef64202e1"
-            ]
-        ]
-    },
+    
     {
         "id": "909a241581cca457",
         "type": "http response",
@@ -479,42 +281,7 @@
         "y": 720,
         "wires": []
     },
-    {
-        "id": "aac2fc05a4f4b451",
-        "type": "template",
-        "z": "2f8fa64411c4e91f",
-        "name": "",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "<!DOCTYPE html>\n<html>\n    <head>\n        <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/slate/bootstrap.min.css\" integrity=\"sha384-8iuq0iaMHpnH2vSyvZMSIqQuUnQA7QM+f6srIdlgBrTSEyd//AWNMyEaSF2yPzNQ\" crossorigin=\"anonymous\">\n    </head>\n    <body class=\"container\">\n        <div class=\"row\">\n            <h1>keyword</h1>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-md-6\">\n                <div class=\"table-responsive\">\n                    <table class=\"table table-sm\">\n                        <thead>\n                            <tr>\n                                <th scope=\"col\">Expression</th>\n                                <th scope=\"col\">Actions</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            {{#payload}}\n                            <tr class=\"table-primary\">\n                                <td>{{expression}}</th>\n                                <td>\n                                    <a href=\"/monitor/keyword/delete/{{rowid}}\" class=\"btn btn-outline-danger\">Delete</a>\n                                </td>\n                            </tr>\n                            {{/payload}}\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n            <div class=\"col-md-6\">\n                <form method=\"post\" action=\"/monitor/keyword\">\n                    <label for=\"expression\" class=\"col-form-label\">Expression</label>\n                    <input type=\"text\" class=\"form-control\" id=\"expression\" name=\"expression\">\n\n                    <button type=\"submit\" class=\"btn btn-primary\">Add</button>\n\n                </form>\n            </div>\n        </div>\n    </body>\n</html>",
-        "output": "str",
-        "x": 590,
-        "y": 720,
-        "wires": [
-            [
-                "909a241581cca457"
-            ]
-        ]
-    },
-    {
-        "id": "2495b60ef64202e1",
-        "type": "sqlite",
-        "z": "2f8fa64411c4e91f",
-        "mydb": "",
-        "sqlquery": "fixed",
-        "sql": "SELECT rowid, * FROM keyword",
-        "name": "db",
-        "x": 440,
-        "y": 720,
-        "wires": [
-            [
-                "aac2fc05a4f4b451",
-                "6ffc61b5552bb009"
-            ]
-        ]
-    },
+
     {
         "id": "6ffc61b5552bb009",
         "type": "debug",
@@ -532,97 +299,7 @@
         "y": 840,
         "wires": []
     },
-    {
-        "id": "1e5bfc8973fad8e1",
-        "type": "http in",
-        "z": "2f8fa64411c4e91f",
-        "name": "",
-        "url": "/monitor/keyword",
-        "method": "post",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 240,
-        "y": 780,
-        "wires": [
-            [
-                "9e0b0b0f1bf3c685"
-            ]
-        ]
-    },
-    {
-        "id": "9e0b0b0f1bf3c685",
-        "type": "template",
-        "z": "2f8fa64411c4e91f",
-        "name": "INSERT",
-        "field": "topic",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "INSERT INTO keyword VALUES ('{{{payload.expression}}}')",
-        "output": "str",
-        "x": 450,
-        "y": 780,
-        "wires": [
-            [
-                "2a8f3ed49fcdd8f1"
-            ]
-        ]
-    },
-    {
-        "id": "2a8f3ed49fcdd8f1",
-        "type": "sqlite",
-        "z": "2f8fa64411c4e91f",
-        "mydb": "",
-        "sqlquery": "msg.topic",
-        "sql": "SELECT * FROM keyword",
-        "name": "db",
-        "x": 600,
-        "y": 780,
-        "wires": [
-            [
-                "2495b60ef64202e1"
-            ]
-        ]
-    },
-    {
-        "id": "3e0e6259c95bd951",
-        "type": "http in",
-        "z": "2f8fa64411c4e91f",
-        "name": "",
-        "url": "/monitor/keyword/delete/:rowid",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 200,
-        "y": 840,
-        "wires": [
-            [
-                "6aca4d8220e706bb"
-            ]
-        ]
-    },
-    {
-        "id": "6aca4d8220e706bb",
-        "type": "template",
-        "z": "2f8fa64411c4e91f",
-        "name": "DELETE",
-        "field": "topic",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "DELETE FROM keyword WHERE rowid = {{req.params.rowid}}",
-        "output": "str",
-        "x": 450,
-        "y": 840,
-        "wires": [
-            [
-                "6ffc61b5552bb009",
-                "2a8f3ed49fcdd8f1"
-            ]
-        ]
-    },
+    
     {
         "id": "08e6c9142189376d",
         "type": "comment",
@@ -788,315 +465,9 @@
             []
         ]
     },
-    {
-        "id": "6e420775b906034a",
-        "type": "e-mail",
-        "z": "1086946b1acd1c45",
-        "server": "smtp.gmail.com",
-        "port": "465",
-        "authtype": "BASIC",
-        "saslformat": true,
-        "token": "oauth2Response.access_token",
-        "secure": true,
-        "tls": true,
-        "name": "qudoos92@gmail.com",
-        "dname": "qudoos92@gmail.com",
-        "x": 280,
-        "y": 700,
-        "wires": []
-    },
-    {
-        "id": "4f212f8073dadb3b",
-        "type": "change",
-        "z": "1086946b1acd1c45",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "article.title",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "from",
-                "pt": "msg",
-                "to": "\"RSS Alert\" <rss-alert@noreply.com>",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 900,
-        "y": 360,
-        "wires": [
-            [
-                "ab259da0e45f7a7e"
-            ]
-        ]
-    },
-    {
-        "id": "ab259da0e45f7a7e",
-        "type": "template",
-        "z": "1086946b1acd1c45",
-        "name": "",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "{{article.description}}\n\nRead more: {{{article.link}}}",
-        "output": "str",
-        "x": 940,
-        "y": 440,
-        "wires": [
-            [
-                "b46c435fe139eb57"
-            ]
-        ]
-    },
-    {
-        "id": "b46c435fe139eb57",
-        "type": "debug",
-        "z": "1086946b1acd1c45",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1240,
-        "y": 600,
-        "wires": []
-    },
-    {
-        "id": "dcedc831fd3250f6",
-        "type": "feedparse",
-        "z": "1086946b1acd1c45",
-        "name": "foxSports",
-        "url": "https://api.foxsports.com/v2/content/optimized-rss?partnerKey=MB0Wehpmuj2lUhuRhQaafhBjAJqaPU244mlTDK1i&size=30",
-        "interval": "1",
-        "ignorefirst": false,
-        "x": 260,
-        "y": 440,
-        "wires": [
-            [
-                "56b6d95d87b265fd"
-            ]
-        ]
-    },
-    {
-        "id": "5ddd6be6d28d1633",
-        "type": "comment",
-        "z": "1086946b1acd1c45",
-        "name": "RSS Reader (old hardcoded)",
-        "info": "",
-        "x": 340,
-        "y": 300,
-        "wires": []
-    },
-    {
-        "id": "473f8c695590a0a6",
-        "type": "inject",
-        "z": "1086946b1acd1c45",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 180,
-        "y": 80,
-        "wires": [
-            [
-                "552f820dc96c8c24"
-            ]
-        ]
-    },
-    {
-        "id": "552f820dc96c8c24",
-        "type": "sqlite",
-        "z": "1086946b1acd1c45",
-        "mydb": "",
-        "sqlquery": "fixed",
-        "sql": "SELECT rowid, * FROM keyword",
-        "name": "db",
-        "x": 330,
-        "y": 80,
-        "wires": [
-            [
-                "715709815b8c6fa4"
-            ]
-        ]
-    },
-    {
-        "id": "116ca2f2b9f17b18",
-        "type": "debug",
-        "z": "1086946b1acd1c45",
-        "name": "debug 5",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 740,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "715709815b8c6fa4",
-        "type": "change",
-        "z": "1086946b1acd1c45",
-        "name": "keyword",
-        "rules": [
-            {
-                "t": "set",
-                "p": "keyword",
-                "pt": "msg",
-                "to": "$join(payload.expression, \"|\")",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 480,
-        "y": 80,
-        "wires": [
-            [
-                "5ff94b3fd31bd4ed"
-            ]
-        ]
-    },
-    {
-        "id": "5ff94b3fd31bd4ed",
-        "type": "sqlite",
-        "z": "1086946b1acd1c45",
-        "mydb": "",
-        "sqlquery": "fixed",
-        "sql": "SELECT rowid, * FROM feed",
-        "name": "db",
-        "x": 630,
-        "y": 80,
-        "wires": [
-            [
-                "89313d2bb8e13570"
-            ]
-        ]
-    },
-    {
-        "id": "cbeb9d458de4311b",
-        "type": "comment",
-        "z": "1086946b1acd1c45",
-        "name": "reading keywords",
-        "info": "",
-        "x": 320,
-        "y": 40,
-        "wires": []
-    },
-    {
-        "id": "2efc380456e97a92",
-        "type": "comment",
-        "z": "1086946b1acd1c45",
-        "name": "reading feed urls",
-        "info": "",
-        "x": 620,
-        "y": 40,
-        "wires": []
-    },
-    {
-        "id": "89313d2bb8e13570",
-        "type": "split",
-        "z": "1086946b1acd1c45",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "property": "payload",
-        "x": 810,
-        "y": 80,
-        "wires": [
-            [
-                "6a79874374f0148d"
-            ]
-        ]
-    },
-    {
-        "id": "92eef555a1f1f2ee",
-        "type": "http request",
-        "z": "1086946b1acd1c45",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1110,
-        "y": 80,
-        "wires": [
-            [
-                "9b152eaa55d9e4f9"
-            ]
-        ]
-    },
-    {
-        "id": "6a79874374f0148d",
-        "type": "change",
-        "z": "1086946b1acd1c45",
-        "name": "read url",
-        "rules": [
-            {
-                "t": "move",
-                "p": "payload.url",
-                "pt": "msg",
-                "to": "url",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 960,
-        "y": 80,
-        "wires": [
-            [
-                "92eef555a1f1f2ee"
-            ]
-        ]
-    },
+
+   
+    
     {
         "id": "9b152eaa55d9e4f9",
         "type": "xml",
@@ -1451,43 +822,7 @@
         "y": 320,
         "wires": []
     },
-    {
-        "id": "inject-init",
-        "type": "inject",
-        "z": "cc64ed2b39bf39cc",
-        "name": "Init state",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 420,
-        "y": 320,
-        "wires": [
-            [
-                "function-init"
-            ]
-        ]
-    },
-    {
-        "id": "function-init",
-        "type": "function",
-        "z": "cc64ed2b39bf39cc",
-        "name": "Set initial state",
-        "func": "flow.set(\"coffee.resources\", { milk: 100, beans: 100, water: 100 });\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 620,
-        "y": 320,
-        "wires": [
-            []
-        ]
-    },
+   
     {
         "id": "httpin-resources",
         "type": "http in",
@@ -1636,7 +971,7 @@
         "type": "function",
         "z": "cc64ed2b39bf39cc",
         "name": "Return TD",
-        "func": "msg.payload = {\n  \"@context\": \"https://www.w3.org/2022/wot/td/v1.1\",\n  \"title\": \"Coffee Machine\",\n  \"id\": \"urn:uuid:local-coffee-machine\",\n  \"security\": [\"nosec\"],\n  \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n  \"properties\": {\n    \"resources\": {\n      \"type\": \"object\",\n      \"forms\": [\n        { \"op\": [\"readproperty\"], \"href\": \"http://localhost:8080/coffee-machine/properties/resources\", \"contentType\": \"application/json\" }\n      ]\n    }\n  },\n  \"actions\": {\n    \"brew\": {\n      \"forms\": [\n        { \"op\": [\"invokeaction\"], \"href\": \"http://localhost:8080/coffee-machine/actions/brew\", \"contentType\": \"application/json\", \"htv:methodName\": \"POST\" }\n      ]\n    },\n    \"refill\": {\n      \"forms\": [\n        { \"op\": [\"invokeaction\"], \"href\": \"http://localhost:8080/coffee-machine/actions/refill\", \"contentType\": \"application/json\", \"htv:methodName\": \"POST\" }\n      ]\n    }\n  }\n};\nreturn msg;",
+        "func": "msg.payload = {\n  \"@context\": \"https://www.w3.org/2022/wot/td/v1.1\",\n  \"title\": \"Coffee Machine\",\n  \"id\": \"urn:uuid:local-coffee-machine\",\n  \"security\": [\"nosec\"],\n  \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n  \"properties\": {\n    \"resources\": {\n      \"type\": \"object\",\n      \"forms\": [\n        { \"op\": [\"readproperty\"], \"href\": \"http://localhost:1880/coffee-machine/properties/resources\", \"contentType\": \"application/json\" }\n      ]\n    }\n  },\n  \"actions\": {\n    \"brew\": {\n      \"forms\": [\n        { \"op\": [\"invokeaction\"], \"href\": \"http://localhost:1880/coffee-machine/actions/brew\", \"contentType\": \"application/json\", \"htv:methodName\": \"POST\" }\n      ]\n    },\n    \"refill\": {\n      \"forms\": [\n        { \"op\": [\"invokeaction\"], \"href\": \"http://localhost:1880/coffee-machine/actions/refill\", \"contentType\": \"application/json\", \"htv:methodName\": \"POST\" }\n      ]\n    }\n  }\n};\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -1761,7 +1096,7 @@
         "type": "function",
         "z": "ff0f90c1e6ac2159",
         "name": "Return TD",
-        "func": "msg.payload = {\n  \"id\": \"urn:uuid:1234-light\",\n  \"@context\": \"https://www.w3.org/2022/wot/td/v1.1\",\n  \"title\": \"SimpleLight\",\n  \"security\": [\"nosec\"],\n  \"securityDefinitions\": {\n    \"nosec\": { \"scheme\": \"nosec\" }\n  },\n  \"properties\": {\n    \"on\": {\n      \"type\": \"boolean\",\n      \"forms\": [\n        {\n          \"href\": \"http://localhost:8080/light/on\",\n          \"op\": [\"readproperty\", \"writeproperty\"],\n          \"contentType\": \"application/json\"\n        }\n      ]\n    }\n  },\n  \"actions\": {\n    \"toggle\": {\n      \"forms\": [\n        {\n          \"href\": \"http://localhost:8080/light/toggle\",\n          \"op\": [\"invokeaction\"],\n          \"htv:methodName\": \"POST\",\n          \"contentType\": \"application/json\"\n        }\n      ]\n    }\n  }\n}\n\nreturn msg;",
+        "func": "msg.payload = {\n  \"id\": \"urn:uuid:1234-light\",\n  \"@context\": \"https://www.w3.org/2022/wot/td/v1.1\",\n  \"title\": \"SimpleLight\",\n  \"security\": [\"nosec\"],\n  \"securityDefinitions\": {\n    \"nosec\": { \"scheme\": \"nosec\" }\n  },\n  \"properties\": {\n    \"on\": {\n      \"type\": \"boolean\",\n      \"forms\": [\n        {\n          \"href\": \"http://localhost:1880/light/on\",\n          \"op\": [\"readproperty\", \"writeproperty\"],\n          \"contentType\": \"application/json\"\n        }\n      ]\n    }\n  },\n  \"actions\": {\n    \"toggle\": {\n      \"forms\": [\n        {\n          \"href\": \"http://localhost:1880/light/toggle\",\n          \"op\": [\"invokeaction\"],\n          \"htv:methodName\": \"POST\",\n          \"contentType\": \"application/json\"\n        }\n      ]\n    }\n  }\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -2143,7 +1478,7 @@
         "type": "function",
         "z": "cc58a035b207933b",
         "name": "function 3",
-        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:virtual-thing1\",\n    \"title\": \"LED\",\n    \"security\": [\"nosec\"],\n    \"properties\": {\n        \"status\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"status\": {\"type\": \"number\"}\n            },\n            \"description\": \"LED 0 (OFF) / 1 (ON) status\",\n            \"observable\": false,\n            \"forms\": [{\n                \"href\": \"http://localhost:8080/things/thing1/properties/status\",\n                \"contentType\": \"application/json\",\n                \"op\": [\"readproperty\", \"writeproperty\"] // specifies the kind of operation you can perform on that Thing’s property\n            }]\n        }\n    },\n    \"actions\": {\n        \"toggle\": {\n            \"description\": \"Toggle LED state\",\n            \"forms\": [{\n                \"href\": \"http://localhost:8080/things/thing1/actions/toggle\",\n                \"contentType\": \"application/json\",\n                \"op\": \"invokeaction\"\n            }],\n            \"output\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"result\": { \"type\": \"number\" }\n                },\n                \"required\": [\"result\"]\n            }\n        }\n    },\n    \"forms\": [{ \"href\": \"http://localhost:8080/things/thing1\", \"contentType\": \"application/td+json\" }]\n};\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
+        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:virtual-thing1\",\n    \"title\": \"LED\",\n    \"security\": [\"nosec\"],\n    \"properties\": {\n        \"status\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"status\": {\"type\": \"number\"}\n            },\n            \"description\": \"LED 0 (OFF) / 1 (ON) status\",\n            \"observable\": false,\n            \"forms\": [{\n                \"href\": \"http://localhost:1880/things/thing1/properties/status\",\n                \"contentType\": \"application/json\",\n                \"op\": [\"readproperty\", \"writeproperty\"] // specifies the kind of operation you can perform on that Thing’s property\n            }]\n        }\n    },\n    \"actions\": {\n        \"toggle\": {\n            \"description\": \"Toggle LED state\",\n            \"forms\": [{\n                \"href\": \"http://localhost:1880/things/thing1/actions/toggle\",\n                \"contentType\": \"application/json\",\n                \"op\": \"invokeaction\"\n            }],\n            \"output\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"result\": { \"type\": \"number\" }\n                },\n                \"required\": [\"result\"]\n            }\n        }\n    },\n    \"forms\": [{ \"href\": \"http://localhost:1880/things/thing1\", \"contentType\": \"application/td+json\" }]\n};\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2300,7 +1635,7 @@
         "type": "function",
         "z": "cc58a035b207933b",
         "name": "function 6",
-        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:virtual-thing1\",\n    \"title\": \"Thing2\",\n    \"security\": [\"nosec\"],\n    \"properties\": {\n        \"level\": {\n            \"type\": \"object\",\n            \"forms\": [{ \"href\": \"http://localhost:8080/things/thing2/properties/level\", \"contentType\": \"application/json\" }]\n        }\n    },\n    \"actions\": {\n        \"set\": {\n            \"input\": {\n                \"level\": {\"type\": \"number\"}\n            },\n            \"output\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"result\": { \"type\": \"number\" }\n                },\n                \"required\": [\"result\"]\n            },\n            \"forms\": [{ \"href\": \"http://localhost:8080/things/thing2/actions/set\", \"contentType\": \"application/json\" }]\n        }\n    },\n    \"forms\": [{ \"href\": \"http://localhost:8080/things/thing2\", \"contentType\": \"application/td+json\" }]\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:virtual-thing1\",\n    \"title\": \"Thing2\",\n    \"security\": [\"nosec\"],\n    \"properties\": {\n        \"level\": {\n            \"type\": \"object\",\n            \"forms\": [{ \"href\": \"http://localhost:1880/things/thing2/properties/level\", \"contentType\": \"application/json\" }]\n        }\n    },\n    \"actions\": {\n        \"set\": {\n            \"input\": {\n                \"level\": {\"type\": \"number\"}\n            },\n            \"output\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"result\": { \"type\": \"number\" }\n                },\n                \"required\": [\"result\"]\n            },\n            \"forms\": [{ \"href\": \"http://localhost:1880/things/thing2/actions/set\", \"contentType\": \"application/json\" }]\n        }\n    },\n    \"forms\": [{ \"href\": \"http://localhost:1880/things/thing2\", \"contentType\": \"application/td+json\" }]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2708,7 +2043,7 @@
         "type": "function",
         "z": "cc58a035b207933b",
         "name": "function 9",
-        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:thing1-temperature\",\n    \"title\": \"Temperature Sensor\",\n    \"@type\": \"TemperatureSensor\",\n    \"securityDefinitions\": {\n        \"nosec_sc\": {\n            \"scheme\": \"nosec\"\n        }\n    },\n    \"security\": \"nosec_sc\",\n    \"properties\": {\n        \"temperature\": {\n            \"type\": \"number\",\n            \"description\": \"Current temperature in Celsius\",\n            \"observable\": false,\n            \"readOnly\": true,\n            \"forms\": [{\n                \"href\": \"http://localhost:8080/things/thing3/properties/temperature\",\n                \"contentType\": \"application/json\",\n                \"op\": \"readproperty\"\n            }]\n        }\n    }\n};\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\nreturn msg;",
+        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:thing1-temperature\",\n    \"title\": \"Temperature Sensor\",\n    \"@type\": \"TemperatureSensor\",\n    \"securityDefinitions\": {\n        \"nosec_sc\": {\n            \"scheme\": \"nosec\"\n        }\n    },\n    \"security\": \"nosec_sc\",\n    \"properties\": {\n        \"temperature\": {\n            \"type\": \"number\",\n            \"description\": \"Current temperature in Celsius\",\n            \"observable\": false,\n            \"readOnly\": true,\n            \"forms\": [{\n                \"href\": \"http://localhost:1880/things/thing3/properties/temperature\",\n                \"contentType\": \"application/json\",\n                \"op\": \"readproperty\"\n            }]\n        }\n    }\n};\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3043,7 +2378,7 @@
         "type": "wot-fetch",
         "z": "cc58a035b207933b",
         "name": "",
-        "tdUrl": "http://localhost:8080/things/thing1",
+        "tdUrl": "http://localhost:1880/things/thing1",
         "outputVar": "thingDescription",
         "outputVarType": "msg",
         "cacheTds": true,
@@ -3185,7 +2520,7 @@
         "type": "function",
         "z": "cc58a035b207933b",
         "name": "function 11",
-        "func": "msg.payload = {\n    \"thing1\": {\n        \"id\": \"urn:dev:ops:thing1\",\n            \"title\": \"Thing1\",\n                \"properties\": {\n            \"status\": {\n                \"type\": \"string\",\n                    \"forms\": [\n                        { \"href\": \"http://localhost:8080/things/thing1/properties/status\" }\n                    ]\n            }\n        },\n        \"actions\": {\n            \"toggle\": {\n                \"forms\": [\n                    { \"href\": \"http://localhost:8080/things/thing1/actions/toggle\" }\n                ]\n            }\n        }\n    },\n    \"thing2\": {\n        \"id\": \"urn:dev:ops:thing2\",\n            \"title\": \"Thing2\",\n                \"properties\": {\n            \"level\": {\n                \"type\": \"number\",\n                    \"forms\": [\n                        { \"href\": \"http://localhost:8080/things/thing2/properties/level\" }\n                    ]\n            }\n        },\n        \"actions\": {\n            \"set\": {\n                \"forms\": [\n                    { \"href\": \"http://localhost:8080/things/thing2/actions/set\" }\n                ]\n            }\n        }\n    },\n    \"thing3\": {\n        \"id\": \"urn:dev:ops:thing3\",\n            \"title\": \"Thing3\",\n                \"properties\": { /* ... */ },\n        \"actions\": { /* ... */ }\n    }\n}\n\nreturn msg;",
+        "func": "msg.payload = {\n    \"thing1\": {\n        \"id\": \"urn:dev:ops:thing1\",\n            \"title\": \"Thing1\",\n                \"properties\": {\n            \"status\": {\n                \"type\": \"string\",\n                    \"forms\": [\n                        { \"href\": \"http://localhost:1880/things/thing1/properties/status\" }\n                    ]\n            }\n        },\n        \"actions\": {\n            \"toggle\": {\n                \"forms\": [\n                    { \"href\": \"http://localhost:1880/things/thing1/actions/toggle\" }\n                ]\n            }\n        }\n    },\n    \"thing2\": {\n        \"id\": \"urn:dev:ops:thing2\",\n            \"title\": \"Thing2\",\n                \"properties\": {\n            \"level\": {\n                \"type\": \"number\",\n                    \"forms\": [\n                        { \"href\": \"http://localhost:1880/things/thing2/properties/level\" }\n                    ]\n            }\n        },\n        \"actions\": {\n            \"set\": {\n                \"forms\": [\n                    { \"href\": \"http://localhost:1880/things/thing2/actions/set\" }\n                ]\n            }\n        }\n    },\n    \"thing3\": {\n        \"id\": \"urn:dev:ops:thing3\",\n            \"title\": \"Thing3\",\n                \"properties\": { /* ... */ },\n        \"actions\": { /* ... */ }\n    }\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3262,7 +2597,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/thing2/properties/level",
+        "url": "http://localhost:1880/things/thing2/properties/level",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -3338,7 +2673,7 @@
         "method": "PUT",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/thing1/properties/status",
+        "url": "http://localhost:1880/things/thing1/properties/status",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -3403,7 +2738,7 @@
         "type": "function",
         "z": "03751bef0ed5432b",
         "name": "function 13",
-        "func": "\nconst smartHomeTDs = [\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:alarm\",\n        \"title\": \"Alarm\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"alarmRinging\": {\n                \"title\": \"Alarm Ringing\",\n                \"description\": \"This alarm has started ringing\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"since\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [\n                    {\n                        \"href\": \"http://localhost:8080/things/alarm/events/alarmRinging\",\n                        \"contentType\": \"text/event-stream\",\n                        \"op\": [\"subscribeevent\"]\n                    }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/alarm\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:doorbell\",\n        \"title\": \"DoorBell\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"bellRung\": {\n                \"title\": \"Bell rung\",\n                \"description\": \"The bell was rung\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [\n                    {\n                        \"href\": \"http://localhost:8080/things/doorbell/events/bellRung\",\n                        \"contentType\": \"text/event-stream\",\n                        \"op\": [\"subscribeevent\"]\n                    }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/doorbell\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:heater\",\n        \"title\": \"Heater\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"startHeater\": {\n                \"title\": \"Start heater\",\n                \"description\": \"Starts the heater at the given temperature for the given time\",\n                \"input\": { \"type\": \"object\", \"properties\": { \"temperature\": { \"type\": \"integer\" }, \"timeHeating\": { \"type\": \"integer\" } }, \"required\": [\"temperature\"] },\n                \"output\": { \"type\": \"object\", \"properties\": { \"status\": { \"type\": \"string\" } } },\n                \"forms\": [\n                    { \"href\": \"http://localhost:8080/things/heater/actions/startHeater\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/heater\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:leds\",\n        \"title\": \"LEDs\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"blink\": { \"title\": \"Blink LEDs\", \"input\": { \"type\": \"object\", \"properties\": { \"times\": { \"type\": \"integer\" } } }, \"forms\": [{ \"href\": \"http://localhost:8080/things/leds/actions/blink\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"LEDsOn\": { \"title\": \"Turn LEDs on\", \"forms\": [{ \"href\": \"http://localhost:8080/things/leds/actions/LEDsOn\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"LEDsOff\": { \"title\": \"Turn LEDs off\", \"forms\": [{ \"href\": \"http://localhost:8080/things/leds/actions/LEDsOff\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/leds\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:mainroomlight\",\n        \"title\": \"MainRoomLight\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"lightOn\": { \"title\": \"Turn light on\", \"forms\": [{ \"href\": \"http://localhost:8080/things/mainroomlight/actions/lightOn\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"lightOff\": { \"title\": \"Turn light off\", \"forms\": [{ \"href\": \"http://localhost:8080/things/mainroomlight/actions/lightOff\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/mainroomlight\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:motionsensor\",\n        \"title\": \"MotionSensor\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"motionDetected\": {\n                \"title\": \"Motion detected\",\n                \"description\": \"An event made when motion is detected\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [{ \"href\": \"http://localhost:8080/things/motionsensor/events/motionDetected\", \"contentType\": \"text/event-stream\", \"op\": [\"subscribeevent\"] }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/motionsensor\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:smartassistant\",\n        \"title\": \"SmartAssistant\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"say\": {\n                \"title\": \"Say phrase\",\n                \"input\": { \"type\": \"object\", \"properties\": { \"phrase\": { \"type\": \"string\" } }, \"required\": [\"phrase\"] },\n                \"forms\": [{ \"href\": \"http://localhost:8080/things/smartassistant/actions/say\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/smartassistant\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:speaker\",\n        \"title\": \"Speaker\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"setVolume\": { \"title\": \"Set volume\", \"input\": { \"type\": \"object\", \"properties\": { \"percentage\": { \"type\": \"integer\", \"minimum\": 0, \"maximum\": 100 } }, \"required\": [\"percentage\"] }, \"forms\": [{ \"href\": \"http://localhost:8080/things/speaker/actions/setVolume\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"getVolume\": { \"title\": \"Get volume\", \"output\": { \"type\": \"integer\" }, \"forms\": [{ \"href\": \"http://localhost:8080/things/speaker/actions/getVolume\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"properties\": {\n            \"volume\": {\n                \"type\": \"integer\",\n                \"forms\": [{ \"href\": \"http://localhost:8080/things/speaker/properties/volume\", \"contentType\": \"application/json\", \"op\": [\"readproperty\", \"writeproperty\"], \"htv:methodName\": \"GET\" }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/speaker\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:washingmachine\",\n        \"title\": \"WashingMachine\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"finishedCycle\": {\n                \"title\": \"Wash cycle complete\",\n                \"description\": \"Sends a notification at the end of a wash cycle\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [{ \"href\": \"http://localhost:8080/things/washingmachine/events/finishedCycle\", \"contentType\": \"text/event-stream\", \"op\": [\"subscribeevent\"] }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/washingmachine\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    }\n]\n\n\nflow.set(\"smartHomeTDs\", smartHomeTDs);\n\nmsg.payload = smartHomeTDs\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
+        "func": "\nconst smartHomeTDs = [\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:alarm\",\n        \"title\": \"Alarm\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"alarmRinging\": {\n                \"title\": \"Alarm Ringing\",\n                \"description\": \"This alarm has started ringing\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"since\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [\n                    {\n                        \"href\": \"http://localhost:1880/things/alarm/events/alarmRinging\",\n                        \"contentType\": \"text/event-stream\",\n                        \"op\": [\"subscribeevent\"]\n                    }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/alarm\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:doorbell\",\n        \"title\": \"DoorBell\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"bellRung\": {\n                \"title\": \"Bell rung\",\n                \"description\": \"The bell was rung\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [\n                    {\n                        \"href\": \"http://localhost:1880/things/doorbell/events/bellRung\",\n                        \"contentType\": \"text/event-stream\",\n                        \"op\": [\"subscribeevent\"]\n                    }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/doorbell\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:heater\",\n        \"title\": \"Heater\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"startHeater\": {\n                \"title\": \"Start heater\",\n                \"description\": \"Starts the heater at the given temperature for the given time\",\n                \"input\": { \"type\": \"object\", \"properties\": { \"temperature\": { \"type\": \"integer\" }, \"timeHeating\": { \"type\": \"integer\" } }, \"required\": [\"temperature\"] },\n                \"output\": { \"type\": \"object\", \"properties\": { \"status\": { \"type\": \"string\" } } },\n                \"forms\": [\n                    { \"href\": \"http://localhost:1880/things/heater/actions/startHeater\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/heater\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:leds\",\n        \"title\": \"LEDs\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"blink\": { \"title\": \"Blink LEDs\", \"input\": { \"type\": \"object\", \"properties\": { \"times\": { \"type\": \"integer\" } } }, \"forms\": [{ \"href\": \"http://localhost:1880/things/leds/actions/blink\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"LEDsOn\": { \"title\": \"Turn LEDs on\", \"forms\": [{ \"href\": \"http://localhost:1880/things/leds/actions/LEDsOn\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"LEDsOff\": { \"title\": \"Turn LEDs off\", \"forms\": [{ \"href\": \"http://localhost:1880/things/leds/actions/LEDsOff\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/leds\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:mainroomlight\",\n        \"title\": \"MainRoomLight\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"lightOn\": { \"title\": \"Turn light on\", \"forms\": [{ \"href\": \"http://localhost:1880/things/mainroomlight/actions/lightOn\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"lightOff\": { \"title\": \"Turn light off\", \"forms\": [{ \"href\": \"http://localhost:1880/things/mainroomlight/actions/lightOff\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/mainroomlight\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:motionsensor\",\n        \"title\": \"MotionSensor\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"motionDetected\": {\n                \"title\": \"Motion detected\",\n                \"description\": \"An event made when motion is detected\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [{ \"href\": \"http://localhost:1880/things/motionsensor/events/motionDetected\", \"contentType\": \"text/event-stream\", \"op\": [\"subscribeevent\"] }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/motionsensor\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:smartassistant\",\n        \"title\": \"SmartAssistant\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"say\": {\n                \"title\": \"Say phrase\",\n                \"input\": { \"type\": \"object\", \"properties\": { \"phrase\": { \"type\": \"string\" } }, \"required\": [\"phrase\"] },\n                \"forms\": [{ \"href\": \"http://localhost:1880/things/smartassistant/actions/say\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/smartassistant\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:speaker\",\n        \"title\": \"Speaker\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"setVolume\": { \"title\": \"Set volume\", \"input\": { \"type\": \"object\", \"properties\": { \"percentage\": { \"type\": \"integer\", \"minimum\": 0, \"maximum\": 100 } }, \"required\": [\"percentage\"] }, \"forms\": [{ \"href\": \"http://localhost:1880/things/speaker/actions/setVolume\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"getVolume\": { \"title\": \"Get volume\", \"output\": { \"type\": \"integer\" }, \"forms\": [{ \"href\": \"http://localhost:1880/things/speaker/actions/getVolume\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"properties\": {\n            \"volume\": {\n                \"type\": \"integer\",\n                \"forms\": [{ \"href\": \"http://localhost:1880/things/speaker/properties/volume\", \"contentType\": \"application/json\", \"op\": [\"readproperty\", \"writeproperty\"], \"htv:methodName\": \"GET\" }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/speaker\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:washingmachine\",\n        \"title\": \"WashingMachine\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"finishedCycle\": {\n                \"title\": \"Wash cycle complete\",\n                \"description\": \"Sends a notification at the end of a wash cycle\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [{ \"href\": \"http://localhost:1880/things/washingmachine/events/finishedCycle\", \"contentType\": \"text/event-stream\", \"op\": [\"subscribeevent\"] }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/washingmachine\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    }\n]\n\n\nflow.set(\"smartHomeTDs\", smartHomeTDs);\n\nmsg.payload = smartHomeTDs\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3483,7 +2818,7 @@
         "type": "function",
         "z": "7e0f78b972841d3a",
         "name": "function 15",
-        "func": "\nconst washingMachineTD = {\n    \"@context\": \"http://www.w3.org/ns/td\",\n    \"@type\": [\"Thing\"],\n    \"title\": \"WashingMachine\",\n    \"securityDefinitions\": {\n        \"no_sec\": {\n            \"scheme\": \"nosec\"\n        }\n    },\n    \"security\": \"no_sec\",\n    \"properties\": {\n        \"status\": {\n            \"title\": \"Machine Status\",\n            \"description\": \"Current state of the washing machine\",\n            \"type\": \"string\",\n            \"enum\": [\"idle\", \"running\", \"finished\"],\n            \"readOnly\": true,\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:8080/things/wm/status\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"readproperty\"]\n                }\n            ]\n        },\n        \"remainingTime\": {\n            \"title\": \"Time Left\",\n            \"description\": \"Remaining wash cycle time in minutes\",\n            \"type\": \"integer\",\n            \"unit\": \"minutes\",\n            \"readOnly\": true,\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:8080/things/wm/remainingTime\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"readproperty\"]\n                }\n            ]\n        }\n    },\n    \"actions\": {\n        \"start\": {\n            \"title\": \"Start Washing Cycle\",\n            \"description\": \"Start a new wash program\",\n            \"input\": {\n                \"type\": \"string\",\n                \"enum\": [\"quick\", \"cotton\", \"wool\"]\n            },\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:8080/things/wm/start\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"invokeaction\"]\n                }\n            ]\n        },\n        \"stop\": {\n            \"title\": \"Stop Cycle\",\n            \"description\": \"Immediately stop the wash program\",\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:8080/things/wm/stop\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"invokeaction\"]\n                }\n            ]\n        }\n    },\n    \"events\": {\n        \"finishedCycle\": {\n            \"title\": \"Wash cycle complete\",\n            \"description\": \"Sends a notification at the end of a wash cycle\",\n            \"data\": {\n                \"type\": \"string\"\n            },\n            \"forms\": [\n                {\n                    \"href\": \"ws://localhost:8080/things/wm/finishedCycle\",\n                    \"subprotocol\": \"websocket\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"subscribeevent\"]\n                },\n                {\n                    \"href\": \"http://localhost:8080/things/wm/finishedCycle\",\n                    \"subprotocol\": \"longpoll\"\n                }\n            ]\n        }\n    }\n}\n\n\n\nflow.set(\"washingMachineTD\", washingMachineTD);\n\nmsg.payload = washingMachineTD\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
+        "func": "\nconst washingMachineTD = {\n    \"@context\": \"http://www.w3.org/ns/td\",\n    \"@type\": [\"Thing\"],\n    \"title\": \"WashingMachine\",\n    \"securityDefinitions\": {\n        \"no_sec\": {\n            \"scheme\": \"nosec\"\n        }\n    },\n    \"security\": \"no_sec\",\n    \"properties\": {\n        \"status\": {\n            \"title\": \"Machine Status\",\n            \"description\": \"Current state of the washing machine\",\n            \"type\": \"string\",\n            \"enum\": [\"idle\", \"running\", \"finished\"],\n            \"readOnly\": true,\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:1880/things/wm/status\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"readproperty\"]\n                }\n            ]\n        },\n        \"remainingTime\": {\n            \"title\": \"Time Left\",\n            \"description\": \"Remaining wash cycle time in minutes\",\n            \"type\": \"integer\",\n            \"unit\": \"minutes\",\n            \"readOnly\": true,\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:1880/things/wm/remainingTime\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"readproperty\"]\n                }\n            ]\n        }\n    },\n    \"actions\": {\n        \"start\": {\n            \"title\": \"Start Washing Cycle\",\n            \"description\": \"Start a new wash program\",\n            \"input\": {\n                \"type\": \"string\",\n                \"enum\": [\"quick\", \"cotton\", \"wool\"]\n            },\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:1880/things/wm/start\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"invokeaction\"]\n                }\n            ]\n        },\n        \"stop\": {\n            \"title\": \"Stop Cycle\",\n            \"description\": \"Immediately stop the wash program\",\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:1880/things/wm/stop\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"invokeaction\"]\n                }\n            ]\n        }\n    },\n    \"events\": {\n        \"finishedCycle\": {\n            \"title\": \"Wash cycle complete\",\n            \"description\": \"Sends a notification at the end of a wash cycle\",\n            \"data\": {\n                \"type\": \"string\"\n            },\n            \"forms\": [\n                {\n                    \"href\": \"ws://localhost:1880/things/wm/finishedCycle\",\n                    \"subprotocol\": \"websocket\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"subscribeevent\"]\n                },\n                {\n                    \"href\": \"http://localhost:1880/things/wm/finishedCycle\",\n                    \"subprotocol\": \"longpoll\"\n                }\n            ]\n        }\n    }\n}\n\n\n\nflow.set(\"washingMachineTD\", washingMachineTD);\n\nmsg.payload = washingMachineTD\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5433,7 +4768,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/wm/status",
+        "url": "http://localhost:1880/things/wm/status",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -5523,7 +4858,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/mainroomlight/on",
+        "url": "http://localhost:1880/things/mainroomlight/on",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -5547,7 +4882,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/speaker/volume",
+        "url": "http://localhost:1880/things/speaker/volume",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -5592,7 +4927,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/speaker/setVolume",
+        "url": "http://localhost:1880/things/speaker/setVolume",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -5617,7 +4952,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/smartassistant/say",
+        "url": "http://localhost:1880/things/smartassistant/say",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -5657,7 +4992,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/speaker/setVolume",
+        "url": "http://localhost:1880/things/speaker/setVolume",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -5681,7 +5016,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/heater/start",
+        "url": "http://localhost:1880/things/heater/start",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -5720,7 +5055,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/leds/blink",
+        "url": "http://localhost:1880/things/leds/blink",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -5946,31 +5281,7 @@
         "statusType": "auto",
         "x": 520,
         "y": 800,
-/data $ cat flows.json
-[
-    {
-        "id": "2f8fa64411c4e91f",
-        "type": "tab",
-        "label": "web-requests",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "1086946b1acd1c45",
-        "type": "tab",
-        "label": "RSS Reader",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "25f9976e4245e54a",
-        "type": "tab",
-        "label": "db-admin",
-        "disabled": true,
-        "info": "",
-        "env": []
+        "wires": []
     },
     {
         "id": "cc64ed2b39bf39cc",
@@ -6040,7 +5351,7 @@
         "id": "consumedThing1",
         "type": "consumed-thing",
         "tdLink": "/things/thing1",
-        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:virtual-thing1\",\"title\":\"LED\",\"security\":[\"nosec\"],\"properties\":{\"status\":{\"type\":\"object\",\"properties\":{\"status\":{\"type\":\"number\"}},\"description\":\"LED 0 (OFF) / 1 (ON) status\",\"observable\":false,\"forms\":[{\"href\":\"http://localhost:8080/things/thing1/properties/status\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]}]}},\"actions\":{\"toggle\":{\"description\":\"Toggle LED state\",\"forms\":[{\"href\":\"http://localhost:8080/things/thing1/actions/toggle\",\"contentType\":\"application/json\",\"op\":\"invokeaction\"}],\"output\":{\"type\":\"object\",\"properties\":{\"result\":{\"type\":\"number\"}},\"required\":[\"result\"]}}},\"forms\":[{\"href\":\"http://localhost:8080/things/thing1\",\"contentType\":\"application/td+json\"}]}",
+        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:virtual-thing1\",\"title\":\"LED\",\"security\":[\"nosec\"],\"properties\":{\"status\":{\"type\":\"object\",\"properties\":{\"status\":{\"type\":\"number\"}},\"description\":\"LED 0 (OFF) / 1 (ON) status\",\"observable\":false,\"forms\":[{\"href\":\"http://localhost:1880/things/thing1/properties/status\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]}]}},\"actions\":{\"toggle\":{\"description\":\"Toggle LED state\",\"forms\":[{\"href\":\"http://localhost:1880/things/thing1/actions/toggle\",\"contentType\":\"application/json\",\"op\":\"invokeaction\"}],\"output\":{\"type\":\"object\",\"properties\":{\"result\":{\"type\":\"number\"}},\"required\":[\"result\"]}}},\"forms\":[{\"href\":\"http://localhost:1880/things/thing1\",\"contentType\":\"application/td+json\"}]}",
         "http": true,
         "ws": false,
         "coap": false,
@@ -6054,8 +5365,8 @@
     {
         "id": "6b22e72718942046",
         "type": "consumed-thing",
-        "tdLink": "http://localhost:8080/things/thing2",
-        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:virtual-thing1\",\"title\":\"Thing2\",\"security\":[\"nosec\"],\"properties\":{\"level\":{\"type\":\"object\",\"forms\":[{\"href\":\"http://localhost:8080/things/thing2/properties/level\",\"contentType\":\"application/json\"}]}},\"actions\":{\"set\":{\"input\":{\"level\":{\"type\":\"number\"}},\"output\":{\"type\":\"object\",\"properties\":{\"result\":{\"type\":\"number\"}},\"required\":[\"result\"]},\"forms\":[{\"href\":\"http://localhost:8080/things/thing2/actions/set\",\"contentType\":\"application/json\"}]}},\"forms\":[{\"href\":\"http://localhost:8080/things/thing2\",\"contentType\":\"application/td+json\"}]}",
+        "tdLink": "http://localhost:1880/things/thing2",
+        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:virtual-thing1\",\"title\":\"Thing2\",\"security\":[\"nosec\"],\"properties\":{\"level\":{\"type\":\"object\",\"forms\":[{\"href\":\"http://localhost:1880/things/thing2/properties/level\",\"contentType\":\"application/json\"}]}},\"actions\":{\"set\":{\"input\":{\"level\":{\"type\":\"number\"}},\"output\":{\"type\":\"object\",\"properties\":{\"result\":{\"type\":\"number\"}},\"required\":[\"result\"]},\"forms\":[{\"href\":\"http://localhost:1880/things/thing2/actions/set\",\"contentType\":\"application/json\"}]}},\"forms\":[{\"href\":\"http://localhost:1880/things/thing2\",\"contentType\":\"application/td+json\"}]}",
         "http": true,
         "ws": false,
         "coap": false,
@@ -6070,7 +5381,7 @@
         "id": "2805a003dbd2b617",
         "type": "consumed-thing",
         "tdLink": "/things/thing3",
-        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:thing1-temperature\",\"title\":\"Temperature Sensor\",\"@type\":\"TemperatureSensor\",\"securityDefinitions\":{\"nosec_sc\":{\"scheme\":\"nosec\"}},\"security\":\"nosec_sc\",\"properties\":{\"temperature\":{\"type\":\"number\",\"description\":\"Current temperature in Celsius\",\"observable\":false,\"readOnly\":true,\"forms\":[{\"href\":\"http://localhost:8080/things/thing3/properties/temperature\",\"contentType\":\"application/json\",\"op\":\"readproperty\"}]}}}",
+        "td": "{\"@context\":\"https://www.w3.org/2019/wot/td/v1\",\"id\":\"urn:dev:ops:thing1-temperature\",\"title\":\"Temperature Sensor\",\"@type\":\"TemperatureSensor\",\"securityDefinitions\":{\"nosec_sc\":{\"scheme\":\"nosec\"}},\"security\":\"nosec_sc\",\"properties\":{\"temperature\":{\"type\":\"number\",\"description\":\"Current temperature in Celsius\",\"observable\":false,\"readOnly\":true,\"forms\":[{\"href\":\"http://localhost:1880/things/thing3/properties/temperature\",\"contentType\":\"application/json\",\"op\":\"readproperty\"}]}}}",
         "http": true,
         "ws": false,
         "coap": false,
@@ -6132,7 +5443,7 @@
     {
         "id": "63485395a50b29c0",
         "type": "websocket-client",
-        "path": "ws:http://localhost:8080/things/doorbell/bellrung",
+        "path": "ws:http://localhost:1880/things/doorbell/bellrung",
         "tls": "",
         "wholemsg": "false",
         "hb": "0",
@@ -6172,7 +5483,7 @@
     {
         "id": "c53c11b411a8dbad",
         "type": "websocket-client",
-        "path": "ws:http://localhost:8080/things/wm/finishedCycle",
+        "path": "ws:http://localhost:1880/things/wm/finishedCycle",
         "tls": "",
         "wholemsg": "false",
         "hb": "0",
@@ -6182,7 +5493,7 @@
     {
         "id": "91c8ec522b374b97",
         "type": "websocket-client",
-        "path": "ws://localhost:8080/things/alarm/ringing",
+        "path": "ws://localhost:1880/things/alarm/ringing",
         "tls": "",
         "wholemsg": "false",
         "hb": "0",
@@ -6204,7 +5515,7 @@
     {
         "id": "19b93c24ab8e2161",
         "type": "websocket-listener",
-        "path": "ws://localhost:8080/things/doorbell/rung",
+        "path": "ws://localhost:1880/things/doorbell/rung",
         "wholemsg": "false"
     },
     {
@@ -7400,664 +6711,9 @@
         "y": 320,
         "wires": []
     },
-    {
-        "id": "inject-init",
-        "type": "inject",
-        "z": "cc64ed2b39bf39cc",
-        "name": "Init state",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 420,
-        "y": 320,
-        "wires": [
-            [
-                "function-init"
-            ]
-        ]
-    },
-    {
-        "id": "function-init",
-        "type": "function",
-        "z": "cc64ed2b39bf39cc",
-        "name": "Set initial state",
-        "func": "flow.set(\"coffee.resources\", { milk: 100, beans: 100, water: 100 });\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 620,
-        "y": 320,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "httpin-resources",
-        "type": "http in",
-        "z": "cc64ed2b39bf39cc",
-        "name": "GET resources",
-        "url": "/coffee-machine/properties/resources/",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 410,
-        "y": 380,
-        "wires": [
-            [
-                "function-get-resources"
-            ]
-        ]
-    },
-    {
-        "id": "function-get-resources",
-        "type": "function",
-        "z": "cc64ed2b39bf39cc",
-        "name": "Read resources",
-        "func": "msg.payload = flow.get(\"coffee.resources\");\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 620,
-        "y": 380,
-        "wires": [
-            [
-                "http-response"
-            ]
-        ]
-    },
-    {
-        "id": "http-response",
-        "type": "http response",
-        "z": "cc64ed2b39bf39cc",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 820,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "httpin-brew",
-        "type": "http in",
-        "z": "cc64ed2b39bf39cc",
-        "name": "POST brew",
-        "url": "/coffee-machine/actions/brew/",
-        "method": "post",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 400,
-        "y": 480,
-        "wires": [
-            [
-                "function-brew"
-            ]
-        ]
-    },
-    {
-        "id": "function-brew",
-        "type": "function",
-        "z": "cc64ed2b39bf39cc",
-        "name": "Handle brew",
-        "func": "let state = flow.get(\"coffee.resources\") || { milk: 0, beans: 0, water: 0 };\n\n// Accept empty payload\nlet drink = msg.payload || \"espresso\";  // default to espresso\n\n// simple resource consumption\nif (state.water >= 10 && state.beans >= 5) {\n    state.water -= 10;\n    state.beans -= 5;\n    msg.payload = { result: `Brewed ${drink}`, resources: state };\n} else {\n    msg.payload = { error: \"Not enough resources\" };\n}\n\nflow.set(\"coffee.resources\", state);\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 620,
-        "y": 480,
-        "wires": [
-            [
-                "http-response"
-            ]
-        ]
-    },
-    {
-        "id": "httpin-refill",
-        "type": "http in",
-        "z": "cc64ed2b39bf39cc",
-        "name": "POST refill",
-        "url": "/coffee-machine/actions/refill/",
-        "method": "post",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 400,
-        "y": 580,
-        "wires": [
-            [
-                "function-refill"
-            ]
-        ]
-    },
-    {
-        "id": "function-refill",
-        "type": "function",
-        "z": "cc64ed2b39bf39cc",
-        "name": "Handle refill",
-        "func": "let state = flow.get(\"coffee.resources\") || { milk:0, beans:0, water:0 };\nlet item = msg.payload;\nconsole.log(item)\nif ([\"milk\", \"beans\", \"water\"].includes(item)) {\n    state[item] = 100;\n    msg.payload = { result: `Refilled ${item}`, resources: state };\n} else {\n    msg.payload = { error: \"Unknown refill item\" };\n}\nflow.set(\"coffee.resources\", state);\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 620,
-        "y": 580,
-        "wires": [
-            [
-                "http-response"
-            ]
-        ]
-    },
-    {
-        "id": "httpin-td",
-        "type": "http in",
-        "z": "cc64ed2b39bf39cc",
-        "name": "GET TD",
-        "url": "/coffee-machine/td/",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 390,
-        "y": 680,
-        "wires": [
-            [
-                "function-td"
-            ]
-        ]
-    },
-    {
-        "id": "function-td",
-        "type": "function",
-        "z": "cc64ed2b39bf39cc",
-        "name": "Return TD",
-        "func": "msg.payload = {\n  \"@context\": \"https://www.w3.org/2022/wot/td/v1.1\",\n  \"title\": \"Coffee Machine\",\n  \"id\": \"urn:uuid:local-coffee-machine\",\n  \"security\": [\"nosec\"],\n  \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n  \"properties\": {\n    \"resources\": {\n      \"type\": \"object\",\n      \"forms\": [\n        { \"op\": [\"readproperty\"], \"href\": \"http://localhost:8080/coffee-machine/properties/resources\", \"contentType\": \"application/json\" }\n      ]\n    }\n  },\n  \"actions\": {\n    \"brew\": {\n      \"forms\": [\n        { \"op\": [\"invokeaction\"], \"href\": \"http://localhost:8080/coffee-machine/actions/brew\", \"contentType\": \"application/json\", \"htv:methodName\": \"POST\" }\n      ]\n    },\n    \"refill\": {\n      \"forms\": [\n        { \"op\": [\"invokeaction\"], \"href\": \"http://localhost:8080/coffee-machine/actions/refill\", \"contentType\": \"application/json\", \"htv:methodName\": \"POST\" }\n      ]\n    }\n  }\n};\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 600,
-        "y": 680,
-        "wires": [
-            [
-                "http-response"
-            ]
-        ]
-    },
-    {
-        "id": "16fcdb9b72e5303d",
-        "type": "http in",
-        "z": "cc64ed2b39bf39cc",
-        "name": "simple",
-        "url": "/coffee-machine/",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 510,
-        "y": 840,
-        "wires": [
-            [
-                "fbd8dcb0b0457e6b"
-            ]
-        ]
-    },
-    {
-        "id": "fbd8dcb0b0457e6b",
-        "type": "function",
-        "z": "cc64ed2b39bf39cc",
-        "name": "description",
-        "func": "msg.payload = \"simple coffee machine\"\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 690,
-        "y": 840,
-        "wires": [
-            [
-                "http-response"
-            ]
-        ]
-    },
-    {
-        "id": "e9da25bf173cd0d5",
-        "type": "function",
-        "z": "ff0f90c1e6ac2159",
-        "name": "function 1",
-        "func": "msg.payload = \"Simple light 💡\"\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 800,
-        "y": 440,
-        "wires": [
-            [
-                "3b54fc8e264c8d54"
-            ]
-        ]
-    },
-    {
-        "id": "3b54fc8e264c8d54",
-        "type": "http response",
-        "z": "ff0f90c1e6ac2159",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 1090,
-        "y": 660,
-        "wires": []
-    },
-    {
-        "id": "de3d0e9532dc658c",
-        "type": "http in",
-        "z": "ff0f90c1e6ac2159",
-        "name": "Light",
-        "url": "/light",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 630,
-        "y": 440,
-        "wires": [
-            [
-                "e9da25bf173cd0d5"
-            ]
-        ]
-    },
-    {
-        "id": "2cc128ece6210ea2",
-        "type": "http in",
-        "z": "ff0f90c1e6ac2159",
-        "name": "GET TD",
-        "url": "/light/td/",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 620,
-        "y": 520,
-        "wires": [
-            [
-                "51f8da90bd956473"
-            ]
-        ]
-    },
-    {
-        "id": "51f8da90bd956473",
-        "type": "function",
-        "z": "ff0f90c1e6ac2159",
-        "name": "Return TD",
-        "func": "msg.payload = {\n  \"id\": \"urn:uuid:1234-light\",\n  \"@context\": \"https://www.w3.org/2022/wot/td/v1.1\",\n  \"title\": \"SimpleLight\",\n  \"security\": [\"nosec\"],\n  \"securityDefinitions\": {\n    \"nosec\": { \"scheme\": \"nosec\" }\n  },\n  \"properties\": {\n    \"on\": {\n      \"type\": \"boolean\",\n      \"forms\": [\n        {\n          \"href\": \"http://localhost:8080/light/on\",\n          \"op\": [\"readproperty\", \"writeproperty\"],\n          \"contentType\": \"application/json\"\n        }\n      ]\n    }\n  },\n  \"actions\": {\n    \"toggle\": {\n      \"forms\": [\n        {\n          \"href\": \"http://localhost:8080/light/toggle\",\n          \"op\": [\"invokeaction\"],\n          \"htv:methodName\": \"POST\",\n          \"contentType\": \"application/json\"\n        }\n      ]\n    }\n  }\n}\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 810,
-        "y": 520,
-        "wires": [
-            [
-                "3b54fc8e264c8d54"
-            ]
-        ]
-    },
-    {
-        "id": "d9e396bd2b1d3b95",
-        "type": "http in",
-        "z": "ff0f90c1e6ac2159",
-        "name": "GET STATUS",
-        "url": "/light/on/",
-        "method": "get",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 610,
-        "y": 600,
-        "wires": [
-            [
-                "cb7ebe6da4936478"
-            ]
-        ]
-    },
-    {
-        "id": "cb7ebe6da4936478",
-        "type": "function",
-        "z": "ff0f90c1e6ac2159",
-        "name": "get status",
-        "func": "// GET /light/on\n// let lightState = flow.get(\"light.on\") || false;\n// msg.payload = JSON.stringify({ on: lightState }); // wrap in object and stringify\n// return msg;\nmsg.payload= flow.get(\"light.on\")\nreturn msg",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 800,
-        "y": 600,
-        "wires": [
-            [
-                "3b54fc8e264c8d54"
-            ]
-        ]
-    },
-    {
-        "id": "6302b437b6a04b84",
-        "type": "inject",
-        "z": "ff0f90c1e6ac2159",
-        "name": "Init state",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "false",
-        "payloadType": "bool",
-        "x": 660,
-        "y": 360,
-        "wires": [
-            [
-                "a3a80162769c68a1"
-            ]
-        ]
-    },
-    {
-        "id": "a3a80162769c68a1",
-        "type": "function",
-        "z": "ff0f90c1e6ac2159",
-        "name": "Set initial state",
-        "func": "flow.set(\"lightOn\", msg.payload);\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 860,
-        "y": 360,
-        "wires": [
-            [
-                "21433652205778be"
-            ]
-        ]
-    },
-    {
-        "id": "21433652205778be",
-        "type": "debug",
-        "z": "ff0f90c1e6ac2159",
-        "name": "debug 7",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1100,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "2efa3c19758259b8",
-        "type": "http in",
-        "z": "ff0f90c1e6ac2159",
-        "name": "SET STATUS",
-        "url": "/light/on/",
-        "method": "put",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 610,
-        "y": 700,
-        "wires": [
-            [
-                "cf3436bd1f71c15e"
-            ]
-        ]
-    },
-    {
-        "id": "cf3436bd1f71c15e",
-        "type": "function",
-        "z": "ff0f90c1e6ac2159",
-        "name": "set status",
-        "func": "let body = msg.payload;  // expects JSON { \"on\": true/false }\nif (typeof body.on === \"boolean\") {\n    flow.set(\"lightOn\", body.on);\n    msg.payload = { on: body.on };\n} else {\n    msg.statusCode = 400;\n    msg.payload = { error: \"Expected JSON { on: true/false }\" };\n}\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 800,
-        "y": 700,
-        "wires": [
-            [
-                "3b54fc8e264c8d54"
-            ]
-        ]
-    },
-    {
-        "id": "a6c033e603a68ed8",
-        "type": "http in",
-        "z": "ff0f90c1e6ac2159",
-        "name": "TOGGLE",
-        "url": "/light/toggle",
-        "method": "post",
-        "upload": false,
-        "skipBodyParsing": false,
-        "swaggerDoc": "",
-        "x": 600,
-        "y": 780,
-        "wires": [
-            [
-                "32e7e99319e953a1"
-            ]
-        ]
-    },
-    {
-        "id": "32e7e99319e953a1",
-        "type": "function",
-        "z": "ff0f90c1e6ac2159",
-        "name": "toggle status",
-        "func": "// POST /light/toggle\nlet current = flow.get(\"light.on\") || false;\ncurrent = !current;\nflow.set(\"light.on\", current);\nmsg.payload = JSON.stringify({ on: current }); // wrap in object\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 810,
-        "y": 780,
-        "wires": [
-            [
-                "3b54fc8e264c8d54"
-            ]
-        ]
-    },
-    {
-        "id": "27499b9f22421b38",
-        "type": "comment",
-        "z": "292a46ef9ad25949",
-        "name": "Inject → Toggle Light → Read Light → Store in flow context → Function check → Set drink → Invoke Coffee Machine → Debug",
-        "info": "Inject → Toggle Light → Read Light → Store in flow context → Function check → Set drink → Invoke Coffee Machine → Debug",
-        "x": 520,
-        "y": 340,
-        "wires": []
-    },
-    {
-        "id": "inject-toggle",
-        "type": "inject",
-        "z": "292a46ef9ad25949",
-        "name": "Start sequence",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 180,
-        "y": 680,
-        "wires": [
-            [
-                "invoke-toggle"
-            ]
-        ]
-    },
-    {
-        "id": "invoke-toggle",
-        "type": "invoke-action",
-        "z": "292a46ef9ad25949",
-        "name": "Toggle Light",
-        "topic": "",
-        "thing": "",
-        "action": "toggle",
-        "uriVariables": "{}",
-        "x": 400,
-        "y": 680,
-        "wires": [
-            [
-                "read-light"
-            ]
-        ]
-    },
-    {
-        "id": "read-light",
-        "type": "read-property",
-        "z": "292a46ef9ad25949",
-        "name": "Read Light State",
-        "topic": "",
-        "thing": "",
-        "property": "on",
-        "uriVariables": "",
-        "observe": false,
-        "x": 620,
-        "y": 680,
-        "wires": [
-            [
-                "store-light"
-            ]
-        ]
-    },
-    {
-        "id": "store-light",
-        "type": "function",
-        "z": "292a46ef9ad25949",
-        "name": "Store Light State",
-        "func": "flow.set(\"light.on\", msg.payload);\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 840,
-        "y": 680,
-        "wires": [
-            [
-                "check-light"
-            ]
-        ]
-    },
-    {
-        "id": "check-light",
-        "type": "function",
-        "z": "292a46ef9ad25949",
-        "name": "Check Light and Set Drink",
-        "func": "// Get light state\nlet lightState = flow.get(\"light.on\");\nif (lightState !== true) {\n    msg.payload = { error: \"Light is off, cannot brew coffee\" };\n    return msg;\n}\n\n// Light is on, set default drink\nmsg.payload = \"espresso\";\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1080,
-        "y": 680,
-        "wires": [
-            [
-                "invoke-brew"
-            ]
-        ]
-    },
-    {
-        "id": "invoke-brew",
-        "type": "invoke-action",
-        "z": "292a46ef9ad25949",
-        "name": "Brew Coffee",
-        "topic": "",
-        "thing": "",
-        "action": "brew",
-        "uriVariables": "",
-        "x": 1280,
-        "y": 680,
-        "wires": [
-            [
-                "3613d4f551f0cdf9"
-            ]
-        ]
-    },
-    {
-        "id": "debug-output",
-        "type": "debug",
-        "z": "292a46ef9ad25949",
-        "name": "Debug",
-        "active": true,
-        "tosidebar": true,
-        "console": true,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1620,
-        "y": 680,
-        "wires": []
-    },
-    {
-        "id": "3613d4f551f0cdf9",
-        "type": "function",
-        "z": "292a46ef9ad25949",
-        "name": "function 2",
-        "func": "let lightState = flow.get(\"light.on\");\nlet coffeeResources = flow.get(\"coffee.resources\");\nlet lastDrink = msg.payload.result || null;\n\nmsg.payload = {\n    light: lightState,\n    coffee: coffeeResources,\n    brewed: lastDrink\n};\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1460,
-        "y": 680,
-        "wires": [
-            [
-                "debug-output"
-            ]
-        ]
-    },
+    
+    
+   
     {
         "id": "8a4ed3ab187dfd8b",
         "type": "http in",
@@ -8092,7 +6748,7 @@
         "type": "function",
         "z": "cc58a035b207933b",
         "name": "function 3",
-        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:virtual-thing1\",\n    \"title\": \"LED\",\n    \"security\": [\"nosec\"],\n    \"properties\": {\n        \"status\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"status\": {\"type\": \"number\"}\n            },\n            \"description\": \"LED 0 (OFF) / 1 (ON) status\",\n            \"observable\": false,\n            \"forms\": [{\n                \"href\": \"http://localhost:8080/things/thing1/properties/status\",\n                \"contentType\": \"application/json\",\n                \"op\": [\"readproperty\", \"writeproperty\"] // specifies the kind of operation you can perform on that Thing’s property\n            }]\n        }\n    },\n    \"actions\": {\n        \"toggle\": {\n            \"description\": \"Toggle LED state\",\n            \"forms\": [{\n                \"href\": \"http://localhost:8080/things/thing1/actions/toggle\",\n                \"contentType\": \"application/json\",\n                \"op\": \"invokeaction\"\n            }],\n            \"output\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"result\": { \"type\": \"number\" }\n                },\n                \"required\": [\"result\"]\n            }\n        }\n    },\n    \"forms\": [{ \"href\": \"http://localhost:8080/things/thing1\", \"contentType\": \"application/td+json\" }]\n};\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
+        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:virtual-thing1\",\n    \"title\": \"LED\",\n    \"security\": [\"nosec\"],\n    \"properties\": {\n        \"status\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"status\": {\"type\": \"number\"}\n            },\n            \"description\": \"LED 0 (OFF) / 1 (ON) status\",\n            \"observable\": false,\n            \"forms\": [{\n                \"href\": \"http://localhost:1880/things/thing1/properties/status\",\n                \"contentType\": \"application/json\",\n                \"op\": [\"readproperty\", \"writeproperty\"] // specifies the kind of operation you can perform on that Thing’s property\n            }]\n        }\n    },\n    \"actions\": {\n        \"toggle\": {\n            \"description\": \"Toggle LED state\",\n            \"forms\": [{\n                \"href\": \"http://localhost:1880/things/thing1/actions/toggle\",\n                \"contentType\": \"application/json\",\n                \"op\": \"invokeaction\"\n            }],\n            \"output\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"result\": { \"type\": \"number\" }\n                },\n                \"required\": [\"result\"]\n            }\n        }\n    },\n    \"forms\": [{ \"href\": \"http://localhost:1880/things/thing1\", \"contentType\": \"application/td+json\" }]\n};\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -8249,7 +6905,7 @@
         "type": "function",
         "z": "cc58a035b207933b",
         "name": "function 6",
-        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:virtual-thing1\",\n    \"title\": \"Thing2\",\n    \"security\": [\"nosec\"],\n    \"properties\": {\n        \"level\": {\n            \"type\": \"object\",\n            \"forms\": [{ \"href\": \"http://localhost:8080/things/thing2/properties/level\", \"contentType\": \"application/json\" }]\n        }\n    },\n    \"actions\": {\n        \"set\": {\n            \"input\": {\n                \"level\": {\"type\": \"number\"}\n            },\n            \"output\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"result\": { \"type\": \"number\" }\n                },\n                \"required\": [\"result\"]\n            },\n            \"forms\": [{ \"href\": \"http://localhost:8080/things/thing2/actions/set\", \"contentType\": \"application/json\" }]\n        }\n    },\n    \"forms\": [{ \"href\": \"http://localhost:8080/things/thing2\", \"contentType\": \"application/td+json\" }]\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:virtual-thing1\",\n    \"title\": \"Thing2\",\n    \"security\": [\"nosec\"],\n    \"properties\": {\n        \"level\": {\n            \"type\": \"object\",\n            \"forms\": [{ \"href\": \"http://localhost:1880/things/thing2/properties/level\", \"contentType\": \"application/json\" }]\n        }\n    },\n    \"actions\": {\n        \"set\": {\n            \"input\": {\n                \"level\": {\"type\": \"number\"}\n            },\n            \"output\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"result\": { \"type\": \"number\" }\n                },\n                \"required\": [\"result\"]\n            },\n            \"forms\": [{ \"href\": \"http://localhost:1880/things/thing2/actions/set\", \"contentType\": \"application/json\" }]\n        }\n    },\n    \"forms\": [{ \"href\": \"http://localhost:1880/things/thing2\", \"contentType\": \"application/td+json\" }]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -8657,7 +7313,7 @@
         "type": "function",
         "z": "cc58a035b207933b",
         "name": "function 9",
-        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:thing1-temperature\",\n    \"title\": \"Temperature Sensor\",\n    \"@type\": \"TemperatureSensor\",\n    \"securityDefinitions\": {\n        \"nosec_sc\": {\n            \"scheme\": \"nosec\"\n        }\n    },\n    \"security\": \"nosec_sc\",\n    \"properties\": {\n        \"temperature\": {\n            \"type\": \"number\",\n            \"description\": \"Current temperature in Celsius\",\n            \"observable\": false,\n            \"readOnly\": true,\n            \"forms\": [{\n                \"href\": \"http://localhost:8080/things/thing3/properties/temperature\",\n                \"contentType\": \"application/json\",\n                \"op\": \"readproperty\"\n            }]\n        }\n    }\n};\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\nreturn msg;",
+        "func": "msg.payload = {\n    \"@context\": \"https://www.w3.org/2019/wot/td/v1\",\n    \"id\": \"urn:dev:ops:thing1-temperature\",\n    \"title\": \"Temperature Sensor\",\n    \"@type\": \"TemperatureSensor\",\n    \"securityDefinitions\": {\n        \"nosec_sc\": {\n            \"scheme\": \"nosec\"\n        }\n    },\n    \"security\": \"nosec_sc\",\n    \"properties\": {\n        \"temperature\": {\n            \"type\": \"number\",\n            \"description\": \"Current temperature in Celsius\",\n            \"observable\": false,\n            \"readOnly\": true,\n            \"forms\": [{\n                \"href\": \"http://localhost:1880/things/thing3/properties/temperature\",\n                \"contentType\": \"application/json\",\n                \"op\": \"readproperty\"\n            }]\n        }\n    }\n};\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -8992,7 +7648,7 @@
         "type": "wot-fetch",
         "z": "cc58a035b207933b",
         "name": "",
-        "tdUrl": "http://localhost:8080/things/thing1",
+        "tdUrl": "http://localhost:1880/things/thing1",
         "outputVar": "thingDescription",
         "outputVarType": "msg",
         "cacheTds": true,
@@ -9134,7 +7790,7 @@
         "type": "function",
         "z": "cc58a035b207933b",
         "name": "function 11",
-        "func": "msg.payload = {\n    \"thing1\": {\n        \"id\": \"urn:dev:ops:thing1\",\n            \"title\": \"Thing1\",\n                \"properties\": {\n            \"status\": {\n                \"type\": \"string\",\n                    \"forms\": [\n                        { \"href\": \"http://localhost:8080/things/thing1/properties/status\" }\n                    ]\n            }\n        },\n        \"actions\": {\n            \"toggle\": {\n                \"forms\": [\n                    { \"href\": \"http://localhost:8080/things/thing1/actions/toggle\" }\n                ]\n            }\n        }\n    },\n    \"thing2\": {\n        \"id\": \"urn:dev:ops:thing2\",\n            \"title\": \"Thing2\",\n                \"properties\": {\n            \"level\": {\n                \"type\": \"number\",\n                    \"forms\": [\n                        { \"href\": \"http://localhost:8080/things/thing2/properties/level\" }\n                    ]\n            }\n        },\n        \"actions\": {\n            \"set\": {\n                \"forms\": [\n                    { \"href\": \"http://localhost:8080/things/thing2/actions/set\" }\n                ]\n            }\n        }\n    },\n    \"thing3\": {\n        \"id\": \"urn:dev:ops:thing3\",\n            \"title\": \"Thing3\",\n                \"properties\": { /* ... */ },\n        \"actions\": { /* ... */ }\n    }\n}\n\nreturn msg;",
+        "func": "msg.payload = {\n    \"thing1\": {\n        \"id\": \"urn:dev:ops:thing1\",\n            \"title\": \"Thing1\",\n                \"properties\": {\n            \"status\": {\n                \"type\": \"string\",\n                    \"forms\": [\n                        { \"href\": \"http://localhost:1880/things/thing1/properties/status\" }\n                    ]\n            }\n        },\n        \"actions\": {\n            \"toggle\": {\n                \"forms\": [\n                    { \"href\": \"http://localhost:1880/things/thing1/actions/toggle\" }\n                ]\n            }\n        }\n    },\n    \"thing2\": {\n        \"id\": \"urn:dev:ops:thing2\",\n            \"title\": \"Thing2\",\n                \"properties\": {\n            \"level\": {\n                \"type\": \"number\",\n                    \"forms\": [\n                        { \"href\": \"http://localhost:1880/things/thing2/properties/level\" }\n                    ]\n            }\n        },\n        \"actions\": {\n            \"set\": {\n                \"forms\": [\n                    { \"href\": \"http://localhost:1880/things/thing2/actions/set\" }\n                ]\n            }\n        }\n    },\n    \"thing3\": {\n        \"id\": \"urn:dev:ops:thing3\",\n            \"title\": \"Thing3\",\n                \"properties\": { /* ... */ },\n        \"actions\": { /* ... */ }\n    }\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -9211,7 +7867,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/thing2/properties/level",
+        "url": "http://localhost:1880/things/thing2/properties/level",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -9287,7 +7943,7 @@
         "method": "PUT",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/thing1/properties/status",
+        "url": "http://localhost:1880/things/thing1/properties/status",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -9352,7 +8008,7 @@
         "type": "function",
         "z": "03751bef0ed5432b",
         "name": "function 13",
-        "func": "\nconst smartHomeTDs = [\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:alarm\",\n        \"title\": \"Alarm\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"alarmRinging\": {\n                \"title\": \"Alarm Ringing\",\n                \"description\": \"This alarm has started ringing\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"since\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [\n                    {\n                        \"href\": \"http://localhost:8080/things/alarm/events/alarmRinging\",\n                        \"contentType\": \"text/event-stream\",\n                        \"op\": [\"subscribeevent\"]\n                    }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/alarm\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:doorbell\",\n        \"title\": \"DoorBell\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"bellRung\": {\n                \"title\": \"Bell rung\",\n                \"description\": \"The bell was rung\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [\n                    {\n                        \"href\": \"http://localhost:8080/things/doorbell/events/bellRung\",\n                        \"contentType\": \"text/event-stream\",\n                        \"op\": [\"subscribeevent\"]\n                    }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/doorbell\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:heater\",\n        \"title\": \"Heater\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"startHeater\": {\n                \"title\": \"Start heater\",\n                \"description\": \"Starts the heater at the given temperature for the given time\",\n                \"input\": { \"type\": \"object\", \"properties\": { \"temperature\": { \"type\": \"integer\" }, \"timeHeating\": { \"type\": \"integer\" } }, \"required\": [\"temperature\"] },\n                \"output\": { \"type\": \"object\", \"properties\": { \"status\": { \"type\": \"string\" } } },\n                \"forms\": [\n                    { \"href\": \"http://localhost:8080/things/heater/actions/startHeater\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/heater\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:leds\",\n        \"title\": \"LEDs\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"blink\": { \"title\": \"Blink LEDs\", \"input\": { \"type\": \"object\", \"properties\": { \"times\": { \"type\": \"integer\" } } }, \"forms\": [{ \"href\": \"http://localhost:8080/things/leds/actions/blink\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"LEDsOn\": { \"title\": \"Turn LEDs on\", \"forms\": [{ \"href\": \"http://localhost:8080/things/leds/actions/LEDsOn\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"LEDsOff\": { \"title\": \"Turn LEDs off\", \"forms\": [{ \"href\": \"http://localhost:8080/things/leds/actions/LEDsOff\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/leds\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:mainroomlight\",\n        \"title\": \"MainRoomLight\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"lightOn\": { \"title\": \"Turn light on\", \"forms\": [{ \"href\": \"http://localhost:8080/things/mainroomlight/actions/lightOn\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"lightOff\": { \"title\": \"Turn light off\", \"forms\": [{ \"href\": \"http://localhost:8080/things/mainroomlight/actions/lightOff\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/mainroomlight\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:motionsensor\",\n        \"title\": \"MotionSensor\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"motionDetected\": {\n                \"title\": \"Motion detected\",\n                \"description\": \"An event made when motion is detected\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [{ \"href\": \"http://localhost:8080/things/motionsensor/events/motionDetected\", \"contentType\": \"text/event-stream\", \"op\": [\"subscribeevent\"] }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/motionsensor\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:smartassistant\",\n        \"title\": \"SmartAssistant\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"say\": {\n                \"title\": \"Say phrase\",\n                \"input\": { \"type\": \"object\", \"properties\": { \"phrase\": { \"type\": \"string\" } }, \"required\": [\"phrase\"] },\n                \"forms\": [{ \"href\": \"http://localhost:8080/things/smartassistant/actions/say\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/smartassistant\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:speaker\",\n        \"title\": \"Speaker\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"setVolume\": { \"title\": \"Set volume\", \"input\": { \"type\": \"object\", \"properties\": { \"percentage\": { \"type\": \"integer\", \"minimum\": 0, \"maximum\": 100 } }, \"required\": [\"percentage\"] }, \"forms\": [{ \"href\": \"http://localhost:8080/things/speaker/actions/setVolume\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"getVolume\": { \"title\": \"Get volume\", \"output\": { \"type\": \"integer\" }, \"forms\": [{ \"href\": \"http://localhost:8080/things/speaker/actions/getVolume\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"properties\": {\n            \"volume\": {\n                \"type\": \"integer\",\n                \"forms\": [{ \"href\": \"http://localhost:8080/things/speaker/properties/volume\", \"contentType\": \"application/json\", \"op\": [\"readproperty\", \"writeproperty\"], \"htv:methodName\": \"GET\" }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/speaker\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:washingmachine\",\n        \"title\": \"WashingMachine\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"finishedCycle\": {\n                \"title\": \"Wash cycle complete\",\n                \"description\": \"Sends a notification at the end of a wash cycle\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [{ \"href\": \"http://localhost:8080/things/washingmachine/events/finishedCycle\", \"contentType\": \"text/event-stream\", \"op\": [\"subscribeevent\"] }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:8080/things/washingmachine\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    }\n]\n\n\nflow.set(\"smartHomeTDs\", smartHomeTDs);\n\nmsg.payload = smartHomeTDs\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
+        "func": "\nconst smartHomeTDs = [\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:alarm\",\n        \"title\": \"Alarm\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"alarmRinging\": {\n                \"title\": \"Alarm Ringing\",\n                \"description\": \"This alarm has started ringing\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"since\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [\n                    {\n                        \"href\": \"http://localhost:1880/things/alarm/events/alarmRinging\",\n                        \"contentType\": \"text/event-stream\",\n                        \"op\": [\"subscribeevent\"]\n                    }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/alarm\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:doorbell\",\n        \"title\": \"DoorBell\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"bellRung\": {\n                \"title\": \"Bell rung\",\n                \"description\": \"The bell was rung\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [\n                    {\n                        \"href\": \"http://localhost:1880/things/doorbell/events/bellRung\",\n                        \"contentType\": \"text/event-stream\",\n                        \"op\": [\"subscribeevent\"]\n                    }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/doorbell\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:heater\",\n        \"title\": \"Heater\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"startHeater\": {\n                \"title\": \"Start heater\",\n                \"description\": \"Starts the heater at the given temperature for the given time\",\n                \"input\": { \"type\": \"object\", \"properties\": { \"temperature\": { \"type\": \"integer\" }, \"timeHeating\": { \"type\": \"integer\" } }, \"required\": [\"temperature\"] },\n                \"output\": { \"type\": \"object\", \"properties\": { \"status\": { \"type\": \"string\" } } },\n                \"forms\": [\n                    { \"href\": \"http://localhost:1880/things/heater/actions/startHeater\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }\n                ]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/heater\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:leds\",\n        \"title\": \"LEDs\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"blink\": { \"title\": \"Blink LEDs\", \"input\": { \"type\": \"object\", \"properties\": { \"times\": { \"type\": \"integer\" } } }, \"forms\": [{ \"href\": \"http://localhost:1880/things/leds/actions/blink\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"LEDsOn\": { \"title\": \"Turn LEDs on\", \"forms\": [{ \"href\": \"http://localhost:1880/things/leds/actions/LEDsOn\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"LEDsOff\": { \"title\": \"Turn LEDs off\", \"forms\": [{ \"href\": \"http://localhost:1880/things/leds/actions/LEDsOff\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/leds\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:mainroomlight\",\n        \"title\": \"MainRoomLight\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"lightOn\": { \"title\": \"Turn light on\", \"forms\": [{ \"href\": \"http://localhost:1880/things/mainroomlight/actions/lightOn\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"lightOff\": { \"title\": \"Turn light off\", \"forms\": [{ \"href\": \"http://localhost:1880/things/mainroomlight/actions/lightOff\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/mainroomlight\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:motionsensor\",\n        \"title\": \"MotionSensor\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"motionDetected\": {\n                \"title\": \"Motion detected\",\n                \"description\": \"An event made when motion is detected\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [{ \"href\": \"http://localhost:1880/things/motionsensor/events/motionDetected\", \"contentType\": \"text/event-stream\", \"op\": [\"subscribeevent\"] }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/motionsensor\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:smartassistant\",\n        \"title\": \"SmartAssistant\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"say\": {\n                \"title\": \"Say phrase\",\n                \"input\": { \"type\": \"object\", \"properties\": { \"phrase\": { \"type\": \"string\" } }, \"required\": [\"phrase\"] },\n                \"forms\": [{ \"href\": \"http://localhost:1880/things/smartassistant/actions/say\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/smartassistant\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:speaker\",\n        \"title\": \"Speaker\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"actions\": {\n            \"setVolume\": { \"title\": \"Set volume\", \"input\": { \"type\": \"object\", \"properties\": { \"percentage\": { \"type\": \"integer\", \"minimum\": 0, \"maximum\": 100 } }, \"required\": [\"percentage\"] }, \"forms\": [{ \"href\": \"http://localhost:1880/things/speaker/actions/setVolume\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] },\n            \"getVolume\": { \"title\": \"Get volume\", \"output\": { \"type\": \"integer\" }, \"forms\": [{ \"href\": \"http://localhost:1880/things/speaker/actions/getVolume\", \"contentType\": \"application/json\", \"op\": [\"invokeaction\"], \"htv:methodName\": \"POST\" }] }\n        },\n        \"properties\": {\n            \"volume\": {\n                \"type\": \"integer\",\n                \"forms\": [{ \"href\": \"http://localhost:1880/things/speaker/properties/volume\", \"contentType\": \"application/json\", \"op\": [\"readproperty\", \"writeproperty\"], \"htv:methodName\": \"GET\" }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/speaker\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    },\n\n    {\n        \"@context\": [\"https://www.w3.org/2019/wot/td/v1\"],\n        \"id\": \"urn:dev:ops:washingmachine\",\n        \"title\": \"WashingMachine\",\n        \"securityDefinitions\": { \"nosec\": { \"scheme\": \"nosec\" } },\n        \"security\": \"nosec\",\n        \"events\": {\n            \"finishedCycle\": {\n                \"title\": \"Wash cycle complete\",\n                \"description\": \"Sends a notification at the end of a wash cycle\",\n                \"data\": { \"type\": \"object\", \"properties\": { \"when\": { \"type\": \"string\", \"format\": \"date-time\" } } },\n                \"forms\": [{ \"href\": \"http://localhost:1880/things/washingmachine/events/finishedCycle\", \"contentType\": \"text/event-stream\", \"op\": [\"subscribeevent\"] }]\n            }\n        },\n        \"forms\": [{ \"href\": \"http://localhost:1880/things/washingmachine\", \"contentType\": \"application/td+json\", \"htv:methodName\": \"GET\" }]\n    }\n]\n\n\nflow.set(\"smartHomeTDs\", smartHomeTDs);\n\nmsg.payload = smartHomeTDs\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -9432,7 +8088,7 @@
         "type": "function",
         "z": "7e0f78b972841d3a",
         "name": "function 15",
-        "func": "\nconst washingMachineTD = {\n    \"@context\": \"http://www.w3.org/ns/td\",\n    \"@type\": [\"Thing\"],\n    \"title\": \"WashingMachine\",\n    \"securityDefinitions\": {\n        \"no_sec\": {\n            \"scheme\": \"nosec\"\n        }\n    },\n    \"security\": \"no_sec\",\n    \"properties\": {\n        \"status\": {\n            \"title\": \"Machine Status\",\n            \"description\": \"Current state of the washing machine\",\n            \"type\": \"string\",\n            \"enum\": [\"idle\", \"running\", \"finished\"],\n            \"readOnly\": true,\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:8080/things/wm/status\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"readproperty\"]\n                }\n            ]\n        },\n        \"remainingTime\": {\n            \"title\": \"Time Left\",\n            \"description\": \"Remaining wash cycle time in minutes\",\n            \"type\": \"integer\",\n            \"unit\": \"minutes\",\n            \"readOnly\": true,\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:8080/things/wm/remainingTime\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"readproperty\"]\n                }\n            ]\n        }\n    },\n    \"actions\": {\n        \"start\": {\n            \"title\": \"Start Washing Cycle\",\n            \"description\": \"Start a new wash program\",\n            \"input\": {\n                \"type\": \"string\",\n                \"enum\": [\"quick\", \"cotton\", \"wool\"]\n            },\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:8080/things/wm/start\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"invokeaction\"]\n                }\n            ]\n        },\n        \"stop\": {\n            \"title\": \"Stop Cycle\",\n            \"description\": \"Immediately stop the wash program\",\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:8080/things/wm/stop\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"invokeaction\"]\n                }\n            ]\n        }\n    },\n    \"events\": {\n        \"finishedCycle\": {\n            \"title\": \"Wash cycle complete\",\n            \"description\": \"Sends a notification at the end of a wash cycle\",\n            \"data\": {\n                \"type\": \"string\"\n            },\n            \"forms\": [\n                {\n                    \"href\": \"ws://localhost:8080/things/wm/finishedCycle\",\n                    \"subprotocol\": \"websocket\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"subscribeevent\"]\n                },\n                {\n                    \"href\": \"http://localhost:8080/things/wm/finishedCycle\",\n                    \"subprotocol\": \"longpoll\"\n                }\n            ]\n        }\n    }\n}\n\n\n\nflow.set(\"washingMachineTD\", washingMachineTD);\n\nmsg.payload = washingMachineTD\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
+        "func": "\nconst washingMachineTD = {\n    \"@context\": \"http://www.w3.org/ns/td\",\n    \"@type\": [\"Thing\"],\n    \"title\": \"WashingMachine\",\n    \"securityDefinitions\": {\n        \"no_sec\": {\n            \"scheme\": \"nosec\"\n        }\n    },\n    \"security\": \"no_sec\",\n    \"properties\": {\n        \"status\": {\n            \"title\": \"Machine Status\",\n            \"description\": \"Current state of the washing machine\",\n            \"type\": \"string\",\n            \"enum\": [\"idle\", \"running\", \"finished\"],\n            \"readOnly\": true,\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:1880/things/wm/status\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"readproperty\"]\n                }\n            ]\n        },\n        \"remainingTime\": {\n            \"title\": \"Time Left\",\n            \"description\": \"Remaining wash cycle time in minutes\",\n            \"type\": \"integer\",\n            \"unit\": \"minutes\",\n            \"readOnly\": true,\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:1880/things/wm/remainingTime\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"readproperty\"]\n                }\n            ]\n        }\n    },\n    \"actions\": {\n        \"start\": {\n            \"title\": \"Start Washing Cycle\",\n            \"description\": \"Start a new wash program\",\n            \"input\": {\n                \"type\": \"string\",\n                \"enum\": [\"quick\", \"cotton\", \"wool\"]\n            },\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:1880/things/wm/start\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"invokeaction\"]\n                }\n            ]\n        },\n        \"stop\": {\n            \"title\": \"Stop Cycle\",\n            \"description\": \"Immediately stop the wash program\",\n            \"forms\": [\n                {\n                    \"href\": \"http://localhost:1880/things/wm/stop\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"invokeaction\"]\n                }\n            ]\n        }\n    },\n    \"events\": {\n        \"finishedCycle\": {\n            \"title\": \"Wash cycle complete\",\n            \"description\": \"Sends a notification at the end of a wash cycle\",\n            \"data\": {\n                \"type\": \"string\"\n            },\n            \"forms\": [\n                {\n                    \"href\": \"ws://localhost:1880/things/wm/finishedCycle\",\n                    \"subprotocol\": \"websocket\",\n                    \"contentType\": \"application/json\",\n                    \"op\": [\"subscribeevent\"]\n                },\n                {\n                    \"href\": \"http://localhost:1880/things/wm/finishedCycle\",\n                    \"subprotocol\": \"longpoll\"\n                }\n            ]\n        }\n    }\n}\n\n\n\nflow.set(\"washingMachineTD\", washingMachineTD);\n\nmsg.payload = washingMachineTD\n\n\nmsg.headers = {\n    \"Content-Type\": \"application/td+json\"\n};\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -11382,7 +10038,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/wm/status",
+        "url": "http://localhost:1880/things/wm/status",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -11472,7 +10128,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/mainroomlight/on",
+        "url": "http://localhost:1880/things/mainroomlight/on",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -11496,7 +10152,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/speaker/volume",
+        "url": "http://localhost:1880/things/speaker/volume",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -11541,7 +10197,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/speaker/setVolume",
+        "url": "http://localhost:1880/things/speaker/setVolume",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -11566,7 +10222,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/smartassistant/say",
+        "url": "http://localhost:1880/things/smartassistant/say",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -11606,7 +10262,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/speaker/setVolume",
+        "url": "http://localhost:1880/things/speaker/setVolume",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -11630,7 +10286,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/heater/start",
+        "url": "http://localhost:1880/things/heater/start",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -11669,7 +10325,7 @@
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://localhost:8080/things/leds/blink",
+        "url": "http://localhost:1880/things/leds/blink",
         "tls": "",
         "persist": false,
         "proxy": "",
