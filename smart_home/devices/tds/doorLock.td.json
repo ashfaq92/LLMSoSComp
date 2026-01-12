@@ -1,0 +1,77 @@
+{
+  "@context": "https://www.w3.org/2022/wot/td/v1.1",
+  "@type": "Thing",
+  "id": "urn:dev:ops:door-lock-001",
+  "title": "Smart Door Lock",
+  "description": "A smart door lock with secure access control",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": "nosec_sc",
+  "properties": {
+    "locked": {
+      "type": "boolean",
+      "title": "Lock Status",
+      "description": "Current lock state (true = locked, false = unlocked)",
+      "readOnly": true
+    },
+    "batteryLevel": {
+      "type": "integer",
+      "title": "Battery Level",
+      "description": "Battery level percentage",
+      "minimum": 0,
+      "maximum": 100,
+      "readOnly": true,
+      "unit": "percent"
+    }
+  },
+  "actions": {
+    "lock": {
+      "title": "Lock Door",
+      "description": "Lock the door"
+    },
+    "unlock": {
+      "title": "Unlock Door",
+      "description": "Unlock the door",
+      "input": {
+        "type": "object",
+        "properties": {
+          "pin": {
+            "type": "string",
+            "description": "4-digit PIN code",
+            "pattern": "^[0-9]{4}$"
+          }
+        }
+      }
+    }
+  },
+  "events": {
+    "doorOpened": {
+      "title": "Door Opened",
+      "description": "Triggered when door is opened",
+      "data": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "lowBattery": {
+      "title": "Low Battery",
+      "description": "Triggered when battery is below 20%",
+      "data": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

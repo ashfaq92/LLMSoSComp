@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.2",
     "@node-red-contrib-themes/theme-collection": "^4.1.0",
-    "request": "^2.88.2"
+    "express": "^5.2.1",
+    "zod": "^4.3.5"
   }
 }
