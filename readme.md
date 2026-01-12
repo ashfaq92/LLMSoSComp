@@ -17,7 +17,7 @@ npm install
 
 **Terminal 1 - Thing Directory:**
 ```bash
-node ./smart_home/thingDirectory.js
+node ./smart_home/devices/thingDirectory.js
 ```
 
 **Terminal 2 - Light Device:**

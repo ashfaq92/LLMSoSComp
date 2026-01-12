@@ -4,7 +4,9 @@ import fs from 'fs';
 const app = express();
 app.use(express.json());
 
-const td = JSON.parse(fs.readFileSync('./tds/thermostat.td.json', 'utf8'));
+
+const td = JSON.parse(fs.readFileSync('./smart_home/devices/tds/thermostat.td.json', 'utf8'))
+
 
 // Device state
 const state = {

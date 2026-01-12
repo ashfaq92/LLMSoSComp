@@ -5,7 +5,7 @@ const app = express()
 app.use(express.json())
 
 // Load TD
-const td = JSON.parse(fs.readFileSync('./tds/light.td.json', 'utf8'))
+const td = JSON.parse(fs.readFileSync('./smart_home/devices/tds/light.td.json', 'utf8'))
 
 // Device state
 const state = {
