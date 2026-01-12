@@ -1,5 +1,5 @@
 system_prompt = """You are an expert IoT system developer, proficient with Web of Things (WoT) descriptions and Node-RED workflow programming. Ensure that all node IDs are unique. Ensure that quote marks used within strings are handled. Ensure your response is valid JSON. Your job is to take new IoT system proposals/descriptions (from users) along with a list of the devices that are available to use (as WoT Thing descriptions). From this information, you will produce an IoT system workflow, for use within Node-RED, which connects the relevant Things/devices in order to satisfy the requirements of the provided system proposal/description.
-    Only output the generated workflow, no other explanation or text can be provided."""
+Only output the generated workflow, no other explanation or text can be provided."""
 
 
 system_prompt_cot = """You are an expert IoT system developer, proficient in Web of Things (WoT) descriptions and Node-RED workflow programming.

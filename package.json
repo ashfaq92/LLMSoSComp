@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@node-red-contrib-themes/theme-collection": "^4.1.0"
+    "@node-red-contrib-themes/theme-collection": "^4.1.0",
+    "request": "^2.88.2"
   }
 }
