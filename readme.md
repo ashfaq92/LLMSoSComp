@@ -2,62 +2,42 @@
 
 Bridge between W3C Web of Things (WoT) and Model Context Protocol (MCP) for LLM control of IoT devices.
 
-## Overview
-
 This project demonstrates how to expose W3C WoT devices to Large Language Models (LLMs) through the Model Context Protocol, enabling natural language control of IoT devices.
 
-### Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Device 1  │────▶│   Thing     │◀────│     MCP     │
-│  (Light)    │     │  Directory  │     │   Server    │
-└─────────────┘     │             │     └──────┬──────┘
-                    │  (Registry) │            │
-┌─────────────┐     │             │            │
-│   Device 2  │────▶│   Stores    │            │
-│ (Thermostat)│     │     TDs     │         ┌──▼──────┐
-└─────────────┘     │             │         │   LLM   │
-                    └─────────────┘         │ (Claude)│
-┌─────────────┐                             └─────────┘
-│   Device 3  │
-│ (Door Lock) │
-└─────────────┘
-```
+# Quick Start
 
-## Quick Start
-
-### 1. Install Dependencies
+## Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Start Components (in separate terminals)
+## Start Components (in separate terminals)
 
 **Terminal 1 - Thing Directory:**
 ```bash
-npm run start:directory
+node ./smart_home/thingDirectory.js
 ```
 
 **Terminal 2 - Light Device:**
 ```bash
-npm run start:light
+node ./smart_home/devices/lightDevice.js
 ```
 
 **Terminal 3 - Thermostat Device:**
 ```bash
-npm run start:thermostat
+node ./smart_home/devices/thermostatDevice.js
 ```
 
 **Terminal 4 - Door Lock Device:**
 ```bash
-npm run start:lock
+node ./smart_home/devices/doorLockDevice.js
 ```
 
-**Terminal 5 - Test MCP Server:**
+**Terminal 5 - Monitor MCP Server:**
 ```bash
-npm run test:mcp
+npx @modelcontextprotocol/inspector node ./smart_home/td2mcp.js
 ```
 
 This opens the MCP Inspector where you can:
@@ -86,7 +66,9 @@ Add to `claude_desktop_config.json`:
 
 
 # Workflows
-Restart Claude Desktop and try:
+
+## Basic
+
 - "Turn on the smart light"
 - "What's the current temperature?"
 - "Set thermostat to 22 degrees"
