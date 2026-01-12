@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@modelcontextprotocol/inspector": "^0.18.0",
     "@modelcontextprotocol/sdk": "^1.25.2",
     "@node-red-contrib-themes/theme-collection": "^4.1.0",
     "express": "^5.2.1",

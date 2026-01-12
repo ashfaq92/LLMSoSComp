@@ -1,106 +1,124 @@
-import express from 'express';
+import express from 'express'
 
-const app = express();
-app.use(express.json());
+const app = express()
+// app.use(express.json())
+
+app.use(express.json({
+  type: [
+    'application/json',
+    'application/td+json'
+  ]
+}))
+
 
 // In-memory TD storage
-const things = new Map();
+const things = new Map()
 
-console.log('\n═══════════════════════════════════════════════════════');
-console.log('  📚 W3C WoT Thing Directory');
-console.log('═══════════════════════════════════════════════════════\n');
+console.log('\n═══════════════════════════════════════════════════════')
+console.log('  📚 W3C WoT Thing Directory')
+console.log('═══════════════════════════════════════════════════════\n')
 
 // Thing Directory API
 
 // 1. Register a new TD
 app.post('/things', (req, res) => {
-  console.log('➜ Registering new Thing...', req.body);
-  const td = req.body;
-  
-  if (!td.id) {
-    return res.status(400).json({ error: 'TD must have an id' });
+  const td = req.body
+
+  if (!td || Object.keys(td).length === 0) {
+    console.error('✗ Registration failed: empty request body')
+    return res.status(400).json({
+      error: 'Request body is empty. Did you forget to send JSON or set Content-Type to application/json?'
+    })
   }
-  
+
+  if (!td.id) {
+    console.error('✗ Registration failed: missing id', td)
+    return res.status(400).json({
+      error: 'TD must have an id'
+    })
+  }
+
   things.set(td.id, {
     td,
     registered: new Date().toISOString()
-  });
-  
-  console.log(`✓ Registered: ${td.title} (${td.id})`);
-  
+  })
+
+  console.log(`✓ Registered: ${td.title ?? 'Untitled'} (${td.id})`)
+
   res.status(201).json({
     id: td.id,
     message: 'Thing registered successfully'
-  });
-});
+  })
+})
+
 
 // 2. Get all TDs
 app.get('/things', (req, res) => {
-  const allTDs = Array.from(things.values()).map(entry => entry.td);
-  res.json(allTDs);
-});
+  const allTDs = Array.from(things.values()).map(entry => entry.td)
+  res.json(allTDs)
+})
 
 // 3. Get specific TD by ID
 app.get('/things/:id', (req, res) => {
-  const entry = things.get(req.params.id);
+  const entry = things.get(req.params.id)
   
   if (!entry) {
-    return res.status(404).json({ error: 'Thing not found' });
+    return res.status(404).json({ error: 'Thing not found' })
   }
   
-  res.json(entry.td);
-});
+  res.json(entry.td)
+})
 
 // 4. Update TD
 app.put('/things/:id', (req, res) => {
   if (!things.has(req.params.id)) {
-    return res.status(404).json({ error: 'Thing not found' });
+    return res.status(404).json({ error: 'Thing not found' })
   }
   
-  const td = req.body;
+  const td = req.body
   things.set(req.params.id, {
     td,
     registered: things.get(req.params.id).registered,
     updated: new Date().toISOString()
-  });
+  })
   
-  console.log(`✓ Updated: ${td.title} (${td.id})`);
-  res.json({ message: 'Thing updated successfully' });
-});
+  console.log(`✓ Updated: ${td.title} (${td.id})`)
+  res.json({ message: 'Thing updated successfully' })
+})
 
 // 5. Delete TD
 app.delete('/things/:id', (req, res) => {
   if (!things.has(req.params.id)) {
-    return res.status(404).json({ error: 'Thing not found' });
+    return res.status(404).json({ error: 'Thing not found' })
   }
   
-  const td = things.get(req.params.id).td;
-  things.delete(req.params.id);
+  const td = things.get(req.params.id).td
+  things.delete(req.params.id)
   
-  console.log(`✓ Deregistered: ${td.title} (${td.id})`);
-  res.json({ message: 'Thing deleted successfully' });
-});
+  console.log(`✓ Deregistered: ${td.title} (${td.id})`)
+  res.json({ message: 'Thing deleted successfully' })
+})
 
 // 6. Search TDs
 app.get('/search', (req, res) => {
-  const { type, title } = req.query;
+  const { type, title } = req.query
   
-  let results = Array.from(things.values()).map(entry => entry.td);
+  let results = Array.from(things.values()).map(entry => entry.td)
   
   if (type) {
     results = results.filter(td => 
       td['@type'] && td['@type'].includes(type)
-    );
+    )
   }
   
   if (title) {
     results = results.filter(td => 
       td.title.toLowerCase().includes(title.toLowerCase())
-    );
+    )
   }
   
-  res.json(results);
-});
+  res.json(results)
+})
 
 // 7. Directory's self-description
 app.get('/.well-known/wot', (req, res) => {
@@ -135,14 +153,14 @@ app.get('/.well-known/wot', (req, res) => {
         }]
       }
     }
-  });
-});
+  })
+})
 
-const PORT = 8080;
+const PORT = 8080
 app.listen(PORT, () => {
-  console.log(`📚 Thing Directory running on http://localhost:${PORT}`);
-  console.log(`   Registry API: http://localhost:${PORT}/things`);
-  console.log(`   Search API: http://localhost:${PORT}/search`);
-  console.log(`   Self-description: http://localhost:${PORT}/.well-known/wot`);
-  console.log(`\n⏳ Waiting for devices to register...\n`);
+  console.log(`📚 Thing Directory running on http://localhost:${PORT}`)
+  console.log(`   Registry API: http://localhost:${PORT}/things`)
+  console.log(`   Search API: http://localhost:${PORT}/search`)
+  console.log(`   Self-description: http://localhost:${PORT}/.well-known/wot`)
+  console.log(`\n⏳ Waiting for devices to register...\n`)
 });
