@@ -1,9 +1,4 @@
 {
-	"servers": {
-		"my-mcp-server-87acd336": {
-			"url": "http://localhost:6274",
-			"type": "http"
-		}
-	},
-	"inputs": []
+	"inputs": [],
+	"servers": {}
 }
