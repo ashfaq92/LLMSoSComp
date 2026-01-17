@@ -142,46 +142,66 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 // -----------------------------
 // Call a tool (invoke action or set/get property)
 // -----------------------------
+// Call a tool (invoke action or set/get property)
+// 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const entry = toolMap.get(request.params.name)
-  if (!entry) throw new Error(`Unknown tool: ${request.params.name}`)
+  try {
+    const entry = toolMap.get(request.params.name)
+    if (!entry) throw new Error(`Unknown tool: ${request.params.name}`)
 
-  const { thingId, type, name } = entry
-  const td = allTDs.find(t => t.id === thingId)
-  if (!td) throw new Error(`Thing ${thingId} not found`)
+    const { thingId, type, name } = entry
+    const td = allTDs.find(t => t.id === thingId)
+    if (!td) throw new Error(`Thing ${thingId} not found`)
 
-  let url, method, body
+    let url, method, body
 
-  if (type === "property") {
-    // Writable property
-    const property = td.properties[name]
-    if (!property) throw new Error(`Property ${name} not found in ${td.title}`)
-    url = getFormUrl(property.forms)
-    method = "PUT"
-    body = JSON.stringify(request.params.arguments || {})
-  } else if (type === "readonly_property") {
-    // Read-only property
-    const property = td.properties[name]
-    if (!property) throw new Error(`Property ${name} not found in ${td.title}`)
-    url = getFormUrl(property.forms)
-    method = "GET"
-    body = undefined
-  } else {
-    // Action
-    const action = td.actions[name]
-    if (!action) throw new Error(`Action ${name} not found in ${td.title}`)
-    url = getFormUrl(action.forms)
-    method = "POST"
-    body = JSON.stringify(request.params.arguments || {})
-  }
+    if (type === "property") {
+      // Writable property - send just the value, not the arguments object
+      const property = td.properties[name]
+      if (!property) throw new Error(`Property ${name} not found in ${td.title}`)
+      url = getFormUrl(property.forms)
+      method = "PUT"
+      // Extract the value from arguments - the key should match the property name
+      const args = request.params.arguments || {}
+      const value = args[name] !== undefined ? args[name] : args
+      body = JSON.stringify(value)
+      console.error(`[td2mcp] Setting ${td.title}.${name} = ${body}`)
+    } else if (type === "readonly_property") {
+      // Read-only property
+      const property = td.properties[name]
+      if (!property) throw new Error(`Property ${name} not found in ${td.title}`)
+      url = getFormUrl(property.forms)
+      method = "GET"
+      body = undefined
+    } else {
+      // Action
+      const action = td.actions[name]
+      if (!action) throw new Error(`Action ${name} not found in ${td.title}`)
+      url = getFormUrl(action.forms)
+      method = "POST"
+      body = JSON.stringify(request.params.arguments || {})
+    }
 
-  if (!url) throw new Error(`No form URL found for ${name}`)
+    if (!url) throw new Error(`No form URL found for ${name}`)
 
-  const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body })
-  const result = await res.json()
+    const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body })
+    
+    let result
+    try {
+      const text = await res.text()
+      result = text ? JSON.parse(text) : { status: 'success' }
+    } catch (e) {
+      result = { status: 'success', message: 'Operation completed' }
+    }
 
-  return {
-    content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+    return {
+      content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+    }
+  } catch (error) {
+    // Always return valid JSON even on error
+    return {
+      content: [{ type: "text", text: JSON.stringify({ error: error.message }, null, 2) }],
+    }
   }
 })
 

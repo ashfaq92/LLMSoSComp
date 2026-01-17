@@ -1,8 +1,10 @@
 // SMART LIGHT DEVICE - Following WoT pattern from myThing.js
 
-const Servient = require('@node-wot/core').Servient
-const HttpServer = require('@node-wot/binding-http').HttpServer
-const Helpers = require('@node-wot/core').Helpers
+import coreModule from '@node-wot/core'
+import bindingModule from '@node-wot/binding-http'
+
+const { Servient, Helpers } = coreModule
+const { HttpServer } = bindingModule
 
 const httpServer = new HttpServer({ port: 8081 })
 
@@ -65,21 +67,25 @@ servient.start().then(async (WoT) => {
   
   // Property handlers
   thing.setPropertyReadHandler('on', async () => {
+    console.log(`💡 Reading light state: ${state.on ? 'ON' : 'OFF'}`)
     return state.on
   })
   
   thing.setPropertyWriteHandler('on', async (input) => {
     const value = await input.value()
+    console.log(`💡 Write handler 'on' received value:`, value, `(type: ${typeof value})`)
     state.on = value
     console.log(`💡 Light turned ${state.on ? 'ON' : 'OFF'}`)
   })
   
   thing.setPropertyReadHandler('brightness', async () => {
+    console.log(`💡 Reading brightness: ${state.brightness}%`)
     return state.brightness
   })
   
   thing.setPropertyWriteHandler('brightness', async (input) => {
     const value = await input.value()
+    console.log(`💡 Write handler 'brightness' received value:`, value, `(type: ${typeof value})`)
     state.brightness = Math.max(0, Math.min(100, value))
     console.log(`💡 Brightness set to ${state.brightness}%`)
   })

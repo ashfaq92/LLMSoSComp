@@ -1,8 +1,10 @@
 // SMART THERMOSTAT - Following WoT pattern from myThing.js
 
-const Servient = require('@node-wot/core').Servient
-const HttpServer = require('@node-wot/binding-http').HttpServer
-const Helpers = require('@node-wot/core').Helpers
+import coreModule from '@node-wot/core'
+import bindingModule from '@node-wot/binding-http'
+
+const { Servient, Helpers } = coreModule
+const { HttpServer } = bindingModule
 
 const httpServer = new HttpServer({ port: 8082 })
 
@@ -22,19 +24,19 @@ servient.start().then(async (WoT) => {
     humidity: 45
   }
   
-  // Simulate temperature changes
+  // Simulate temperature changes - faster adjustment for testing
   setInterval(() => {
-    // Simulate temperature adjusting toward target
+    // Simulate temperature adjusting toward target (faster for testing)
     if (state.mode !== 'off') {
       const diff = state.targetTemperature - state.temperature
-      state.temperature += diff * 0.1 // 10% adjustment per interval
+      state.temperature += diff * 0.3 // 30% adjustment per interval (faster)
       state.temperature = Math.round(state.temperature * 10) / 10
     }
     
     // Simulate humidity fluctuation
     state.humidity = Math.max(30, Math.min(70, state.humidity + (Math.random() - 0.5) * 2))
     state.humidity = Math.round(state.humidity)
-  }, 5000)
+  }, 2000)  // 2 second interval (faster than 5 seconds)
   
   const thing = await WoT.produce({
     title: 'Smart Thermostat',
@@ -96,20 +98,25 @@ servient.start().then(async (WoT) => {
   
   // Property handlers
   thing.setPropertyReadHandler('temperature', async () => {
+    console.log(`🌡️  Reading current temperature: ${state.temperature}°C`)
     return state.temperature
   })
   
   thing.setPropertyReadHandler('targetTemperature', async () => {
+    console.log(`🌡️  Reading target temperature: ${state.targetTemperature}°C`)
     return state.targetTemperature
   })
   
   thing.setPropertyWriteHandler('targetTemperature', async (input) => {
     const value = await input.value()
+    const oldTarget = state.targetTemperature
     state.targetTemperature = Math.max(10, Math.min(30, value))
-    console.log(`🌡️  Target temperature set to ${state.targetTemperature}°C`)
+    console.log(`🌡️  Target temperature set from ${oldTarget}°C to ${state.targetTemperature}°C`)
+    console.log(`    Current temp: ${state.temperature}°C (will adjust toward target)`)
   })
   
   thing.setPropertyReadHandler('mode', async () => {
+    console.log(`🌡️  Reading mode: ${state.mode}`)
     return state.mode
   })
   
@@ -125,6 +132,7 @@ servient.start().then(async (WoT) => {
   })
   
   thing.setPropertyReadHandler('humidity', async () => {
+    console.log(`💧 Reading humidity: ${state.humidity}%`)
     return state.humidity
   })
   

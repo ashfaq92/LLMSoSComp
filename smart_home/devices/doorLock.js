@@ -1,8 +1,10 @@
 // SMART DOOR LOCK - Following WoT pattern from myThing.js
 
-const Servient = require('@node-wot/core').Servient
-const HttpServer = require('@node-wot/binding-http').HttpServer
-const Helpers = require('@node-wot/core').Helpers
+import coreModule from '@node-wot/core'
+import bindingModule from '@node-wot/binding-http'
+
+const { Servient, Helpers } = coreModule
+const { HttpServer } = bindingModule
 
 const httpServer = new HttpServer({ port: 8083 })
 
