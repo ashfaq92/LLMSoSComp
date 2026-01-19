@@ -74,31 +74,9 @@ Add to `claude_desktop_config.json`:
 - "Set thermostat to 22 degrees"
 - "Lock the door"
 
-## Leaving the house (fully connected)
+## Complex: 
 
-**Scenario:** You are leaving the house.
-
-**Step 1: Check the door**
-
-* If the **door is unlocked**, lock it.
-
-  * After locking, check the **temperature**.
-
-    * If temperature < 20°C → set thermostat to 22°C.
-    * Else → skip thermostat adjustment.
-* Else (door is already locked) → skip locking and **dim/turn off smart light**.
-
-**Step 2: Smart light behavior depends on door**
-
-* If door was successfully locked → turn off the smart light.
-* If door was already locked → leave the smart light on (maybe you forgot something and might return).
-
-**Step 3: Optional branching based on thermostat adjustment**
-
-* If thermostat was changed → wait 5 minutes, then check temperature again:
-
-  * If temperature still < 20°C → send alert “house still cold.”
-  * Else → finish workflow.
+-  **Leaving Home Scenario:** If the door is unlocked, lock it. After locking, check the temperature. If temperature < 20°C → set thermostat to 22°C. Else → skip thermostat adjustment. Else (door is already locked) → skip locking and dim/turn off smart light. If door was successfully locked → turn off the smart light. If door was already locked → leave the smart light on. If thermostat was changed → wait 1 minute, then check temperature again: If temperature still < 20°C → send alert “house still cold.” Else → finish workflow.
 
 
 
