@@ -22,16 +22,16 @@ async def main():
             # Initialize the connection
             await session.initialize()
 
-            # Get tools
+            # Load tools
             tools = await load_mcp_tools(session)
-            
             print(f"\n✓ Loaded {len(tools)} tools from MCP server")
 
-            # Create the agent
             agent = create_agent("openai:gpt-4.1", tools)
             
             print("\n🏠 Smart Home MCP Client - Interactive Mode")
             print("Type 'exit' to quit\n")
+            
+            last_tool_count = len(tools)
             
             # Interactive loop
             while True:
@@ -44,6 +44,13 @@ async def main():
                     
                     if not question:
                         continue
+                    
+                    # Auto-refresh tools before each query
+                    tools = await load_mcp_tools(session)
+                    if len(tools) != last_tool_count:
+                        print(f"🔄 Tools updated: {last_tool_count} → {len(tools)}")
+                        agent = create_agent("openai:gpt-4.1", tools)
+                        last_tool_count = len(tools)
                     
                     # Run the agent with HumanMessage to trigger tool use
                     agent_response = await agent.ainvoke({"messages": [HumanMessage(content=question)]})

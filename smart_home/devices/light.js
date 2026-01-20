@@ -14,6 +14,8 @@ servient.addServer(httpServer)
 
 const DIRECTORY_URL = 'http://localhost:8080/things'
 
+let thing 
+
 servient.start().then(async (WoT) => {
   console.log('WoT Servient started')
   
@@ -22,7 +24,7 @@ servient.start().then(async (WoT) => {
     brightness: 0
   }
   
-  const thing = await WoT.produce({
+  thing = await WoT.produce({
     title: 'Smart Light',
     description: 'A smart light that can be turned on/off and toggled',
     properties: {
@@ -155,8 +157,26 @@ servient.start().then(async (WoT) => {
   setTimeout(registerWithDirectory, 1000)
 })
 
+
+
+
 // Deregister on shutdown
 process.on('SIGINT', async () => {
   console.log('\n🛑 Shutting down Smart Light...')
+  // Deregister from Thing Directory
+  if (thing) {
+    try {
+      const response = await fetch(`${DIRECTORY_URL}/${thing.getThingDescription().id}`, {
+        method: 'DELETE'
+      })
+      if (response.ok) {
+        console.log('✓ Deregistered from Thing Directory')
+      } else {
+        console.log('⚠️ Failed to deregister from Thing Directory')
+      }
+    } catch (err) {
+      console.log(`⚠️ Could not deregister: ${err.message}`)
+    }
+  }
   process.exit(0)
 })

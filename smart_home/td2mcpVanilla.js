@@ -6,10 +6,6 @@ import {
   ListToolsRequestSchema,
   CallToolRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js"
-import { Servient } from "@node-wot/core"
-import bindingHttp from "@node-wot/binding-http"
-
-const { HttpClientFactory } = bindingHttp
 
 const THING_DIRECTORY = "http://localhost:8080/things"
 
@@ -18,14 +14,7 @@ function safeName(str) {
 }
 
 const toolMap = new Map()
-let consumedThings = new Map() // Map of thingId -> ConsumedThing
 let allTDs = []
-
-// Initialize WoT Servient
-const servient = new Servient()
-servient.addClientFactory(new HttpClientFactory())
-// servient.addServer(new HttpServer({ port: 8081 }))
-let wot
 
 // -----------------------------
 // Discover all things from Thing Directory
@@ -48,21 +37,16 @@ async function discoverThings() {
 }
 
 // -----------------------------
-// Consume Thing Descriptions
+// Extract form URL from TD
 // -----------------------------
-async function consumeThings(tds) {
-  for (const td of tds) {
-    try {
-      const consumedThing = await wot.consume(td)
-      consumedThings.set(td.id, consumedThing)
-      console.error(`✓ Consumed thing: ${td.title}`)
-    } catch (err) {
-      console.error(`✗ Failed to consume ${td.title}: ${err.message}`)
-    }
-  }
+function getFormUrl(forms) {
+  if (!forms || forms.length === 0) return null
+  return forms[0].href
 }
 
-// Initialize MCP Server
+// -----------------------------
+// Initialize server
+// -----------------------------
 const server = new Server(
   { name: "WoT-MCP-Bridge", version: "1.0.0" },
   { capabilities: { resources: {}, tools: {} } }
@@ -93,24 +77,18 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   const match = request.params.uri.match(/^wot:\/\/([^/]+)\/properties\/(.+)$/)
   if (!match) throw new Error(`Invalid URI: ${request.params.uri}`)
   const [, thingId, propName] = match
-  
-  const consumedThing = consumedThings.get(thingId)
-  if (!consumedThing) throw new Error(`Thing ${thingId} not consumed`)
-  
   const td = allTDs.find(t => t.id === thingId)
-  if (!td?.properties?.[propName]) throw new Error(`Property ${propName} not found`)
-
-  try {
-    const output = await consumedThing.readProperty(propName)
-    // Extract the actual value from the InteractionOutput
-    const value = await output.value()
-    return {
-      contents: [
-        { uri: request.params.uri, mimeType: "application/json", text: JSON.stringify(value, null, 2) }
-      ],
-    }
-  } catch (err) {
-    throw new Error(`Failed to read ${propName}: ${err.message}`)
+  if (!td) throw new Error(`Thing ${thingId} not found`)
+  const property = td.properties[propName]
+  if (!property) throw new Error(`Property ${propName} not found in ${td.title}`)
+  const url = getFormUrl(property.forms)
+  if (!url) throw new Error(`No form URL found for ${propName}`)
+  const res = await fetch(url)
+  const data = await res.json()
+  return {
+    contents: [
+      { uri: request.params.uri, mimeType: "application/json", text: JSON.stringify(data, null, 2) }
+    ],
   }
 })
 
@@ -164,40 +142,63 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 // -----------------------------
 // Call a tool (invoke action or set/get property)
 // -----------------------------
+// Call a tool (invoke action or set/get property)
+// 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     const entry = toolMap.get(request.params.name)
     if (!entry) throw new Error(`Unknown tool: ${request.params.name}`)
 
     const { thingId, type, name } = entry
-    const consumedThing = consumedThings.get(thingId)
-    if (!consumedThing) throw new Error(`Thing ${thingId} not consumed`)
+    const td = allTDs.find(t => t.id === thingId)
+    if (!td) throw new Error(`Thing ${thingId} not found`)
 
-    let result
+    let url, method, body
 
     if (type === "property") {
-      // Writable property
+      // Writable property - send just the value, not the arguments object
+      const property = td.properties[name]
+      if (!property) throw new Error(`Property ${name} not found in ${td.title}`)
+      url = getFormUrl(property.forms)
+      method = "PUT"
+      // Extract the value from arguments - the key should match the property name
       const args = request.params.arguments || {}
       const value = args[name] !== undefined ? args[name] : args
-      await consumedThing.writeProperty(name, value)
-      console.error(`[td2mcp] Set ${thingId}.${name} = ${JSON.stringify(value)}`)
-      result = { status: "success", message: `Property ${name} set to ${value}` }
+      body = JSON.stringify(value)
+      console.error(`[td2mcp] Setting ${td.title}.${name} = ${body}`)
     } else if (type === "readonly_property") {
       // Read-only property
-      const output = await consumedThing.readProperty(name)
-      const value = await output.value()
-      result = { status: "success", value }
+      const property = td.properties[name]
+      if (!property) throw new Error(`Property ${name} not found in ${td.title}`)
+      url = getFormUrl(property.forms)
+      method = "GET"
+      body = undefined
     } else {
       // Action
-      const args = request.params.arguments || {}
-      const actionResult = await consumedThing.invokeAction(name, args)
-      result = { status: "success", result: actionResult }
+      const action = td.actions[name]
+      if (!action) throw new Error(`Action ${name} not found in ${td.title}`)
+      url = getFormUrl(action.forms)
+      method = "POST"
+      body = JSON.stringify(request.params.arguments || {})
+    }
+
+    if (!url) throw new Error(`No form URL found for ${name}`)
+
+    const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body })
+    
+    let result
+    try {
+      const text = await res.text()
+      result = text ? JSON.parse(text) : { status: 'success' }
+    } catch (e) {
+      result = { status: 'success', message: 'Operation completed' }
     }
 
     return {
       content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
     }
   } catch (error) {
+    // Always return valid JSON even on error
     return {
       content: [{ type: "text", text: JSON.stringify({ error: error.message }, null, 2) }],
     }
@@ -208,49 +209,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 // Start server
 // -----------------------------
 async function main() {
-  try {
-    console.error("\n🌉 WoT-MCP Bridge starting...")
-    
-    // Initialize WoT runtime
-    wot = await servient.start()
-    console.error("✓ WoT Servient initialized")
-    
-    // Discover and consume things
-    allTDs = await discoverThings()
-    if (allTDs.length === 0) {
-      console.error("⚠️ No things discovered!")
-    } else {
-      await consumeThings(allTDs)
-    }
-    
-    // Start MCP server
-    const transport = new StdioServerTransport()
-    await server.connect(transport)
-    console.error("✓ MCP server ready\n")
-    
-    // Monitor for changes in Thing Directory
-    setInterval(async () => {
-      const newTDs = await discoverThings()
-      if (newTDs.length !== allTDs.length) {
-        console.error(`\n🔄 Detected change: ${allTDs.length} → ${newTDs.length} things`)
-        allTDs = newTDs
-        // Clear old consumed things that no longer exist
-        const newIds = new Set(newTDs.map(td => td.id))
-        for (const id of consumedThings.keys()) {
-          if (!newIds.has(id)) {
-            consumedThings.delete(id)
-          }
-        }
-        await consumeThings(newTDs)
-      }
-    }, 10000) // Check every 10 seconds
-  } catch (error) {
-    console.error("Fatal error:", error)
-    process.exit(1)
-  }
+  console.error("\n🌉 WoT-MCP Bridge starting...")
+  allTDs = await discoverThings()
+  if (allTDs.length === 0) console.error("⚠️ No things discovered!")
+  
+  const transport = new StdioServerTransport()
+  await server.connect(transport)
+  console.error("✓ MCP server ready\n")
 }
 
 main().catch(error => {
   console.error("Fatal error:", error)
   process.exit(1)
-})
+});

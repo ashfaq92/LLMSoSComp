@@ -15,6 +15,8 @@ servient.addServer(httpServer)
 const CORRECT_PIN = '1234'
 const DIRECTORY_URL = 'http://localhost:8080/things'
 
+let thing; // Declare thing outside for access in shutdown handler
+
 servient.start().then(async (WoT) => {
   console.log('WoT Servient started')
   
@@ -35,7 +37,7 @@ servient.start().then(async (WoT) => {
     }
   }, 60000) // Drain 0.1% per minute
   
-  const thing = await WoT.produce({
+  thing = await WoT.produce({ // Assign to the outer variable
     title: 'Smart Door Lock',
     description: 'A smart door lock that can be locked/unlocked with PIN authentication',
     properties: {
@@ -149,5 +151,20 @@ servient.start().then(async (WoT) => {
 // Deregister on shutdown
 process.on('SIGINT', async () => {
   console.log('\n🛑 Shutting down Smart Door Lock...')
+  // Deregister from Thing Directory
+  if (thing) {
+    try {
+      const response = await fetch(`${DIRECTORY_URL}/${thing.getThingDescription().id}`, {
+        method: 'DELETE'
+      })
+      if (response.ok) {
+        console.log('✓ Deregistered from Thing Directory')
+      } else {
+        console.log('⚠️ Failed to deregister from Thing Directory')
+      }
+    } catch (err) {
+      console.log(`⚠️ Could not deregister: ${err.message}`)
+    }
+  }
   process.exit(0)
 })
