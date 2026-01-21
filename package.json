@@ -10,6 +10,7 @@
     "@node-wot/core": "^0.9.1",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "get-port": "^7.1.0",
     "langchain": "^1.2.10",
     "zod": "^4.3.5"
   }

@@ -1,170 +1,93 @@
-// SMART DOOR LOCK - Following WoT pattern from myThing.js
-
-import coreModule from '@node-wot/core'
-import bindingModule from '@node-wot/binding-http'
-
-const { Servient, Helpers } = coreModule
-const { HttpServer } = bindingModule
-
-const httpServer = new HttpServer({ port: 8083 })
-
-const servient = new Servient()
-Helpers.setStaticAddress('localhost')
-servient.addServer(httpServer)
+import { startDevice } from './deviceHelper.js'
 
 const CORRECT_PIN = '1234'
-const DIRECTORY_URL = 'http://localhost:8080/things'
 
-let thing; // Declare thing outside for access in shutdown handler
-
-servient.start().then(async (WoT) => {
-  console.log('WoT Servient started')
-  
-  let state = {
-    locked: true,
-    batteryLevel: 85
-  }
-  
-  // Simulate battery drain
-  setInterval(() => {
-    if (state.batteryLevel > 0) {
-      state.batteryLevel = Math.max(0, state.batteryLevel - 0.1)
-      state.batteryLevel = Math.round(state.batteryLevel)
-      
-      if (state.batteryLevel === 20) {
-        console.log(`🔋 LOW BATTERY WARNING: ${state.batteryLevel}%`)
+const td = {
+  title: 'Smart Door Lock',
+  description: 'A smart door lock that can be locked/unlocked with PIN authentication',
+  properties: {
+    locked: {
+      type: 'boolean',
+      title: 'Lock Status',
+      description: 'Current lock status (true = locked, false = unlocked)',
+      readOnly: true
+    },
+    batteryLevel: {
+      type: 'integer',
+      title: 'Battery Level',
+      description: 'Battery level percentage (0-100)',
+      minimum: 0,
+      maximum: 100,
+      readOnly: true
+    }
+  },
+  actions: {
+    lock: {
+      title: 'Lock',
+      description: 'Lock the door'
+    },
+    unlock: {
+      title: 'Unlock',
+      description: 'Unlock the door with PIN',
+      input: {
+        type: 'object',
+        properties: {
+          pin: {
+            type: 'string',
+            description: 'PIN code to unlock'
+          }
+        },
+        required: ['pin']
       }
     }
-  }, 60000) // Drain 0.1% per minute
-  
-  thing = await WoT.produce({ // Assign to the outer variable
-    title: 'Smart Door Lock',
-    description: 'A smart door lock that can be locked/unlocked with PIN authentication',
-    properties: {
-      locked: {
-        type: 'boolean',
-        title: 'Lock Status',
-        description: 'Current lock status (true = locked, false = unlocked)',
-        readOnly: true
-      },
-      batteryLevel: {
-        type: 'integer',
-        title: 'Battery Level',
-        description: 'Battery level percentage (0-100)',
-        minimum: 0,
-        maximum: 100,
-        readOnly: true
-      }
+  }
+}
+
+let state = {
+  locked: true,
+  batteryLevel: 85
+}
+
+const handlers = {
+  setPropertyReadHandler: {
+    locked: async () => state.locked,
+    batteryLevel: async () => state.batteryLevel
+  },
+  setActionHandler: {
+    lock: async () => {
+      state.locked = true
+      console.log(`🔒 Door LOCKED`)
+      return { locked: state.locked, message: 'Door locked successfully' }
     },
-    actions: {
-      lock: {
-        title: 'Lock',
-        description: 'Lock the door'
-      },
-      unlock: {
-        title: 'Unlock',
-        description: 'Unlock the door with PIN',
-        input: {
-          type: 'object',
-          properties: {
-            pin: {
-              type: 'string',
-              description: 'PIN code to unlock'
-            }
-          },
-          required: ['pin']
+    unlock: async (input) => {
+      const inputData = await input.value()
+      const pin = inputData?.pin
+      if (!pin) throw new Error('PIN required')
+      if (pin === CORRECT_PIN) {
+        state.locked = false
+        console.log(`🔓 Door UNLOCKED with correct PIN`)
+        return { locked: state.locked, message: 'Door unlocked successfully' }
+      } else {
+        console.log(`⚠️  Unlock attempt with incorrect PIN: ${pin}`)
+        throw new Error('Incorrect PIN')
+      }
+    }
+  }
+}
+
+startDevice({
+  td,
+  handlers,
+  onExposed: () => {
+    setInterval(() => {
+      if (state.batteryLevel > 0) {
+        state.batteryLevel = Math.max(0, state.batteryLevel - 0.1)
+        state.batteryLevel = Math.round(state.batteryLevel)
+        if (state.batteryLevel === 20) {
+          console.log(`🔋 LOW BATTERY WARNING: ${state.batteryLevel}%`)
         }
       }
-    }
-  })
-  
-  // Property handlers
-  thing.setPropertyReadHandler('locked', async () => {
-    return state.locked
-  })
-  
-  thing.setPropertyReadHandler('batteryLevel', async () => {
-    return state.batteryLevel
-  })
-  
-  // Action handlers
-  thing.setActionHandler('lock', async () => {
-    state.locked = true
-    console.log(`🔒 Door LOCKED`)
-    return { 
-      locked: state.locked,
-      message: 'Door locked successfully'
-    }
-  })
-  
-  thing.setActionHandler('unlock', async (input) => {
-    const inputData = await input.value()
-    const pin = inputData?.pin
-    
-    if (!pin) {
-      throw new Error('PIN required')
-    }
-    
-    if (pin === CORRECT_PIN) {
-      state.locked = false
-      console.log(`🔓 Door UNLOCKED with correct PIN`)
-      return { 
-        locked: state.locked,
-        message: 'Door unlocked successfully'
-      }
-    } else {
-      console.log(`⚠️  Unlock attempt with incorrect PIN: ${pin}`)
-      throw new Error('Incorrect PIN')
-    }
-  })
-  // Register with Thing Directory
-  async function registerWithDirectory() {
-    try {
-      const response = await fetch(DIRECTORY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/td+json' },
-        body: JSON.stringify(thing.getThingDescription())
-      })
-      
-      if (response.ok) {
-        console.log(`✓ Registered with Thing Directory`)
-      } else {
-        console.log(`⚠️ ${response.statusText}  Thing Directory not available`)
-      }
-    } catch (err) {
-      console.log(`⚠️  Could not register: ${err.message}`)
-    }
+    }, 60000)
+    console.log(`PIN for testing: ${CORRECT_PIN}`)
   }
-  
-  
-  await thing.expose()
-  
-  console.log(`\n🔒 Smart Door Lock running on http://localhost:8083`)
-  console.log(`   Status: ${state.locked ? 'LOCKED' : 'UNLOCKED'}, Battery: ${state.batteryLevel}%`)
-  console.log(`   TD: http://localhost:8083/.well-known/wot`)
-  console.log(`   PIN for testing: ${CORRECT_PIN}\n`)
-
-  // Register after a short delay to ensure directory is ready
-  setTimeout(registerWithDirectory, 1000)
-})
-
-// Deregister on shutdown
-process.on('SIGINT', async () => {
-  console.log('\n🛑 Shutting down Smart Door Lock...')
-  // Deregister from Thing Directory
-  if (thing) {
-    try {
-      const response = await fetch(`${DIRECTORY_URL}/${thing.getThingDescription().id}`, {
-        method: 'DELETE'
-      })
-      if (response.ok) {
-        console.log('✓ Deregistered from Thing Directory')
-      } else {
-        console.log('⚠️ Failed to deregister from Thing Directory')
-      }
-    } catch (err) {
-      console.log(`⚠️ Could not deregister: ${err.message}`)
-    }
-  }
-  process.exit(0)
 })
