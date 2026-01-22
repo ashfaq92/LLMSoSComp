@@ -17,10 +17,11 @@ const handlers = {}
 startDevice({
   td,
   handlers,
+  route: 'alarm',
   onExposed: (thing) => {
     setInterval(() => {
-      thing.emitEvent('alarmRinging')
+      thing.emitEvent('alarmRinging', null)
       console.log('⏰ Alarm event emitted')
-    }, 30000)
+    }, 1000)
   }
 })

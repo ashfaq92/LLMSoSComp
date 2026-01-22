@@ -1,0 +1,9 @@
+{
+  "things": [
+    {
+      "protocol": "http",
+      "url": "http://localhost:49951/alarm",
+      "td": "/things/urn:uuid:c686718a-ab9b-403d-8a60-6c5cf62d5a2a"
+    }
+  ]
+}

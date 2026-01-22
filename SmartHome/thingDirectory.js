@@ -1,7 +1,12 @@
 import express from 'express'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express()
-// app.use(express.json())
 
 app.use(express.json({
   type: [
@@ -10,9 +15,28 @@ app.use(express.json({
   ]
 }))
 
-
 // In-memory TD storage
 const things = new Map()
+
+const thingsConfigPath = path.resolve(__dirname, 'thingsConfig.json')
+
+// Helper to write thingsConfig.json
+function writeThingsConfig() {
+  const thingsArray = Array.from(things.values()).map(entry => {
+    const td = entry.td;
+    let protocol = td.protocol || 'http';
+    let url = td.base || td.url || '';
+    if (!url && td.forms && td.forms.length > 0) {
+      url = td.forms[0].href;
+    }
+    return {
+      protocol: protocol,
+      url: url,
+      td: td.id ? `/things/${td.id}` : undefined
+    };
+  });
+  fs.writeFileSync(thingsConfigPath, JSON.stringify({ things: thingsArray }, null, 2));
+}
 
 console.log('\n═══════════════════════════════════════════════════════')
 console.log('  📚 W3C WoT Thing Directory')
@@ -43,6 +67,8 @@ app.post('/things', (req, res) => {
     registered: new Date().toISOString()
   })
 
+  writeThingsConfig()
+
   console.log(`✓ Registered: ${td.title ?? 'Untitled'} (${td.id})`)
 
   res.status(201).json({
@@ -50,7 +76,6 @@ app.post('/things', (req, res) => {
     message: 'Thing registered successfully'
   })
 })
-
 
 // 2. Get all TDs
 app.get('/things', (req, res) => {
@@ -81,6 +106,8 @@ app.put('/things/:id', (req, res) => {
     registered: things.get(req.params.id).registered,
     updated: new Date().toISOString()
   })
+
+  writeThingsConfig()
   
   console.log(`✓ Updated: ${td.title} (${td.id})`)
   res.json({ message: 'Thing updated successfully' })
@@ -94,6 +121,8 @@ app.delete('/things/:id', (req, res) => {
   
   const td = things.get(req.params.id).td
   things.delete(req.params.id)
+
+  writeThingsConfig()
   
   console.log(`✓ Deregistered: ${td.title} (${td.id})`)
   res.json({ message: 'Thing deleted successfully' })
@@ -155,6 +184,24 @@ app.get('/.well-known/wot', (req, res) => {
     }
   })
 })
+
+// 8. Provide thingsConfig.json format dynamically
+app.get('/thingsConfig', (req, res) => {
+  const thingsArray = Array.from(things.values()).map(entry => {
+    const td = entry.td;
+    let protocol = td.protocol || 'http';
+    let url = td.base || td.url || '';
+    if (!url && td.forms && td.forms.length > 0) {
+      url = td.forms[0].href;
+    }
+    return {
+      protocol: protocol,
+      url: url,
+      td: td.id ? `/things/${td.id}` : undefined
+    };
+  });
+  res.json({ things: thingsArray });
+});
 
 const PORT = 8080
 app.listen(PORT, () => {

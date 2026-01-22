@@ -50,11 +50,12 @@ This example demonstrates how to build an AI agent using Python, LangChain, and 
    npm run start:http
    ```
 
-2. Ensure your [`wot-mcp`](https://github.com/macc-n/wot-mcp) server is running in `streamable-http` mode on port `3000` and with the correct config file.
+2. Ensure your [`wot-mcp`](https://github.com/macc-n/wot-mcp) server is running in `streamable
+3. -http` mode on port `3000` and with the correct config file.
 
-3. Run the agent:
+4. Run the agent:
    ```bash
    python3 wot-mcp-agent.py
    ```
 
-4. The agent will connect to the MCP server, discover available tools (representing your WoT devices), and you can interact with it via the console.
+5. The agent will connect to the MCP server, discover available tools (representing your WoT devices), and you can interact with it via the console.
