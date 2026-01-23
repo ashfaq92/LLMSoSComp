@@ -1,11 +1,9 @@
 import asyncio
-import os
-import sys
-from typing import Any, Dict, Type
 import mcp.types as types
+import os
 from dotenv import load_dotenv
 from langchain.agents import create_agent
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
 from langgraph.checkpoint.memory import InMemorySaver
@@ -16,9 +14,11 @@ load_dotenv()
 MCP_SERVER_URL = "http://localhost:3000/mcp"
 VERBOSE = False
 
-model = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
+model = ChatOpenAI(
+    model="gpt-4",  # or "gpt-3.5-turbo"
     temperature=0,
+    openai_api_key=os.getenv("OPENAI_API_KEY")
+
 )
 
 async def main():
@@ -42,6 +42,8 @@ async def main():
 
         async def notification_handler(message):
             # Call the original handler first (to handle responses etc.)
+            # print(f"\n[DEBUG] Incoming notification: {message}")
+
             if original_handler:
                 await original_handler(message)
             

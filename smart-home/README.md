@@ -13,6 +13,12 @@ cd smart-home
 npm install
 ```
 
+## Running all devices
+
+```bash
+npm run start:devices
+```
+
 ## Available Devices
 
 ### 1. HTTP Thermostat
