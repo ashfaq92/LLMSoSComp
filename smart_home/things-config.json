@@ -1,0 +1,12 @@
+{
+  "things": [
+    {
+        "protocol": "http",
+        "url": "http://localhost:8080/httpthermostat"
+    },
+    {
+        "protocol": "http",
+        "url": "http://localhost:8081/mylamp"
+    }
+  ]
+}
