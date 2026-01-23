@@ -23,7 +23,7 @@ git clone https://github.com/macc-n/wot-mcp.git
 cd wot-mcp
 npm install
 npm run build
-npm start -- --mode streamable-http --port 3000 --config ../smart_home/things-config.json
+npm start -- --mode streamable-http --port 3000 --config ../smart-home/things-config.json
 ```
 
 ## Usage
