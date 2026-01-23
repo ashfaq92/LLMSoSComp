@@ -21,9 +21,7 @@ This example demonstrates how to build an AI agent using Python, LangChain, and 
    - On Windows (PowerShell):
      ```powershell
      python -m venv .venv
-     .\.venv\Scripts\Activate.ps1
-     
-     (.venv\Scripts\activate)
+     .\.venv\Scripts\Activate.ps1 (OR .venv\Scripts\activate)
      ```
 
 1. Navigate to project directory:
@@ -43,19 +41,14 @@ This example demonstrates how to build an AI agent using Python, LangChain, and 
 
 ## Usage
 
-1. Start the simulated HTTP thermostat device:
-   ```bash
-   cd ../simulated-devices
-   npm install && npm run build
-   npm run start:http
-   ```
+1. Start the simulated devices in smart-home
 
-2. Ensure your [`wot-mcp`](https://github.com/macc-n/wot-mcp) server is running in `streamable
-3. -http` mode on port `3000` and with the correct config file.
+2. Ensure your [`wot-mcp`](https://github.com/macc-n/wot-mcp) server is running in `streamable-http` mode on port `3000` and with the correct config file.
 
 4. Run the agent:
    ```bash
-   python3 wot-mcp-agent.py
+   (linux) python3 wot-mcp-agent.py
+   (windows) python wot-mcp-agent.py
    ```
 
 5. The agent will connect to the MCP server, discover available tools (representing your WoT devices), and you can interact with it via the console.
