@@ -23,7 +23,8 @@ VERBOSE = False
 # )
 
 model = ChatOpenAI(
-    model="gpt-4",  # or "gpt-3.5-turbo"
+    # model="gpt-4",  
+    model="gpt-3.5-turbo",  
     temperature=0,
     openai_api_key=os.getenv("OPENAI_API_KEY")
 
@@ -118,65 +119,69 @@ async def main():
             checkpointer=InMemorySaver(),
         )
 
-        print("\nAgent ready! Type 'bye' to exit.")
+        print("\n🏠 Agent ready! Type 'bye' to exit.")
+        print("Listening for temperature alerts...\n")
 
-        while True:
+        # Background task to monitor notifications
+        async def notification_monitor():
+            while True:
+                try:
+                    alert = await notification_queue.get()
+                    print(f"\n🚨 {alert}")
+                    # Process the alert through the agent
+                    await process_with_agent(alert)
+                except asyncio.CancelledError:
+                    break
+
+        async def process_with_agent(prompt):
             try:
-                # Wait for either user input or a notification
-                input_task = asyncio.create_task(asyncio.to_thread(input, "User prompt: "))
-                notification_task = asyncio.create_task(notification_queue.get())
-                
-                done, pending = await asyncio.wait(
-                    [input_task, notification_task], 
-                    return_when=asyncio.FIRST_COMPLETED
+                agent_response = await agent.ainvoke(
+                    {"messages": [{"role": "user", "content": prompt}]},
+                    {"configurable": {"thread_id": "1"}}
                 )
-
-                # Cancel pending tasks
-                for task in pending:
-                    task.cancel()
-
-                if input_task in done:
-                    try:
-                        user_prompt = input_task.result()
-                    except EOFError:
-                        break
-                else:
-                    # It was a notification
-                    user_prompt = notification_task.result()
-                    print(f"\n🚨 Processing Notification: {user_prompt}")
-
-            except asyncio.CancelledError:
-                break
-
-            if user_prompt.lower() == "bye":
-                break
-
-            async for chunk in agent.astream(
-                {"messages": [{"role": "user", "content": user_prompt}]},
-                {"configurable": {"thread_id": "1"}},
-                stream_mode="updates",
-            ):
-                for step, data in chunk.items():
-                    if "messages" in data:
-                        last_msg = data["messages"][-1]
+                
+                # Extract and print the response
+                if "messages" in agent_response:
+                    messages = agent_response["messages"]
+                    if messages:
+                        last_msg = messages[-1]
                         if isinstance(last_msg, AIMessage):
-                            if last_msg.tool_calls:
-                                for tool_call in last_msg.tool_calls:
-                                    print(f"🛠️  Calling tool: {tool_call['name']} with {tool_call['args']}")
-                            elif last_msg.content:
+                            if last_msg.content:
                                 if isinstance(last_msg.content, list):
                                     for part in last_msg.content:
                                         if isinstance(part, dict) and part.get("type") == "text":
                                             print(f"🤖 Agent: {part.get('text')}")
                                 else:
                                     print(f"🤖 Agent: {last_msg.content}")
-                        elif isinstance(last_msg, ToolMessage):
-                            print(f"✅ Tool Output: {last_msg.content}")
-                        
-                    if VERBOSE:
-                        print(f"--- Step: {step} ---")
-                        print(data)
-                        print("--------------------")
+            except Exception as e:
+                print(f"❌ Error processing: {e}")
+
+        # Start the notification monitor task
+        monitor_task = asyncio.create_task(notification_monitor())
+
+        # Interactive loop - simple and clean
+        try:
+            while True:
+                try:
+                    user_prompt = await asyncio.to_thread(input, "You: ")
+                    
+                    if user_prompt.lower() == "bye":
+                        print("Goodbye!")
+                        break
+                    
+                    if not user_prompt.strip():
+                        continue
+                    
+                    await process_with_agent(user_prompt)
+                
+                except EOFError:
+                    break
+        finally:
+            monitor_task.cancel()
+            try:
+                await monitor_task
+            except asyncio.CancelledError:
+                pass
 
 
 if __name__ == "__main__":
