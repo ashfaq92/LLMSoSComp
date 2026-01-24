@@ -1,18 +1,26 @@
 import asyncio
-import mcp.types as types
 import os
+import sys
+from typing import Any, Dict, Type
+import mcp.types as types
 from dotenv import load_dotenv
 from langchain.agents import create_agent
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.messages import AIMessage, ToolMessage
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
 MCP_SERVER_URL = "http://localhost:3000/mcp"
 VERBOSE = False
+
+# model = ChatGoogleGenerativeAI(
+#     model="gemini-2.5-flash",
+#     temperature=0,
+# )
 
 model = ChatOpenAI(
     model="gpt-4",  # or "gpt-3.5-turbo"
@@ -42,26 +50,29 @@ async def main():
 
         async def notification_handler(message):
             # Call the original handler first (to handle responses etc.)
-            # print(f"\n[DEBUG] Incoming notification: {message}")
-
             if original_handler:
                 await original_handler(message)
             
-            # Check for notifications
-            if isinstance(message, types.ServerNotification):
-                method = getattr(message, 'method', None)
-                params = getattr(message, 'params', {})
-                
-                if method == "notifications/resources/updated":
-                    uri = params.get('uri') if isinstance(params, dict) else getattr(params, 'uri', None)
-                    print(f"\n🔔 RESOURCE UPDATED: {uri}")
-                    # Check if it's an overheating event
-                    if uri and "overheating" in uri:
-                        await notification_queue.put(
-                            f"ALERT: The device at {uri} is overheating! Please investigate and fix it immediately."
-                        )
-                elif method == "notifications/resources/list_changed":
-                    print(f"\n🔔 RESOURCE LIST CHANGED")
+            # Check for notifications - handle as Pydantic model
+            if hasattr(message, 'root') and isinstance(message.root, types.ResourceUpdatedNotification):
+                notification = message.root
+                uri = str(notification.params.uri)  # Convert AnyUrl to string
+                print(f"\n🔔 RESOURCE UPDATED: {uri}")
+                if uri and "overheating" in uri:
+                    await notification_queue.put(
+                        f"ALERT: The device at {uri} is overheating! Please investigate and fix it immediately."
+                    )
+            elif hasattr(message, 'root') and isinstance(message.root, types.ResourceListChangedNotification):
+                print(f"\n🔔 RESOURCE LIST CHANGED")
+            elif isinstance(message, types.ResourceUpdatedNotification):
+                uri = str(message.params.uri)  # Convert AnyUrl to string
+                print(f"\n🔔 RESOURCE UPDATED: {uri}")
+                if uri and "overheating" in uri:
+                    await notification_queue.put(
+                        f"ALERT: The device at {uri} is overheating! Please investigate and fix it immediately."
+                    )
+            elif isinstance(message, types.ResourceListChangedNotification):
+                print(f"\n🔔 RESOURCE LIST CHANGED")
 
         # Inject our handler
         session._message_handler = notification_handler
