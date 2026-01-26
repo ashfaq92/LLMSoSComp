@@ -4,7 +4,7 @@
   "description": "Simulated WoT devices for testing",
   "type": "module",
   "scripts": {
-    "start:devices": "concurrently \"node devices/thermostat.js\" \"node devices/lamp.js\""
+    "start:devices": "concurrently \"node devices/thermostat.js\" \"node devices/lamp.js\" \"node devices/washingMachine.js\" \"node devices/leds.js\""
   },
   "dependencies": {
     "@node-wot/binding-coap": "^0.9.1",

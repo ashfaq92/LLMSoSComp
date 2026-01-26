@@ -7,6 +7,14 @@
     {
         "protocol": "http",
         "url": "http://localhost:8081/mylamp"
+    },
+    {
+        "protocol": "http",
+        "url": "http://localhost:8082/washingmachine"
+    },
+    {
+        "protocol": "http",
+        "url": "http://localhost:8083/leds"
     }
   ]
 }
