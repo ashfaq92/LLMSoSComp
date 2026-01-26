@@ -50,7 +50,7 @@ def print_event(message: str):
     # Use carriage return to clear current line and print event
     sys.stdout.write(f"\r{' ' * 100}\r")  # Clear the current input line
     sys.stdout.flush()
-    print(f"🔔 {message}")
+    # print(f"🔔 {message}")
     sys.stdout.write("You: ")  # Reprint the prompt
     sys.stdout.flush()
 

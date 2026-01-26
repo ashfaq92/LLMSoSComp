@@ -28,9 +28,14 @@ servient.start().then(async (WoT) => {
 	});
 	await thing.expose();
 	console.log('WashingMachine exposed at http://localhost:8082/washingmachine');
-	// Simulate a wash cycle every 10 seconds
-	setInterval(() => {
-		thing.emitEvent("finishedCycle", null);
-		console.log("🧺 Wash cycle finished. Event 'finishedCycle' emitted.");
-	}, 10000);
+	// Simulate a wash cycle with random interval between 5-15 seconds
+	const scheduleWashCycle = () => {
+		const randomDelay = Math.random() * 10000 + 5000; // 5000-15000ms
+		setTimeout(() => {
+			thing.emitEvent("finishedCycle", null);
+			console.log("🧺 Wash cycle finished. Event 'finishedCycle' emitted.");
+			scheduleWashCycle(); // Schedule next cycle
+		}, randomDelay);
+	};
+	scheduleWashCycle();
 });

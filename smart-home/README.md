@@ -13,7 +13,7 @@ cd smart-home
 npm install
 ```
 
-## Running all devices
+## Starting all the devices
 
 ```bash
 npm run start:devices
