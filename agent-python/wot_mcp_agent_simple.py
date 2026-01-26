@@ -1,7 +1,5 @@
 import asyncio
 import os
-import sys
-from typing import Any, Dict, Type
 import mcp.types as types
 from dotenv import load_dotenv
 from langchain.agents import create_agent
@@ -47,7 +45,10 @@ async def main():
         original_handler = session._message_handler
         
         # Queue to communicate between notification handler and main loop
-        notification_queue = asyncio.Queue()
+        event_queue = asyncio.Queue()
+        
+        # Dictionary to track which resources are events
+        event_resources = {}
 
         async def notification_handler(message):
             # Call the original handler first (to handle responses etc.)
@@ -57,23 +58,29 @@ async def main():
             # Check for notifications - handle as Pydantic model
             if hasattr(message, 'root') and isinstance(message.root, types.ResourceUpdatedNotification):
                 notification = message.root
-                uri = str(notification.params.uri)  # Convert AnyUrl to string
-                print(f"\n🔔 RESOURCE UPDATED: {uri}")
-                if uri and "overheating" in uri:
-                    await notification_queue.put(
-                        f"ALERT: The device at {uri} is overheating! Please investigate and fix it immediately."
-                    )
+                uri = str(notification.params.uri)
+                await handle_resource_update(uri)
             elif hasattr(message, 'root') and isinstance(message.root, types.ResourceListChangedNotification):
                 print(f"\n🔔 RESOURCE LIST CHANGED")
             elif isinstance(message, types.ResourceUpdatedNotification):
-                uri = str(message.params.uri)  # Convert AnyUrl to string
-                print(f"\n🔔 RESOURCE UPDATED: {uri}")
-                if uri and "overheating" in uri:
-                    await notification_queue.put(
-                        f"ALERT: The device at {uri} is overheating! Please investigate and fix it immediately."
-                    )
+                uri = str(message.params.uri)
+                await handle_resource_update(uri)
             elif isinstance(message, types.ResourceListChangedNotification):
                 print(f"\n🔔 RESOURCE LIST CHANGED")
+
+        async def handle_resource_update(uri: str):
+            """Handle resource updates dynamically based on resource type."""
+            # Check if this is an event resource (URI contains /events/)
+            if "/events/" in uri:
+                resource_name = event_resources.get(uri, uri)
+                await event_queue.put({
+                    "uri": uri,
+                    "name": resource_name,
+                    "message": f"Event triggered: {resource_name}"
+                })
+            else:
+                # For property updates, just log them
+                print(f"\n📊 PROPERTY UPDATED: {uri}")
 
         # Inject our handler
         session._message_handler = notification_handler
@@ -90,7 +97,7 @@ async def main():
         print(f"Tools loaded: {[tool.name for tool in tools]}")
         print(f"Number of tools loaded: {len(tools)}")
 
-        # --- Auto-subscribe to resources ---
+        # --- Auto-subscribe to all resources ---
         print("Checking for resources to subscribe...")
         try:
             resources_result = await session.list_resources()
@@ -98,7 +105,13 @@ async def main():
                 print(f"Found {len(resources_result.resources)} resources. Subscribing...")
                 for resource in resources_result.resources:
                     await session.subscribe_resource(resource.uri)
-                    print(f"  - Subscribed to: {resource.name} ({resource.uri})")
+                    
+                    # Track event resources for easy identification
+                    if "/events/" in resource.uri:
+                        event_resources[resource.uri] = resource.name
+                        print(f"  - Subscribed to event: {resource.name} ({resource.uri})")
+                    else:
+                        print(f"  - Subscribed to: {resource.name} ({resource.uri})")
             else:
                 print("No resources found.")
         except Exception as e:
@@ -120,20 +133,21 @@ async def main():
         )
 
         print("\n🏠 Agent ready! Type 'bye' to exit.")
-        print("Listening for temperature alerts...\n")
+        print("Listening for device events...\n")
 
-        # Background task to monitor notifications
-        async def notification_monitor():
+        # Background task to monitor and display events (passive listening)
+        async def event_monitor():
             while True:
                 try:
-                    alert = await notification_queue.get()
-                    print(f"\n🚨 {alert}")
-                    # Process the alert through the agent
-                    await process_with_agent(alert)
+                    event = await event_queue.get()
+                    print(f"\n🔔 EVENT: {event['message']}")
+                    # Passively display the event - do NOT auto-act on it
+                    # User can then ask the agent to perform actions based on this event
                 except asyncio.CancelledError:
                     break
 
         async def process_with_agent(prompt):
+            """Process user request through the agent."""
             try:
                 agent_response = await agent.ainvoke(
                     {"messages": [{"role": "user", "content": prompt}]},
@@ -156,8 +170,8 @@ async def main():
             except Exception as e:
                 print(f"❌ Error processing: {e}")
 
-        # Start the notification monitor task
-        monitor_task = asyncio.create_task(notification_monitor())
+        # Start the event monitor task
+        monitor_task = asyncio.create_task(event_monitor())
 
         # Interactive loop - simple and clean
         try:
