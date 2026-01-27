@@ -2,6 +2,13 @@
 
 This example demonstrates how to build an AI agent using Python, LangChain, and the Model Context Protocol (MCP) to control Web of Things devices via the [`wot-mcp`](https://github.com/macc-n/wot-mcp) server. It also shows how to handle real-time events from physical or simulated devices, enabling the agent to react to changes in the environment.
 
+## Models
+- 🥇 gpt-5-nano          - $0.40 per 1K tokens (recommended for low-cost automation)
+- 🥇 gpt-4.1-nano        - $0.40 per 1K tokens (recommended for low-cost automation)
+- 🥉 gpt-4o-mini         - $0.60 per 1K tokens (balanced performance)
+- 4️⃣ gpt-5.1-codex-mini  - $2.00 per 1K tokens (advanced code generation)
+- 4️⃣ gpt-5-mini          - $2.00 per 1K tokens (advanced reasoning)
+
 ## Prerequisites
 
 - Python 3.10+

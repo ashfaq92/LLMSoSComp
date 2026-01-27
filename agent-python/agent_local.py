@@ -1,5 +1,4 @@
 import asyncio
-import os
 import sys
 from typing import Any, Dict, Type, List
 import mcp.types as types
@@ -9,17 +8,17 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.messages import AIMessage
-from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
+
 
 load_dotenv()
 
 MCP_SERVER_URL = "http://localhost:3000/mcp"
     
 
-model = ChatOpenAI(
-    model="gpt-5-nano",
+model = ChatOllama(
+    model="qwen2.5:7b",  # name of the model in Ollama
     temperature=0,
-    openai_api_key=os.getenv("OPENAI_API_KEY")
 )
 
 class EventBuffer:
@@ -156,16 +155,13 @@ async def main():
                             [f"- {event['name']}" for event in new_events]
                         )
                         
-                        automation_prompt = f"""
-The following events just occurred:
-{events_str}
-
-Active automation rules:
-{chr(10).join([f"- {rule}" for rule in automation_rules])}
-
-Check if any of these events should trigger any automations. Execute them if needed.
-Only report what actions you're taking now, not what was done before.
-"""
+                        automation_prompt = f"""The following events just occurred:
+                                                {events_str}
+                                                Active automation rules:
+                                                {chr(10).join([f"- {rule}" for rule in automation_rules])}
+                                                Check if any of these events should trigger any automations. Execute them if needed.
+                                                Only report what actions you're taking now, not what was done before.
+                                                """
                         
                         try:
                             response = await agent.ainvoke(
