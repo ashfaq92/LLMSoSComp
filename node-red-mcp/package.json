@@ -1,0 +1,23 @@
+{
+  "name": "node-red-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Node-RED flow management",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "mcp",
+    "node-red",
+    "automation",
+    "claude"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "axios": "^1.7.9",
+    "uuid": "^13.0.0"
+  }
+}
