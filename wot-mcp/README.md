@@ -42,13 +42,13 @@ Add the following to your `claude_desktop_config.json`:
       "command": "npm",
       "args": [
         "--prefix",
-        "<absolute-path>/wot-mcp",
+        "C:\\code_repos\\LLMSoSComp\\wot-mcp",
         "start",
         "--",
         "--tool-strategy",
         "explicit",
         "--config",
-        "<absolute-path>/things-config.json"
+        "C:\\code_repos\\LLMSoSComp\\smart-home\\things-config.json"
       ]
     }
   }
