@@ -1,0 +1,105 @@
+[
+  {
+    "id": "1a2b3c4d5e6f7g8h",
+    "type": "http request",
+    "z": "flow1",
+    "name": "Subscribe finishedCycle",
+    "method": "GET",
+    "ret": "obj",
+    "paytoqs": false,
+    "url": "http://10.203.28.189:8082/washingmachine/events/finishedCycle",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "authType": "",
+    "x": 160,
+    "y": 140,
+    "wires": [
+      [
+        "9a8b7c6d5e4f3g2h"
+      ]
+    ]
+  },
+  {
+    "id": "9a8b7c6d5e4f3g2h",
+    "type": "function",
+    "z": "flow1",
+    "name": "Prepare blink action",
+    "func": "msg.method = 'POST';\nmsg.url = 'http://10.203.28.189:8083/leds/actions/blink';\nmsg.headers = { 'Content-Type': 'application/json' };\nmsg.payload = {};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 380,
+    "y": 140,
+    "wires": [
+      [
+        "2b3c4d5e6f7g8h9i"
+      ]
+    ]
+  },
+  {
+    "id": "2b3c4d5e6f7g8h9i",
+    "type": "http request",
+    "z": "flow1",
+    "name": "Invoke LEDs blink",
+    "method": "POST",
+    "ret": "txt",
+    "paytoqs": false,
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "authType": "",
+    "x": 600,
+    "y": 140,
+    "wires": [
+      [
+        "errorHandler"
+      ]
+    ]
+  },
+  {
+    "id": "errorHandler",
+    "type": "function",
+    "z": "flow1",
+    "name": "Error Handler",
+    "func": "if (msg.statusCode && msg.statusCode >= 400) {\n    node.error(`HTTP error ${msg.statusCode}: ${msg.payload}`, msg);\n    return null;\n}\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 820,
+    "y": 140,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "startTrigger",
+    "type": "inject",
+    "z": "flow1",
+    "name": "Start Subscription",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": true,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 160,
+    "y": 80,
+    "wires": [
+      [
+        "1a2b3c4d5e6f7g8h"
+      ]
+    ]
+  }
+]
