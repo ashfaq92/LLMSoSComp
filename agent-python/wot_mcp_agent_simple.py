@@ -21,8 +21,7 @@ VERBOSE = False
 # )
 
 model = ChatOpenAI(
-    # model="gpt-4",  
-    model="gpt-3.5-turbo",  
+    model=os.getenv("LLM_VERSION"),   
     temperature=0,
     openai_api_key=os.getenv("OPENAI_API_KEY")
 

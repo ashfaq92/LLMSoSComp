@@ -24,6 +24,7 @@ cd wot-mcp
 npm install
 npm run build
 npm start -- --mode streamable-http --port 3000 --config ../smart-home/things-config.json
+npx @modelcontextprotocol/inspector http://localhost:3000/mcp  (for inspecting)
 ```
 
 ## Usage

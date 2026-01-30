@@ -94,6 +94,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             nodes: {
               type: "array",
               description: "Array of node objects to add to the flow",
+              items: {
+                type: "object",
+                description:
+                  "A Node-RED node object with id, type, name, wires, and other properties",
+              },
             },
           },
           required: ["label", "nodes"],
@@ -111,7 +116,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
             nodes: {
               type: "array",
-              description: "Complete array of nodes for this flow (replaces existing)",
+              description:
+                "Complete array of nodes for this flow (replaces existing)",
+              items: {
+                type: "object",
+                description:
+                  "A Node-RED node object with id, type, name, wires, and other properties",
+              },
             },
           },
           required: ["id", "nodes"],
@@ -147,7 +158,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           properties: {
             type: {
               type: "string",
-              description: "Node type to search for (e.g., 'mqtt in', 'function', 'debug')",
+              description:
+                "Node type to search for (e.g., 'mqtt in', 'function', 'debug')",
             },
           },
           required: ["type"],
@@ -169,7 +181,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "inject",
-        description: "Trigger an inject node by ID (requires node-red-contrib-http-inject or HTTP In node setup)",
+        description:
+          "Trigger an inject node by ID (requires node-red-contrib-http-inject or HTTP In node setup)",
         inputSchema: {
           type: "object",
           properties: {
@@ -189,7 +202,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           properties: {
             flowId: {
               type: "string",
-              description: "Optional: specific flow ID to visualize. If omitted, visualizes all flows.",
+              description:
+                "Optional: specific flow ID to visualize. If omitted, visualizes all flows.",
             },
           },
         },
@@ -252,7 +266,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case "list-tabs": {
         const flows = await nodeRedAPI("GET", "/flows");
-        const tabs = flows.flows.filter((f) => f.type === "tab");
+        // Handle both array response and object with flows property
+        const flowsArray = Array.isArray(flows) ? flows : (flows.flows || []);
+        const tabs = flowsArray.filter((f) => f.type === "tab");
         const tabList = tabs.map((t) => ({
           id: t.id,
           label: t.label,
@@ -269,8 +285,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "create-flow": {
-        // Use the official API endpoint POST /flow
         const newFlowId = generateId();
+        const nodes = args.nodes || []; // Default to empty array if not provided
 
         // Create flow object with nodes
         const flowData = {
@@ -279,7 +295,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           label: args.label,
           disabled: false,
           info: "",
-          nodes: args.nodes.map((node) => ({
+          nodes: nodes.map((node) => ({
             ...node,
             id: node.id || generateId(),
             z: newFlowId,

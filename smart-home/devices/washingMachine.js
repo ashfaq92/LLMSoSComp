@@ -22,7 +22,7 @@ servient.start().then(async (WoT) => {
 			finishedCycle: {
 				title: "Wash cycle complete",
 				description: "Sends a notification at the end of a wash cycle",
-				data: { type: "null" }
+				data: { type: "object" }
 			}
 		}
 	});
@@ -32,8 +32,12 @@ servient.start().then(async (WoT) => {
 	const scheduleWashCycle = () => {
 		const randomDelay = Math.random() * 10000 + 5000; // 5000-15000ms
 		setTimeout(() => {
-			thing.emitEvent("finishedCycle", null);
-			console.log("🧺 Wash cycle finished. Event 'finishedCycle' emitted.");
+			const eventData = {
+				message: "Wash cycle finished!",
+				timestamp: new Date().toISOString()
+			};
+			thing.emitEvent("finishedCycle", eventData);
+			console.log("🧺 Wash cycle finished. Event 'finishedCycle' emitted with data:", eventData);
 			scheduleWashCycle(); // Schedule next cycle
 		}, randomDelay);
 	};

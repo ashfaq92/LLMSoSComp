@@ -17,7 +17,7 @@ MCP_SERVER_URL = "http://localhost:3000/mcp"
     
 
 model = ChatOpenAI(
-    model="gpt-5-nano",
+    model=os.getenv("LLM_VERSION"),
     temperature=0,
     openai_api_key=os.getenv("OPENAI_API_KEY")
 )
