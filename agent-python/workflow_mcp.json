@@ -30,7 +30,7 @@
         "name": "Get finishedCycle event",
         "method": "GET",
         "ret": "obj",
-        "paytoqs": false,
+        "paytoqs": "ignore",
         "url": "http://localhost:3000/washingmachine/events/finishedCycle",
         "tls": "",
         "persist": false,
@@ -51,7 +51,7 @@
         "id": "check-event",
         "type": "switch",
         "z": "flow1",
-        "name": "Check if cycle finished",
+        "name": "Check if event fired",
         "property": "payload.finished",
         "propertyType": "msg",
         "rules": [
@@ -66,18 +66,18 @@
         "y": 100,
         "wires": [
             [
-                "http-post-blink"
+                "call-leds-blink"
             ]
         ]
     },
     {
-        "id": "http-post-blink",
+        "id": "call-leds-blink",
         "type": "http request",
         "z": "flow1",
         "name": "Call LEDs blink action",
         "method": "POST",
-        "ret": "obj",
-        "paytoqs": false,
+        "ret": "txt",
+        "paytoqs": "ignore",
         "url": "http://localhost:3000/leds/actions/blink",
         "tls": "",
         "persist": false,

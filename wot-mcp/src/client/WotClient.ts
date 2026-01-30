@@ -38,7 +38,7 @@ type EventCallback = (eventName: string, data: unknown) => void;
 
 export class WotClient {
   private servient: Servient;
-  private wotHelper!: typeof WoT;
+  private wotHelper!: any; // WoT runtime instance from Servient.start()
   private consumedThings: Map<string, ConsumedThingWrapper> = new Map();
   private eventSubscriptions: Map<string, Map<string, Subscription>> = new Map();
   private initialized = false;

@@ -15,7 +15,7 @@ const MqttClientFactory = MqttPkg.MqttClientFactory || MqttPkg.default?.MqttClie
 import { logger } from '../utils/Logger.js';
 export class WotClient {
     servient;
-    wotHelper;
+    wotHelper; // WoT runtime instance from Servient.start()
     consumedThings = new Map();
     eventSubscriptions = new Map();
     initialized = false;

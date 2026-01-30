@@ -15,6 +15,7 @@ export class ThingTranslator {
             id: thingId,
             title: td.title,
             description: td.description,
+            originalTd: td, // Store original TD for later retrieval
             properties: this.translateProperties(thingId, td),
             actions: this.translateActions(thingId, td),
             events: this.translateEvents(thingId, td)
@@ -42,6 +43,14 @@ export class ThingTranslator {
             .replace(/^-|-$/g, '');
     }
     /**
+     * Extract affordance metadata (forms) from an interaction
+     */
+    extractAffordance(interaction) {
+        return {
+            forms: interaction.forms || []
+        };
+    }
+    /**
      * Translate TD properties to MCP resources
      */
     translateProperties(thingId, td) {
@@ -54,7 +63,8 @@ export class ThingTranslator {
             mimeType: 'application/json',
             writable: !prop.readOnly,
             wotName: name,
-            schema: prop
+            schema: prop,
+            affordance: this.extractAffordance(prop) // Extract forms/URLs
         }));
     }
     /**
@@ -71,7 +81,8 @@ export class ThingTranslator {
                 inputSchema,
                 wotName: name,
                 thingId,
-                inputWrapped
+                inputWrapped,
+                affordance: this.extractAffordance(action) // Extract forms/URLs
             };
         });
     }
@@ -119,7 +130,8 @@ export class ThingTranslator {
             description: event.description || `Event stream for ${name} from ${td.title}`,
             mimeType: 'application/json',
             wotName: name,
-            schema: event.data
+            schema: event.data,
+            affordance: this.extractAffordance(event) // Extract forms/URLs
         }));
     }
 }

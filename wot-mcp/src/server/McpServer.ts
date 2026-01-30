@@ -22,7 +22,9 @@ import {
   TranslatedThing,
   TranslatedProperty,
   TranslatedAction,
-  TranslatedEvent
+  TranslatedEvent,
+  AffordanceMetadata,
+  Form
 } from '../translator/types.js';
 
 export type ToolStrategy = 'explicit' | 'generic';
@@ -146,16 +148,18 @@ export class McpServer {
             description: p.description,
             type: (p.schema as any)?.type || 'unknown',
             writable: p.writable,
-            schema: removeForms(p.schema)
+            forms: p.affordance?.forms || [] // Include forms!
           })),
           actions: thing.actions.map(a => ({
             name: a.wotName,
             description: a.description,
-            inputSchema: a.inputSchema
+            inputSchema: a.inputSchema,
+            forms: a.affordance?.forms || [] // Include forms!
           })),
           events: thing.events.map(e => ({
-            name: e.name,
-            description: e.description
+            name: e.wotName,
+            description: e.description,
+            forms: e.affordance?.forms || [] // Include forms!
           }))
         }));
         return {
@@ -251,6 +255,42 @@ export class McpServer {
           if (!action) throw new Error(`Action '${args.action_name}' not found on device '${args.device_id}'.`);
 
           return await this.invokeActionTool(action, args.params);
+        } catch (error: any) {
+          return {
+            isError: true,
+            content: [{
+              type: 'text',
+              text: `Error: ${error.message || error}`
+            }]
+          };
+        }
+      }
+    );
+
+    // NEW TOOL: get_thing_description
+    server.registerTool(
+      "get_thing_description",
+      {
+        description: "Retrieve the complete Thing Description (TD) for a device, including all affordance details, forms, and protocol bindings. Use this when you need to generate workflows or understand the exact HTTP endpoints.",
+        inputSchema: z.object({
+          device_id: z.string().describe("The ID of the device")
+        })
+      },
+      async (args: any) => {
+        try {
+          const thing = this.things.get(args.device_id);
+          if (!thing) throw new Error(`Device '${args.device_id}' not found.`);
+          
+          if (!thing.originalTd) {
+            throw new Error(`Thing Description not available for '${args.device_id}'.`);
+          }
+
+          return {
+            content: [{
+              type: 'text',
+              text: JSON.stringify(thing.originalTd, null, 2)
+            }]
+          };
         } catch (error: any) {
           return {
             isError: true,
@@ -374,7 +414,7 @@ export class McpServer {
     server.registerTool(
       toolName,
       {
-        description: `Get ${prop.name}. ${prop.description || ''}`,
+        description: this.buildDescriptionWithAffordances(`Get ${prop.name}. ${prop.description || ''}`, prop.affordance),
         inputSchema: z.object({})
       },
       async (args: Record<string, unknown>) => {
@@ -407,7 +447,7 @@ export class McpServer {
     server.registerTool(
       toolName,
       {
-        description: action.description,
+        description: this.buildDescriptionWithAffordances(action.description, action.affordance),
         inputSchema: zodSchema
       },
       async (args: Record<string, unknown>) => {
@@ -798,5 +838,20 @@ export class McpServer {
     }
 
     return shape;
+  }
+
+  /**
+   * Build a description with embedded affordance information
+   */
+  private buildDescriptionWithAffordances(baseDescription: string, affordance?: AffordanceMetadata): string {
+    if (!affordance?.forms || affordance.forms.length === 0) {
+      return baseDescription;
+    }
+
+    const formUrls = affordance.forms
+      .map((form: Form) => `${form.href} (${form.contentType || 'application/json'})`)
+      .join(', ');
+    
+    return `${baseDescription}\n\nEndpoint(s): ${formUrls}`;
   }
 }

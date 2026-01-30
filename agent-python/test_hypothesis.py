@@ -24,7 +24,7 @@ WASHING_MACHINE_TD = {
             "description": "Sends a notification at the end of a wash cycle",
             "data": {"type": "null"},
             "forms": [{
-                "href": "http://10.203.28.189:8082/washingmachine/events/finishedCycle",
+                "href": "http://localhost:8082/washingmachine/events/finishedCycle",
                 "contentType": "application/json",
                 "subprotocol": "longpoll",
                 "op": ["subscribeevent", "unsubscribeevent"]
@@ -46,7 +46,7 @@ LEDS_TD = {
             "title": "Blink LEDs",
             "description": "Blinks the LEDs",
             "forms": [{
-                "href": "http://10.203.28.189:8083/leds/actions/blink",
+                "href": "http://localhost:8083/leds/actions/blink",
                 "contentType": "application/json",
                 "op": ["invokeaction"],
                 "htv:methodName": "POST"

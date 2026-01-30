@@ -9,7 +9,9 @@ import {
   TranslatedThing,
   TranslatedProperty,
   TranslatedAction,
-  TranslatedEvent
+  TranslatedEvent,
+  AffordanceMetadata,
+  Form
 } from './types.js';
 import { logger } from '../utils/Logger.js';
 
@@ -25,6 +27,7 @@ export class ThingTranslator {
       id: thingId,
       title: td.title,
       description: td.description,
+      originalTd: td, // Store original TD for later retrieval
       properties: this.translateProperties(thingId, td),
       actions: this.translateActions(thingId, td),
       events: this.translateEvents(thingId, td)
@@ -55,6 +58,15 @@ export class ThingTranslator {
   }
 
   /**
+   * Extract affordance metadata (forms) from an interaction
+   */
+  private extractAffordance(interaction: any): AffordanceMetadata {
+    return {
+      forms: interaction.forms || []
+    };
+  }
+
+  /**
    * Translate TD properties to MCP resources
    */
   private translateProperties(thingId: string, td: ThingDescription): TranslatedProperty[] {
@@ -67,7 +79,8 @@ export class ThingTranslator {
       mimeType: 'application/json',
       writable: !prop.readOnly,
       wotName: name,
-      schema: prop
+      schema: prop,
+      affordance: this.extractAffordance(prop) // Extract forms/URLs
     }));
   }
 
@@ -86,7 +99,8 @@ export class ThingTranslator {
         inputSchema,
         wotName: name,
         thingId,
-        inputWrapped
+        inputWrapped,
+        affordance: this.extractAffordance(action) // Extract forms/URLs
       };
     });
   }
@@ -139,7 +153,8 @@ export class ThingTranslator {
       description: event.description || `Event stream for ${name} from ${td.title}`,
       mimeType: 'application/json',
       wotName: name,
-      schema: event.data
+      schema: event.data,
+      affordance: this.extractAffordance(event) // Extract forms/URLs
     }));
   }
 }

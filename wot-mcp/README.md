@@ -23,11 +23,10 @@ git clone https://github.com/macc-n/wot-mcp.git
 cd wot-mcp
 npm install
 npm run build
-npm start -- --mode streamable-http --port 3000 --config ../smart-home/things-config.json
-npx @modelcontextprotocol/inspector http://localhost:3000/mcp  (for inspecting)
 ```
 
 ## Usage
+
 
 ### Stdio (Local Clients)
 
@@ -60,14 +59,12 @@ Add the following to your `claude_desktop_config.json`:
 
 ### Streamable HTTP
 
+
 To expose the MCP server over HTTP:
 
 ```bash
   # npm start -- --mode streamable-http --port 3000 --config things-config.json
-
   npm start -- --mode streamable-http --port 3000 --config ../smart-home/things-config.json
-
-
 ```
 
 **Claude Desktop Configuration:**
@@ -89,6 +86,16 @@ Add the following to your `claude_desktop_config.json`:
 }
 ```
 
+### For inspecting 
+
+```bash
+npx @modelcontextprotocol/inspector http://localhost:3000/mcp
+```
+Setting:
+  - Transport Types: streamable HTTP
+  - URL: http://localhost:3000/mcp
+  - Connection Type: Via Proxy
+
 ### Tool Strategies
 
 **Explicit Strategy (Default)**
@@ -102,6 +109,7 @@ Creates a unique tool for every capability:
     * Exposes a subscriptable resource.
 ```bash
 npm start -- --tool-strategy explicit --config things-config.json
+npm start -- --tool-strategy explicit --mode streamable-http --port 3000 --config ../smart-home/things-config.json
 ```
 
 **Generic Strategy**
@@ -113,6 +121,7 @@ Uses 4 static tools to manage all devices:
 > **Note:** WoT Events are managed as described before.
 ```bash
 npm start -- --tool-strategy generic --config things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../smart-home/things-config.json
 ```
 
 ### Configuration File

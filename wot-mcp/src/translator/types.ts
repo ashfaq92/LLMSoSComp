@@ -7,6 +7,23 @@
 import { DataSchema } from 'wot-typescript-definitions';
 
 /**
+ * WoT Form definition (HTTP binding details)
+ */
+export interface Form {
+  href: string;
+  contentType?: string;
+  op?: string | string[];
+  [key: string]: unknown;
+}
+
+/**
+ * Extracted affordance metadata (forms with protocol bindings)
+ */
+export interface AffordanceMetadata {
+  forms?: Form[];
+}
+
+/**
  * Translated WoT Property → MCP Resource
  */
 export interface TranslatedProperty {
@@ -24,6 +41,8 @@ export interface TranslatedProperty {
   wotName: string;
   // JSON Schema for the property value
   schema?: DataSchema;
+  // Affordance forms (HTTP binding details: href, contentType, etc.)
+  affordance?: AffordanceMetadata;
 }
 
 /**
@@ -46,6 +65,8 @@ export interface TranslatedAction {
   thingId: string;
   // Whether the input was wrapped in {value: ...} for MCP compatibility
   inputWrapped?: boolean;
+  // Affordance forms (HTTP binding details: href, contentType, etc.)
+  affordance?: AffordanceMetadata;
 }
 
 /**
@@ -64,6 +85,8 @@ export interface TranslatedEvent {
   wotName: string;
   // JSON Schema for event data
   schema?: DataSchema;
+  // Affordance forms (HTTP binding details: href, contentType, etc.)
+  affordance?: AffordanceMetadata;
 }
 
 /**
@@ -76,6 +99,8 @@ export interface TranslatedThing {
   title: string;
   // Description
   description?: string;
+  // Original Thing Description (stored for get_thing_description tool)
+  originalTd?: any;
   // Translated properties as MCP resources
   properties: TranslatedProperty[];
   // Translated actions as MCP tools

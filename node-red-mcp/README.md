@@ -48,13 +48,12 @@ Add this MCP server to your Claude Code configuration file:
 
 ```json
 {
-  "mcpServers": {
-    "node-red-control": {
+"mcpServers": {
+    "nodeRED": {
       "command": "node",
-      "args": ["/home/aijyu/OneDrive/Ashfaq/node-red-mcp-server/index.js"],
-      "env": {
-        "NODE_RED_URL": "http://localhost:1880"
-      }
+      "args": [
+        "C:\\code_repos\\LLMSoSComp\\node-red-mcp\\index.js"
+      ]
     }
   }
 }
