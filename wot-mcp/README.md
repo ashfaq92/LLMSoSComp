@@ -91,7 +91,7 @@ Add the following to your `claude_desktop_config.json`:
 ```bash
 npx @modelcontextprotocol/inspector http://localhost:3000/mcp
 ```
-Setting:
+Settings:
   - Transport Types: streamable HTTP
   - URL: http://localhost:3000/mcp
   - Connection Type: Via Proxy
