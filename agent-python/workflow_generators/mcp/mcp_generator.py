@@ -10,9 +10,10 @@ from langchain_mcp_adapters.tools import load_mcp_tools
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.messages import AIMessage, ToolMessage, HumanMessage
 from langchain_openai import ChatOpenAI
-import utils
 import json
-import uuid
+from prompts_with_node_wot import SYSTEM_PROMPT    # change this file if you want to use a different system prompt
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+import utils
 
 load_dotenv()
 
@@ -42,10 +43,8 @@ async def main():
         wot_tools = await load_mcp_tools(wot_session)
         print(f"✓ Loaded {len(wot_tools)} tools from WoT MCP server")
 
-        # Use only the consolidated system prompt
-        system_prompt = utils.SYSTEM_PROMPT
+        system_prompt = SYSTEM_PROMPT
 
-        # print(system_prompt)
 
         agent = create_agent(
             model=model,
