@@ -26,53 +26,6 @@ model = ChatOpenAI(
     openai_api_key=os.getenv("OPENAI_API_KEY")
 )
 
-# Node-RED template that the LLM should understand
-NODE_RED_TEMPLATE = """
-# Node-RED Workflow Structure
-
-When generating Node-RED flows, use these node types:
-
-## Core WoT Nodes
-- **consumed-thing**: References a Thing Description (TD)
-  - Properties: tdLink or td (JSON string), http, coap, mqtt flags
-  
-- **read-property**: Read a property from a consumed thing
-  - Properties: thing (node id), property (name), observe (boolean), uriVariables
-  
-- **write-property**: Write to a property
-  - Properties: thing (node id), property (name), uriVariables
-  
-- **invoke-action**: Call an action
-  - Properties: thing (node id), action (name), uriVariables
-  
-- **subscribe-event**: Listen to events
-  - Properties: thing (node id), event (name)
-
-## Flow Control & Debugging
-- **inject**: Trigger the flow (payload, repeat, crontab)
-- **debug**: Output to debug sidebar
-- **function**: JavaScript function node (optional for custom logic)
-- **comment**: Document sections
-
-## Structure
-1. Tab node (type: "tab") - defines the flow container
-2. Consumed-thing nodes - one per device
-3. Interaction nodes (read/write/invoke/subscribe) - connected to things
-4. Trigger nodes (inject) - start the flow
-5. Output nodes (debug) - show results
-
-## Example Wiring
-Inject -> Read-Property -> Debug
-Inject -> Invoke-Action -> Debug
-Subscribe-Event -> Debug
-
-All nodes must have:
-- id: unique identifier (16 char hex)
-- z: tab id (for grouping)
-- x, y: coordinates
-- wires: array of connections to next nodes
-"""
-
 async def main():
     wot_client = MultiServerMCPClient(
         {
@@ -89,27 +42,10 @@ async def main():
         wot_tools = await load_mcp_tools(wot_session)
         print(f"✓ Loaded {len(wot_tools)} tools from WoT MCP server")
 
-        # Enhanced system prompt that includes Node-RED knowledge and workflow strategy
-        system_prompt = f"""{utils.SYSTEM_PROMPT}
+        # Use only the consolidated system prompt
+        system_prompt = utils.SYSTEM_PROMPT
 
-{NODE_RED_TEMPLATE}
-
-## Workflow Generation Strategy
-
-For any user request:
-1. Use list_devices to discover all available devices
-2. Determine which devices are relevant to the request
-3. For each relevant device, use get_thing_description to fetch complete TD
-4. Generate a Node-RED flow JSON that:
-   - Has one tab node with a unique ID
-   - Creates one consumed-thing node per relevant device
-   - Connects read-property, write-property, invoke-action, and subscribe-event nodes based on the task
-   - Includes inject nodes to trigger the flow
-   - Includes debug nodes to show outputs
-   - Properly wires all nodes (wires arrays connect to next node IDs)
-
-Return ONLY valid JSON array representing the Node-RED flow. No explanations.
-"""
+        # print(system_prompt)
 
         agent = create_agent(
             model=model,
