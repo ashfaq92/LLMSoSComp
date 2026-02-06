@@ -10,6 +10,8 @@ from langchain_mcp_adapters.tools import load_mcp_tools
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.messages import AIMessage
 from langchain_openai import ChatOpenAI
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import utils
 
 load_dotenv()
 
@@ -17,8 +19,8 @@ MCP_SERVER_URL = "http://localhost:3000/mcp"
     
 
 model = ChatOpenAI(
-    model=os.getenv("LLM_VERSION"),
-    temperature=0,
+    model=utils.LLM_VERSION,
+    temperature=utils.LLM_TEMPERATURE,
     openai_api_key=os.getenv("OPENAI_API_KEY")
 )
 

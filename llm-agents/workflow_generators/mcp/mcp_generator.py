@@ -11,7 +11,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.messages import AIMessage, ToolMessage, HumanMessage
 from langchain_openai import ChatOpenAI
 import json
-from prompts_with_node_wot import SYSTEM_PROMPT    # change this file if you want to use a different system prompt
+from prompts_with_node_wot import SYSTEM_PROMPT    # change this file for a different system prompt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import utils
 
