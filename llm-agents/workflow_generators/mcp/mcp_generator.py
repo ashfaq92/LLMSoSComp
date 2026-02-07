@@ -77,6 +77,13 @@ async def main():
                     
                     if "messages" in agent_response:
                         messages = agent_response["messages"]
+                        # Print out tool calls and intermediate steps
+                        for msg in messages:
+                            if isinstance(msg, ToolMessage):
+                                print(f"🛠️ ToolMessage: {msg.dict()}")
+                            elif isinstance(msg, AIMessage) and hasattr(msg, "tool_calls"):
+                                # Some frameworks store tool calls here
+                                print(f"🤖 AIMessage tool_calls: {msg.tool_calls}")
                         if messages:
                             last_msg = messages[-1]
                             if isinstance(last_msg, AIMessage):

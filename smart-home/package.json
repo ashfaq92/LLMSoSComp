@@ -13,7 +13,19 @@
     "devices:mainRoomLight": "node devices/mainRoomLight.js",
     "devices:motionSensor": "node devices/motionSensor.js",
     "devices:smartAssistant": "node devices/smartAssistant.js",
-    "devices:speaker": "node devices/speaker.js"
+    "devices:speaker": "node devices/speaker.js",
+    "devices:windowBlind": "node devices/windowBlind.js",
+    "devices:garageDoor": "node devices/garageDoor.js",
+    "devices:coffeeMaker": "node devices/coffeeMaker.js",
+    "devices:fan": "node devices/fan.js",
+    "devices:thermostat": "node devices/thermostat.js",
+    "devices:airPurifier": "node devices/airPurifier.js",
+    "devices:petFeeder": "node devices/petFeeder.js",
+    "devices:robotVacuum": "node devices/robotVacuum.js",
+    "devices:sprinkler": "node devices/sprinkler.js",
+    "devices:fridge": "node devices/fridge.js",
+    "devices:oven": "node devices/oven.js",
+    "devices:curtain": "node devices/curtain.js"
   },
   "dependencies": {
     "@node-wot/binding-coap": "^0.9.1",
