@@ -85,7 +85,6 @@ Add the following to your `claude_desktop_config.json`:
   }
 }
 ```
-
 ### For inspecting 
 
 ```bash

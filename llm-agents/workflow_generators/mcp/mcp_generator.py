@@ -2,6 +2,7 @@ import asyncio
 import os
 import sys
 from typing import List, Dict
+from langchain_anthropic import ChatAnthropic
 import mcp.types as types
 from dotenv import load_dotenv
 from langchain.agents import create_agent
@@ -21,11 +22,25 @@ VERBOSE = True
 
 WOT_MCP_SERVER_URL = "http://localhost:3000/mcp"
 
+
+# LangSmith Configuration
+langsmith_api_key = os.getenv("LANGSMITH_API_KEY")
+if langsmith_api_key:
+    os.environ["LANGCHAIN_TRACING_V2"] = "true"
+    os.environ["LANGCHAIN_PROJECT"] = "workflow-generator"
+    os.environ["LANGSMITH_API_KEY"] = langsmith_api_key
+    print("✓ LangSmith tracing enabled")
+else:
+    print("⚠️  LANGSMITH_API_KEY not set - tracing disabled. Add it to .env to enable LangSmith")
+
 model = ChatOpenAI(
     model=utils.LLM_VERSION,
     temperature=utils.LLM_TEMPERATURE,
+    max_tokens=utils.MAX_TOKENS,
     openai_api_key=os.getenv("OPENAI_API_KEY")
 )
+
+
 
 async def main():
     wot_client = MultiServerMCPClient(
