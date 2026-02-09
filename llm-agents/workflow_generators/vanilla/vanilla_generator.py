@@ -29,7 +29,6 @@ else:
 model = ChatOpenAI(
     model=utils.LLM_VERSION,
     temperature=utils.LLM_TEMPERATURE,
-    max_tokens=utils.MAX_TOKENS,
     openai_api_key=os.getenv("OPENAI_API_KEY")
 )
 
@@ -51,7 +50,7 @@ def load_all_tds_from_config(config_path: str) -> List[dict]:
 async def main():
     # Load all TDs from things-config.json
     config_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'smart-home', 'things-config.json')
+        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'smart-manufacturing', 'things-config.json')
     )
     all_tds = load_all_tds_from_config(config_path)
     print(f"✓ Loaded {len(all_tds)} Thing Descriptions from {config_path}")

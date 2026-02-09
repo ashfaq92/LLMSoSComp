@@ -1,0 +1,13 @@
+{
+  "things": [
+    { "protocol": "http", "url": "http://localhost:9001/database" },
+    { "protocol": "http", "url": "http://localhost:9002/efficiencyanalyser" },
+    { "protocol": "http", "url": "http://localhost:9003/inventorymanager" },
+    { "protocol": "http", "url": "http://localhost:9004/maintenancemonitor" },
+    { "protocol": "http", "url": "http://localhost:9005/managersdevice" },
+    { "protocol": "http", "url": "http://localhost:9006/qualityinspector" },
+    { "protocol": "http", "url": "http://localhost:9007/sensorhub" },
+    { "protocol": "http", "url": "http://localhost:9008/temperaturetracker" },
+    { "protocol": "http", "url": "http://localhost:9009/vibrationmonitor" }
+  ]
+}

@@ -8,9 +8,7 @@ servient.start().then(async (WoT) => {
     console.log('Simulated Alarm Device starting...');
     const thing = await WoT.produce({
         title: "Alarm",
-        "@context": [
-            "https://www.w3.org/2022/wot/td/v1.1"
-        ],
+        "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
         "@type": ["Thing"],
         securityDefinitions: {
             no_sec: { scheme: "nosec" }

@@ -1,0 +1,31 @@
+{
+  "name": "smart-manufacturing",
+  "version": "1.0.0",
+  "description": "Simulated WoT devices for smart manufacturing",
+  "type": "module",
+  "scripts": {
+    "start:devices": "npm-run-all --parallel devices:*",
+    "devices:database": "node devices/database.js",
+    "devices:efficiencyAnalyser": "node devices/efficiencyAnalyser.js",
+    "devices:inventoryManager": "node devices/inventoryManager.js",
+    "devices:maintenanceMonitor": "node devices/maintenanceMonitor.js",
+    "devices:managersDevice": "node devices/managersDevice.js",
+    "devices:qualityInspector": "node devices/qualityInspector.js",
+    "devices:sensorHub": "node devices/sensorHub.js",
+    "devices:temperatureTracker": "node devices/temperatureTracker.js",
+    "devices:vibrationMonitor": "node devices/vibrationMonitor.js"
+  },
+  "dependencies": {
+    "@node-wot/binding-coap": "^0.9.1",
+    "@node-wot/binding-http": "^0.9.1",
+    "@node-wot/binding-mqtt": "^0.9.1",
+    "@node-wot/core": "^0.9.1",
+    "concurrently": "^9.2.1",
+    "wot-typescript-definitions": "^0.8.0-SNAPSHOT.26"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.3.3"
+  }
+}

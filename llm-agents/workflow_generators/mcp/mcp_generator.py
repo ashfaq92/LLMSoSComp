@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
-from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.messages import AIMessage, ToolMessage, HumanMessage
 from langchain_openai import ChatOpenAI
 import json
@@ -18,7 +17,7 @@ import utils
 
 load_dotenv()
 
-VERBOSE = True
+VERBOSE = False
 
 WOT_MCP_SERVER_URL = "http://localhost:3000/mcp"
 
@@ -36,7 +35,6 @@ else:
 model = ChatOpenAI(
     model=utils.LLM_VERSION,
     temperature=utils.LLM_TEMPERATURE,
-    max_tokens=utils.MAX_TOKENS,
     openai_api_key=os.getenv("OPENAI_API_KEY")
 )
 
@@ -65,7 +63,6 @@ async def main():
             model=model,
             tools=wot_tools,
             system_prompt=system_prompt,
-            checkpointer=InMemorySaver(),
         )
 
         print("\n🤖 Node-RED Workflow Generator ready!")
@@ -94,9 +91,11 @@ async def main():
                         messages = agent_response["messages"]
                         # Print out tool calls and intermediate steps
                         for msg in messages:
-                            if isinstance(msg, ToolMessage):
+                            if isinstance(msg, ToolMessage) and VERBOSE:
+                                print("----Tool Call Start----")
                                 print(f"🛠️ ToolMessage: {msg.dict()}")
-                            elif isinstance(msg, AIMessage) and hasattr(msg, "tool_calls"):
+                                print(f"----Tool Call End----\n")
+                            elif isinstance(msg, AIMessage) and hasattr(msg, "tool_calls") and VERBOSE:
                                 # Some frameworks store tool calls here
                                 print(f"🤖 AIMessage tool_calls: {msg.tool_calls}")
                         if messages:
