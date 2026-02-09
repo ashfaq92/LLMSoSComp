@@ -142,25 +142,9 @@ export class McpServer {
         const devices = Array.from(this.things.values()).map(thing => ({
           id: thing.id,
           title: thing.title,
-          description: thing.description,
-          properties: thing.properties.map(p => ({
-            name: p.wotName,
-            description: p.description,
-            type: (p.schema as any)?.type || 'unknown',
-            writable: p.writable,
-            forms: p.affordance?.forms || [] // Include forms!
-          })),
-          actions: thing.actions.map(a => ({
-            name: a.wotName,
-            description: a.description,
-            inputSchema: a.inputSchema,
-            forms: a.affordance?.forms || [] // Include forms!
-          })),
-          events: thing.events.map(e => ({
-            name: e.wotName,
-            description: e.description,
-            forms: e.affordance?.forms || [] // Include forms!
-          }))
+          actions: thing.actions.map(a => a.wotName),
+          events: thing.events.map(e => e.wotName),
+          properties: thing.properties.map(p => p.wotName)
         }));
         return {
           content: [{
