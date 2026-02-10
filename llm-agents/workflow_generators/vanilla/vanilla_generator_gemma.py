@@ -13,6 +13,9 @@ import utils
 
 load_dotenv()
 
+# LangSmith Configuration
+utils.configure_langsmith_tracing()
+
 VERBOSE = True
 
 # Initialize LM Studio (Gemma2) model as in lmstudio.py
@@ -43,7 +46,7 @@ def load_all_tds_from_config(config_path: str) -> List[dict]:
 async def main():
     # Load all TDs from things-config.json
     config_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'smart-home', 'things-config.json')
+        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'iot-systems/smart-home-21-devices', 'things-config.json')
     )
 
     all_tds = load_all_tds_from_config(config_path)
@@ -54,7 +57,7 @@ async def main():
     system_prompt = SYSTEM_PROMPT.replace("{ALL_TDS}", json.dumps(limited_tds, separators=(",", ":")))
 
     print("\n🤖 Node-RED Workflow Generator ready!")
-    print("Describe the workflow you want (e.g., 'Blink LEDs when washing machine finishes')")
+    print("Describe the workflow you want (e.g., 'Blink LEDs when washing machine cycle has finished.')")
     print("Type 'bye' or 'exit' to exit.\n")
 
     while True:
@@ -73,6 +76,10 @@ async def main():
                     SystemMessage(content=system_prompt),
                     HumanMessage(content=user_prompt)
                 ]
+                
+                print(messages)
+                sys.exit(0)
+                
                 # Call LM Studio model (Gemma2)
                 response = await asyncio.to_thread(model.invoke, messages)
                 response_text = response.content

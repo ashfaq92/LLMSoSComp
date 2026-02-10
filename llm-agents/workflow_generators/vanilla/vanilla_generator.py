@@ -14,17 +14,10 @@ import utils
 
 load_dotenv()
 
-VERBOSE = True
-
 # LangSmith Configuration
-langsmith_api_key = os.getenv("LANGSMITH_API_KEY")
-if langsmith_api_key:
-    os.environ["LANGCHAIN_TRACING_V2"] = "true"
-    os.environ["LANGCHAIN_PROJECT"] = "workflow-generator"
-    os.environ["LANGSMITH_API_KEY"] = langsmith_api_key
-    print("✓ LangSmith tracing enabled")
-else:
-    print("⚠️  LANGSMITH_API_KEY not set - tracing disabled. Add it to .env to enable LangSmith")
+utils.configure_langsmith_tracing()
+
+VERBOSE = True
 
 model = ChatOpenAI(
     model=utils.LLM_VERSION,
@@ -68,7 +61,7 @@ async def main():
     )
 
     print("\n🤖 Node-RED Workflow Generator ready!")
-    print("Describe the workflow you want (e.g., 'Blink LEDs when washing machine finishes')")
+    print("Describe the workflow you want (e.g., 'Blink LEDs when washing machine cycle has finished.')")
     print("Type 'bye' or 'exit' to exit.\n")
 
     while True:

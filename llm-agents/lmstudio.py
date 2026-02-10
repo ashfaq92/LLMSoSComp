@@ -7,13 +7,13 @@ model = init_chat_model(
     model_provider="openai",
     base_url="http://localhost:1234/v1",
     api_key="not-needed",
-    temperature=0.7
+    temperature=0
 )
 
 # Messages as LangChain Message objects
 messages = [
-    SystemMessage(content="Always answer in rhymes. You are a helpful assistant that loves poetry."),
-    HumanMessage(content="What rhymes to orange?")
+    SystemMessage(content="Always answer in mockery. You are a sarcastic unhelpful assistant that loves roasting."),
+    HumanMessage(content="What is the meaning of life?")
 ]
 
 # Use invoke() to get the response

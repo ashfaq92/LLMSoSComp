@@ -15,6 +15,9 @@ import utils
 
 load_dotenv()
 
+# LangSmith Configuration
+utils.configure_langsmith_tracing()
+
 VERBOSE = True
 
 WOT_MCP_SERVER_URL = "http://localhost:3000/mcp"
@@ -47,7 +50,7 @@ async def main():
         system_prompt = SYSTEM_PROMPT
 
         print("\n🤖 Node-RED Workflow Generator ready!")
-        print("Describe the workflow you want (e.g., 'Blink LEDs when washing machine finishes')")
+        print("Describe the workflow you want (e.g., 'Blink LEDs when washing machine cycle has finished.')")
         print("Type 'bye' or 'exit' to exit.\n")
 
         while True:
