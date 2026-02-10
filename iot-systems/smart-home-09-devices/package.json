@@ -1,0 +1,32 @@
+{
+  "name": "simulated-devices",
+  "version": "0.1.0",
+  "description": "Simulated WoT devices for testing",
+  "type": "module",
+  "scripts": {
+    "start:devices": "npm-run-all --parallel devices:*",
+    "devices:washingMachine": "node devices/washingMachine.js",
+    "devices:leds": "node devices/leds.js",
+    "devices:alarm": "node devices/alarm.js",
+    "devices:doorBell": "node devices/doorBell.js",
+    "devices:heater": "node devices/heater.js",
+    "devices:mainRoomLight": "node devices/mainRoomLight.js",
+    "devices:motionSensor": "node devices/motionSensor.js",
+    "devices:smartAssistant": "node devices/smartAssistant.js",
+    "devices:speaker": "node devices/speaker.js"
+  },
+  "dependencies": {
+    "@node-wot/binding-coap": "^0.9.1",
+    "@node-wot/binding-http": "^0.9.1",
+    "@node-wot/binding-mqtt": "^0.9.1",
+    "@node-wot/core": "^0.9.1",
+    "concurrently": "^9.2.1",
+    "wot-typescript-definitions": "^0.8.0-SNAPSHOT.26"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.3.3"
+  }
+}
+

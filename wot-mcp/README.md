@@ -88,6 +88,7 @@ Add the following to your `claude_desktop_config.json`:
 ### For inspecting 
 
 ```bash
+cd wot-mcp
 npx @modelcontextprotocol/inspector http://localhost:3000/mcp
 ```
 Settings:
@@ -120,7 +121,9 @@ Uses 4 static tools to manage all devices:
 > **Note:** WoT Events are managed as described before.
 ```bash
 npm start -- --tool-strategy generic --config things-config.json
-npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../smart-home/things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/smart-home/things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/manufacturing/things-config.json
+
 ```
 
 ### Configuration File
