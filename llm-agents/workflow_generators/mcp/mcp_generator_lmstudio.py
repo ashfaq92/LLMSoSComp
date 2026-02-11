@@ -24,7 +24,7 @@ WOT_MCP_SERVER_URL = "http://localhost:3000/mcp"
 
 # Initialize LM Studio (Gemma2) model as in vanilla_generator_gemma2b.py
 model = init_chat_model(
-    model="google/gemma-3-1b:2",
+    model=utils.LLM_VERSION,
     model_provider="openai",
     base_url="http://localhost:1234/v1",
     api_key="not-needed",

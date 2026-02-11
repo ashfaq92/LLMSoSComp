@@ -4,7 +4,6 @@ import sys
 from typing import List, Dict
 from langchain_anthropic import ChatAnthropic
 import mcp.types as types
-from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
@@ -15,7 +14,6 @@ from prompts_with_node_wot import SYSTEM_PROMPT    # change this file for a diff
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import utils
 
-load_dotenv()
 
 # LangSmith Configuration
 utils.configure_langsmith_tracing()
@@ -28,7 +26,7 @@ WOT_MCP_SERVER_URL = "http://localhost:3000/mcp"
 model = ChatOpenAI(
     model=utils.LLM_VERSION,
     temperature=utils.LLM_TEMPERATURE,
-    openai_api_key=os.getenv("OPENAI_API_KEY")
+    openai_api_key=utils.API_KEY
 )
 
 

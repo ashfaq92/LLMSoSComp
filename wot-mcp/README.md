@@ -124,6 +124,7 @@ npm start -- --tool-strategy generic --config things-config.json
 npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/smart-home-09-devices/things-config.json
 npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/smart-home-21-devices/things-config.json
 npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/manufacturing/things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/smart-aquarium/things-config.json
 
 ```
 

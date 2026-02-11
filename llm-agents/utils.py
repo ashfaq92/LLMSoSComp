@@ -1,11 +1,16 @@
 import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # GLOBAL CONFIGURATION FOR LLM AGENTS
+# LLM_VERSION="phi-3-mini-4k-instruct"
 LLM_VERSION="gpt-4.1"
 # LLM_VERSION="gpt-5-nano"
 # LLM_VERSION="claude-sonnet-4-5"
 LLM_TEMPERATURE=0
-
+API_KEY=os.getenv("OPENAI_API_KEY")
 
 
 

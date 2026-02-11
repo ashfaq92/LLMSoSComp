@@ -1,0 +1,35 @@
+{
+  "name": "smart-aquarium",
+  "version": "1.0.0",
+  "description": "Simulated WoT devices for smart aquarium",
+  "type": "module",
+  "scripts": {
+    "start:devices": "npm-run-all --parallel devices:*",
+    "devices:alertSystem": "node devices/alertSystem.js",
+    "devices:backupPower": "node devices/backupPower.js",
+    "devices:clock": "node devices/clock.js",
+    "devices:filterMonitor": "node devices/filterMonitor.js",
+    "devices:foodDispensor": "node devices/foodDispensor.js",
+    "devices:lifeformMonitor": "node devices/lifeformMonitor.js",
+    "devices:outageDetector": "node devices/outageDetector.js",
+    "devices:scheduler": "node devices/scheduler.js",
+    "devices:tankActuators": "node devices/tankActuators.js",
+    "devices:tankCameras": "node devices/tankCameras.js",
+    "devices:tankLighting": "node devices/tankLighting.js",
+    "devices:tankSensors": "node devices/tankSensors.js",
+    "devices:userDevice": "node devices/userDevice.js"
+  },
+  "dependencies": {
+    "@node-wot/binding-coap": "^0.9.1",
+    "@node-wot/binding-http": "^0.9.1",
+    "@node-wot/binding-mqtt": "^0.9.1",
+    "@node-wot/core": "^0.9.1",
+    "concurrently": "^9.2.1",
+    "wot-typescript-definitions": "^0.8.0-SNAPSHOT.26"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.3.3"
+  }
+}

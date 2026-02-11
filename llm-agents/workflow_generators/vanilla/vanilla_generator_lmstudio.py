@@ -20,7 +20,7 @@ VERBOSE = True
 
 # Initialize LM Studio (Gemma2) model as in lmstudio.py
 model = init_chat_model(
-    model="google/gemma-3-1b:2",
+    model=utils.LLM_VERSION,
     model_provider="openai",
     base_url="http://localhost:1234/v1",
     api_key="not-needed",
@@ -46,7 +46,7 @@ def load_all_tds_from_config(config_path: str) -> List[dict]:
 async def main():
     # Load all TDs from things-config.json
     config_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'iot-systems/smart-home-21-devices', 'things-config.json')
+        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'iot-systems/smart-home-09-devices', 'things-config.json')
     )
 
     all_tds = load_all_tds_from_config(config_path)
@@ -77,8 +77,7 @@ async def main():
                     HumanMessage(content=user_prompt)
                 ]
                 
-                print(messages)
-                sys.exit(0)
+           
                 
                 # Call LM Studio model (Gemma2)
                 response = await asyncio.to_thread(model.invoke, messages)

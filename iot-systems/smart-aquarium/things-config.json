@@ -1,0 +1,17 @@
+{
+  "things": [
+    { "protocol": "http", "url": "http://localhost:9101/alertsystem" },
+    { "protocol": "http", "url": "http://localhost:9102/backuppower" },
+    { "protocol": "http", "url": "http://localhost:9103/clock" },
+    { "protocol": "http", "url": "http://localhost:9104/filtermonitor" },
+    { "protocol": "http", "url": "http://localhost:9105/fooddispensor" },
+    { "protocol": "http", "url": "http://localhost:9106/lifeformmonitor" },
+    { "protocol": "http", "url": "http://localhost:9107/outagedetector" },
+    { "protocol": "http", "url": "http://localhost:9108/scheduler" },
+    { "protocol": "http", "url": "http://localhost:9109/tankactuators" },
+    { "protocol": "http", "url": "http://localhost:9110/tankcameras" },
+    { "protocol": "http", "url": "http://localhost:9111/tanklighting" },
+    { "protocol": "http", "url": "http://localhost:9112/tanksensors" },
+    { "protocol": "http", "url": "http://localhost:9113/userdevice" }
+  ]
+}

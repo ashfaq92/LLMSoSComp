@@ -12,7 +12,6 @@ from prompts_with_node_wot import SYSTEM_PROMPT     # change this file for a dif
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import utils
 
-load_dotenv()
 
 # LangSmith Configuration
 utils.configure_langsmith_tracing()
@@ -22,7 +21,7 @@ VERBOSE = True
 model = ChatOpenAI(
     model=utils.LLM_VERSION,
     temperature=utils.LLM_TEMPERATURE,
-    openai_api_key=os.getenv("OPENAI_API_KEY")
+    openai_api_key=utils.API_KEY
 )
 
 def load_all_tds_from_config(config_path: str) -> List[dict]:
@@ -46,7 +45,7 @@ def load_all_tds_from_config(config_path: str) -> List[dict]:
 async def main():
     # Load all TDs from things-config.json
     config_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'iot-systems/smart-home-09-devices', 'things-config.json')
+        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'iot-systems/smart-aquarium', 'things-config.json')
     )
     all_tds = load_all_tds_from_config(config_path)
     print(f"✓ Loaded {len(all_tds)} Thing Descriptions from {config_path}")
