@@ -45,7 +45,7 @@ def load_all_tds_from_config(config_path: str) -> List[dict]:
 async def main():
     # Load all TDs from things-config.json
     config_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'iot-systems/smart-aquarium', 'things-config.json')
+        os.path.join(os.path.dirname(__file__), '..', '..', '..', 'iot-systems', 'system-of-systems.json')
     )
     all_tds = load_all_tds_from_config(config_path)
     print(f"✓ Loaded {len(all_tds)} Thing Descriptions from {config_path}")

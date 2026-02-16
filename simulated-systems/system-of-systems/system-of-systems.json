@@ -1,5 +1,14 @@
 {
   "things": [
+    {"protocol": "http", "url": "http://localhost:8082/washingmachine"},
+    {"protocol": "http", "url": "http://localhost:8083/leds"},
+    {"protocol": "http", "url": "http://localhost:8084/alarm"},
+    {"protocol": "http", "url": "http://localhost:8085/doorbell"},
+    {"protocol": "http", "url": "http://localhost:8086/heater"},
+    {"protocol": "http", "url": "http://localhost:8087/mainroomlight"},
+    {"protocol": "http", "url": "http://localhost:8088/motionsensor"},
+    {"protocol": "http", "url": "http://localhost:8089/smartassistant"},
+    {"protocol": "http", "url": "http://localhost:8090/speaker"},
     { "protocol": "http", "url": "http://localhost:9101/alertsystem" },
     { "protocol": "http", "url": "http://localhost:9102/backuppower" },
     { "protocol": "http", "url": "http://localhost:9103/clock" },
@@ -13,5 +22,5 @@
     { "protocol": "http", "url": "http://localhost:9111/tanklighting" },
     { "protocol": "http", "url": "http://localhost:9112/tanksensors" },
     { "protocol": "http", "url": "http://localhost:9113/userdevice" }
-  ]
+    ]
 }
