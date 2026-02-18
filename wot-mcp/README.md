@@ -121,10 +121,11 @@ Uses 4 static tools to manage all devices:
 > **Note:** WoT Events are managed as described before.
 ```bash
 npm start -- --tool-strategy generic --config things-config.json
-npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/smart-home-09-devices/things-config.json
-npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/smart-home-21-devices/things-config.json
-npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/manufacturing/things-config.json
-npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../iot-systems/smart-aquarium/things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../simulated-systems/smart-home-09-devices/things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../simulated-systems/smart-home-21-devices/things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../simulated-systems/manufacturing/things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../simulated-systems/smart-aquarium/things-config.json
+npm start -- --tool-strategy generic --mode streamable-http --port 3000 --config ../simulated-systems/system-of-systems/things-config.json
 
 ```
 

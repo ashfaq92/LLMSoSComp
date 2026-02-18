@@ -59,8 +59,8 @@ servient.start().then(async (WoT) => {
         }
     });
 
-    thing.setActionHandler("receiveWaterConditions", async () => {
-        console.log("📱 User device received water conditions");
+    thing.setActionHandler("receiveWaterConditions", async (input) => {
+        console.log(input);
         return null;
     });
 
