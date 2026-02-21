@@ -1,0 +1,496 @@
+🤖 Node-RED Workflow Generator ready!
+Describe the workflow you want (e.g., 'Blink LEDs when washing machine finishes')
+Type 'bye' or 'exit' to exit.
+
+You: Blink LEDs when washing machine finishes
+
+🔄 Processing your request...
+
+
+🤖 Agent Response:
+```json
+[
+  {
+    "id": "b1e2a1c3d4e5f607",
+    "type": "tab",
+    "label": "WashingMachine-LEDs-Blink",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "a18841fe05744488",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8082/washingmachine",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b29952ef16855599",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8083/leds",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c3a1b2c3d4e5f6a7",
+    "type": "subscribe-event",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "WashingMachine finishedCycle",
+    "topic": "",
+    "thing": "a18841fe05744488",
+    "event": "finishedCycle",
+    "x": 180,
+    "y": 160,
+    "wires": [["d4b2c3a1e5f6b7c8"]]
+  },
+  {
+    "id": "d4b2c3a1e5f6b7c8",
+    "type": "invoke-action",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "Blink LEDs",
+    "topic": "",
+    "thing": "b29952ef16855599",
+    "action": "blink",
+    "uriVariables": "{}",
+    "x": 420,
+    "y": 160,
+    "wires": [["e5c3b2a1f6d4b7c8"]]
+  },
+  {
+    "id": "e5c3b2a1f6d4b7c8",
+    "type": "debug",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "LEDs blinked output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 670,
+    "y": 160,
+    "wires": []
+  }
+]
+```
+You: Turn on the main room light when motion is detected in that room.
+
+🔄 Processing your request...
+
+
+📝 Generated Node-RED Workflow:
+
+[
+  {
+    "id": "b1e2a3c4d5e6f789",
+    "type": "tab",
+    "label": "Main Room Light On Motion",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "a1b2c3d4e5f60718",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8088/motionsensor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b2c3d4e5f6a71829",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8087/mainroomlight",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c3d4e5f6a7b8293a",
+    "type": "subscribe-event",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "On motion detected",
+    "topic": "",
+    "thing": "a1b2c3d4e5f60718",
+    "event": "motionDetected",
+    "x": 180,
+    "y": 160,
+    "wires": [
+      [
+        "d4e5f6a7b8c93a4b"
+      ]
+    ]
+  },
+  {
+    "id": "d4e5f6a7b8c93a4b",
+    "type": "invoke-action",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "Turn on main room light",
+    "topic": "",
+    "thing": "b2c3d4e5f6a71829",
+    "action": "lightOn",
+    "uriVariables": "{}",
+    "x": 430,
+    "y": 160,
+    "wires": [
+      [
+        "e5f6a7b8c9d04b5c"
+      ]
+    ]
+  },
+  {
+    "id": "e5f6a7b8c9d04b5c",
+    "type": "debug",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "Light On Action Result",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 160,
+    "wires": []
+  }
+]
+You: When the door bell is pressed, reduce the speaker volume, make the smart assistant alert the homeowner of the doorbell, return the speaker’s volume.
+
+🔄 Processing your request...
+
+
+🤖 Agent Response:
+```json
+[
+  {
+    "id": "b1a2c3d4e5f60718",
+    "type": "tab",
+    "label": "Doorbell-Speaker-Assistant",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "a111111111111111",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8085/doorbell",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "a222222222222222",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8090/speaker",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "a333333333333333",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8089/smartassistant",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b222222222222222",
+    "type": "subscribe-event",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Doorbell Pressed",
+    "topic": "",
+    "thing": "a111111111111111",
+    "event": "bellRung",
+    "x": 160,
+    "y": 120,
+    "wires": [["c111111111111111"]]
+  },
+  {
+    "id": "c111111111111111",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Get Speaker Volume",
+    "topic": "",
+    "thing": "a222222222222222",
+    "action": "getVolume",
+    "uriVariables": "{}",
+    "x": 400,
+    "y": 120,
+    "wires": [["d111111111111111"]]
+  },
+  {
+    "id": "d111111111111111",
+    "type": "function",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Store & Set Low Volume",
+    "func": "// Store current volume\nflow.set('origVolume', msg.payload);\n// Set to 20% (or adjust as needed)\nmsg.payload = { percentage: 20 };\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 650,
+    "y": 120,
+    "wires": [["e111111111111111"]]
+  },
+  {
+    "id": "e111111111111111",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Set Speaker Volume Low",
+    "topic": "",
+    "thing": "a222222222222222",
+    "action": "setVolume",
+    "uriVariables": "{}",
+    "x": 900,
+    "y": 120,
+    "wires": [["f111111111111111"]]
+  },
+  {
+    "id": "f111111111111111",
+    "type": "function",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Prepare Assistant Alert",
+    "func": "msg.payload = { phrase: \"Someone is at the door.\" };\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1150,
+    "y": 120,
+    "wires": [["g111111111111111"]]
+  },
+  {
+    "id": "g111111111111111",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Assistant Says Alert",
+    "topic": "",
+    "thing": "a333333333333333",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 1400,
+    "y": 120,
+    "wires": [["h111111111111111"]]
+  },
+  {
+    "id": "h111111111111111",
+    "type": "function",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Restore Speaker Volume",
+    "func": "// Retrieve original volume\nvar orig = flow.get('origVolume');\nmsg.payload = { percentage: orig };\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1650,
+    "y": 120,
+    "wires": [["i111111111111111"]]
+  },
+  {
+    "id": "i111111111111111",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Set Speaker Volume Back",
+    "topic": "",
+    "thing": "a222222222222222",
+    "action": "setVolume",
+    "uriVariables": "{}",
+    "x": 1900,
+    "y": 120,
+    "wires": [["j111111111111111"]]
+  },
+  {
+    "id": "j111111111111111",
+    "type": "debug",
+    "z": "b1a2c3d4e5f60718",
+    "name": "Done",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 2150,
+    "y": 120,
+    "wires": []
+  }
+]
+```
+You: When morning alarm triggers, turn heating on to 30 degrees C for 20mins.
+
+🔄 Processing your request...
+
+
+📝 Generated Node-RED Workflow:
+
+[
+  {
+    "id": "b1e2a3c4d5e6f7a8",
+    "type": "tab",
+    "label": "Alarm-triggered Heating",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "c1d2e3f4a5b6c7d8",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8084/alarm",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "e1f2a3b4c5d6e7f8",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:8086/heater",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "f1e2d3c4b5a6f7e8",
+    "type": "subscribe-event",
+    "z": "b1e2a3c4d5e6f7a8",
+    "name": "When alarm rings",
+    "topic": "",
+    "thing": "c1d2e3f4a5b6c7d8",
+    "event": "alarmRinging",
+    "x": 180,
+    "y": 180,
+    "wires": [
+      [
+        "a1b2c3d4e5f6a7b8"
+      ]
+    ]
+  },
+  {
+    "id": "a1b2c3d4e5f6a7b8",
+    "type": "function",
+    "z": "b1e2a3c4d5e6f7a8",
+    "name": "Set heater params",
+    "func": "msg.payload = {\n  temperature: 30,\n  timeHeating: 20\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 180,
+    "wires": [
+      [
+        "b2c3d4e5f6a7b8c9"
+      ]
+    ]
+  },
+  {
+    "id": "b2c3d4e5f6a7b8c9",
+    "type": "invoke-action",
+    "z": "b1e2a3c4d5e6f7a8",
+    "name": "Start heater at 30\u00b0C for 20min",
+    "topic": "",
+    "thing": "e1f2a3b4c5d6e7f8",
+    "action": "startHeater",
+    "uriVariables": "{}",
+    "x": 700,
+    "y": 180,
+    "wires": [
+      [
+        "c3d4e5f6a7b8c9d0"
+      ]
+    ]
+  },
+  {
+    "id": "c3d4e5f6a7b8c9d0",
+    "type": "debug",
+    "z": "b1e2a3c4d5e6f7a8",
+    "name": "Heater started",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 950,
+    "y": 180,
+    "wires": []
+  }
+]

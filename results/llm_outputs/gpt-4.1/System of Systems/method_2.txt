@@ -1,0 +1,2247 @@
+🤖 Node-RED Workflow Generator ready!
+Describe the workflow you want (e.g., 'Blink LEDs when washing machine cycle has finished.')
+Type 'bye' or 'exit' to exit.
+
+You: If: pH out of range OR temperature out of range OR salinity/nitrate abnormal OR abnormal fish behavior detected, Then: Reduce speaker volume, Smart assistant announces critical aquarium alert, Turn on main room light (if off), If morning alarm triggers during this condition → override heating automation.
+
+🔄 Processing your request...
+
+
+📝 Generated Node-RED Workflow:
+
+[
+  {
+    "id": "a1b2c3d4e5f6a7b8",
+    "type": "tab",
+    "label": "Critical Aquarium Alert",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "b1c2d3e4f5a6b7c8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:9112/tanksensors",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c1d2e3f4a5b6c7d8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:9106/lifeformmonitor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "d1e2f3a4b5c6d7e8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8090/speaker",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "e1f2a3b4c5d6e7f8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8089/smartassistant",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "f1a2b3c4d5e6f7a8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8087/mainroomlight",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "a2b3c4d5e6f7a8b9",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8084/alarm",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b2c3d4e5f6a7b8c9",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8086/heater",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c2d3e4f5a6b7c8d9",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "pH Level Event",
+    "topic": "",
+    "thing": "b1c2d3e4f5a6b7c8",
+    "event": "pHLevel",
+    "x": 160,
+    "y": 100,
+    "wires": [
+      [
+        "d2e3f4a5b6c7d8e9"
+      ]
+    ]
+  },
+  {
+    "id": "d2e3f4a5b6c7d8e9",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Check pH Out of Range",
+    "func": "const ph = msg.payload;\nif (ph < 6.5 || ph > 8.0) {\n    msg.critical = true;\n    msg.reason = 'pH out of range';\n    return [msg, null];\n}\nreturn [null, msg];",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 100,
+    "wires": [
+      [
+        "e2f3a4b5c6d7e8f9"
+      ],
+      [
+        "c3d4e5f6a7b8c9d0"
+      ]
+    ]
+  },
+  {
+    "id": "c3d4e5f6a7b8c9d0",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Temperature Event",
+    "topic": "",
+    "thing": "b1c2d3e4f5a6b7c8",
+    "event": "temperature",
+    "x": 160,
+    "y": 160,
+    "wires": [
+      [
+        "d3e4f5a6b7c8d9e0"
+      ]
+    ]
+  },
+  {
+    "id": "d3e4f5a6b7c8d9e0",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Check Temp Out of Range",
+    "func": "const temp = msg.payload;\nif (temp < 22 || temp > 28) {\n    msg.critical = true;\n    msg.reason = 'Temperature out of range';\n    return [msg, null];\n}\nreturn [null, msg];",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 160,
+    "wires": [
+      [
+        "e2f3a4b5c6d7e8f9"
+      ],
+      [
+        "c4d5e6f7a8b9c0d1"
+      ]
+    ]
+  },
+  {
+    "id": "c4d5e6f7a8b9c0d1",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Salinity Event",
+    "topic": "",
+    "thing": "b1c2d3e4f5a6b7c8",
+    "event": "salinity",
+    "x": 160,
+    "y": 220,
+    "wires": [
+      [
+        "d4e5f6a7b8c9d0e1"
+      ]
+    ]
+  },
+  {
+    "id": "d4e5f6a7b8c9d0e1",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Check Salinity Abnormal",
+    "func": "const sal = msg.payload;\nif (sal < 30 || sal > 40) {\n    msg.critical = true;\n    msg.reason = 'Salinity abnormal';\n    return [msg, null];\n}\nreturn [null, msg];",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 220,
+    "wires": [
+      [
+        "e2f3a4b5c6d7e8f9"
+      ],
+      [
+        "c5d6e7f8a9b0c1d2"
+      ]
+    ]
+  },
+  {
+    "id": "c5d6e7f8a9b0c1d2",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Nitrate Event",
+    "topic": "",
+    "thing": "b1c2d3e4f5a6b7c8",
+    "event": "nitrateLevel",
+    "x": 160,
+    "y": 280,
+    "wires": [
+      [
+        "d5e6f7a8b9c0d1e2"
+      ]
+    ]
+  },
+  {
+    "id": "d5e6f7a8b9c0d1e2",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Check Nitrate Abnormal",
+    "func": "const nitrate = msg.payload;\nif (nitrate > 50) {\n    msg.critical = true;\n    msg.reason = 'Nitrate abnormal';\n    return [msg, null];\n}\nreturn [null, msg];",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 280,
+    "wires": [
+      [
+        "e2f3a4b5c6d7e8f9"
+      ],
+      [
+        "c6d7e8f9a0b1c2d3"
+      ]
+    ]
+  },
+  {
+    "id": "c6d7e8f9a0b1c2d3",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Abnormal Fish Behavior",
+    "topic": "",
+    "thing": "c1d2e3f4a5b6c7d8",
+    "event": "abnormalActivity",
+    "x": 160,
+    "y": 340,
+    "wires": [
+      [
+        "e2f3a4b5c6d7e8f9"
+      ]
+    ]
+  },
+  {
+    "id": "e2f3a4b5c6d7e8f9",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Trigger Critical Alert",
+    "func": "// Set a flag for critical condition\nflow.set('criticalAlert', true);\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 650,
+    "y": 200,
+    "wires": [
+      [
+        "f2a3b4c5d6e7f8a9"
+      ]
+    ]
+  },
+  {
+    "id": "f2a3b4c5d6e7f8a9",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Reduce Speaker Volume",
+    "topic": "",
+    "thing": "d1e2f3a4b5c6d7e8",
+    "action": "setVolume",
+    "uriVariables": "{}",
+    "x": 900,
+    "y": 120,
+    "wires": [
+      [
+        "f3a4b5c6d7e8f9a0"
+      ]
+    ]
+  },
+  {
+    "id": "f3a4b5c6d7e8f9a0",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Smart Assistant Alert",
+    "topic": "",
+    "thing": "e1f2a3b4c5d6e7f8",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 1150,
+    "y": 120,
+    "wires": [
+      [
+        "f4a5b6c7d8e9f0a1"
+      ]
+    ]
+  },
+  {
+    "id": "f4a5b6c7d8e9f0a1",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Turn On Main Room Light",
+    "topic": "",
+    "thing": "f1a2b3c4d5e6f7a8",
+    "action": "lightOn",
+    "uriVariables": "{}",
+    "x": 1400,
+    "y": 120,
+    "wires": [
+      [
+        "f5a6b7c8d9e0f1a2"
+      ]
+    ]
+  },
+  {
+    "id": "f5a6b7c8d9e0f1a2",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Critical Alert Actions Done",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1650,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "c7d8e9f0a1b2c3d4",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Alarm Ringing",
+    "topic": "",
+    "thing": "a2b3c4d5e6f7a8b9",
+    "event": "alarmRinging",
+    "x": 160,
+    "y": 400,
+    "wires": [
+      [
+        "d6e7f8a9b0c1d2e3"
+      ]
+    ]
+  },
+  {
+    "id": "d6e7f8a9b0c1d2e3",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Check Critical On Alarm",
+    "func": "if (flow.get('criticalAlert')) {\n    msg.overrideHeating = true;\n    return msg;\n}\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 400,
+    "wires": [
+      [
+        "c8d9e0f1a2b3c4d5"
+      ]
+    ]
+  },
+  {
+    "id": "c8d9e0f1a2b3c4d5",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Override Heating Automation",
+    "topic": "",
+    "thing": "b2c3d4e5f6a7b8c9",
+    "action": "startHeater",
+    "uriVariables": "{}",
+    "x": 650,
+    "y": 400,
+    "wires": [
+      [
+        "d7e8f9a0b1c2d3e4"
+      ]
+    ]
+  },
+  {
+    "id": "d7e8f9a0b1c2d3e4",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Heating Override Triggered",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 400,
+    "wires": []
+  }
+]
+
+
+You: If: Aquarium is in abnormal condition AND Morning alarm triggers, Then: Do NOT activate 30°C heating boost, Reduce speaker volume, Announce critical aquarium alert, Turn on main room light
+
+🔄 Processing your request...
+
+
+🤖 Agent Response:
+
+
+[
+  {
+    "id": "a1b2c3d4e5f6a7b8",
+    "type": "tab",
+    "label": "Aquarium Critical Alert Workflow",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "b1c2d3e4f5a6b7c8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:9106/lifeformmonitor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c1d2e3f4a5b6c7d8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8084/alarm",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "d1e2f3a4b5c6d7e8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8086/heater",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "e1f2a3b4c5d6e7f8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8090/speaker",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "f1a2b3c4d5e6f7a8",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8089/smartassistant",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "a2b3c4d5e6f7a8b9",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8087/mainroomlight",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b2c3d4e5f6a7b8c9",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Aquarium Abnormal Activity",
+    "topic": "",
+    "thing": "b1c2d3e4f5a6b7c8",
+    "event": "abnormalActivity",
+    "x": 180,
+    "y": 120,
+    "wires": [["c2d3e4f5a6b7c8d9"]]
+  },
+  {
+    "id": "c2d3e4f5a6b7c8d9",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Set abnormal flag",
+    "func": "flow.set('abnormal', true);\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 120,
+    "wires": [["d2e3f4a5b6c7d8e9"]]
+  },
+  {
+    "id": "d2e3f4a5b6c7d8e9",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Morning Alarm Trigger",
+    "topic": "",
+    "thing": "c1d2e3f4a5b6c7d8",
+    "event": "alarmRinging",
+    "x": 700,
+    "y": 120,
+    "wires": [["e2f3a4b5c6d7e8f9"]]
+  },
+  {
+    "id": "e2f3a4b5c6d7e8f9",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Check abnormal & branch",
+    "func": "// Only proceed if abnormal flag is set\nif (flow.get('abnormal')) {\n    flow.set('abnormal', false); // reset for next time\n    return [msg, null];\n} else {\n    return [null, msg];\n}",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 960,
+    "y": 120,
+    "wires": [["f2a3b4c5d6e7f8a9","f3a4b5c6d7e8f9a0"]]
+  },
+  {
+    "id": "f2a3b4c5d6e7f8a9",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Reduce Speaker Volume",
+    "topic": "",
+    "thing": "e1f2a3b4c5d6e7f8",
+    "action": "setVolume",
+    "uriVariables": "{}",
+    "x": 1260,
+    "y": 60,
+    "wires": [["a3b4c5d6e7f8a9b0"]]
+  },
+  {
+    "id": "a3b4c5d6e7f8a9b0",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Announce Aquarium Alert",
+    "topic": "",
+    "thing": "f1a2b3c4d5e6f7a8",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 1540,
+    "y": 60,
+    "wires": [["b3c4d5e6f7a8b9c0"]]
+  },
+  {
+    "id": "b3c4d5e6f7a8b9c0",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Turn On Main Room Light",
+    "topic": "",
+    "thing": "a2b3c4d5e6f7a8b9",
+    "action": "lightOn",
+    "uriVariables": "{}",
+    "x": 1820,
+    "y": 60,
+    "wires": [["c3d4e5f6a7b8c9d0"]]
+  },
+  {
+    "id": "c3d4e5f6a7b8c9d0",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Critical Alert Actions Done",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 2100,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "f3a4b5c6d7e8f9a0",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "No abnormal condition, do nothing",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1260,
+    "y": 180,
+    "wires": []
+  }
+]
+```
+**Note:**
+- The "Reduce Speaker Volume" node expects a payload with the correct structure. You may need to set the payload in the function node or add a function node before it to set `msg.payload = { percentage: 20 }` (or your desired reduced volume).
+- The "Announce Aquarium Alert" node expects a payload with `{ phrase: "Critical aquarium alert! Please check the tank immediately." }`. You may need to add a function node to set this payload if required.
+- The "Do NOT activate 30°C heating boost" is implemented by not invoking the heater action at all in this branch.
+- The workflow triggers only if both "abnormal activity" and "alarmRinging" occur, in that order.
+
+
+You: If: Motion detected in aquarium room AND Feeding time is approaching, Then: Turn on main room light, Adjust aquarium lighting profile, Send notification with real-time tank data, Notify owner that manual food dispensing is available
+
+🔄 Processing your request...
+
+
+🤖 Agent Response:
+[
+  {
+    "id": "b1a2c3d4e5f6a7b8",
+    "type": "tab",
+    "label": "Aquarium Feeding Automation",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "a1b2c3d4e5f6a7b9",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8088/motionsensor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b2c3d4e5f6a7b8c1",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8087/mainroomlight",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c3d4e5f6a7b8c1d2",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:9111/tanklighting",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "d4e5f6a7b8c1d2e3",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:9112/tanksensors",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "e5f6a7b8c1d2e3f4",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8089/smartassistant",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "f6a7b8c1d2e3f4a5",
+    "type": "subscribe-event",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Motion Detected in Aquarium Room",
+    "topic": "",
+    "thing": "a1b2c3d4e5f6a7b9",
+    "event": "motionDetected",
+    "x": 160,
+    "y": 100,
+    "wires": [["a7b8c1d2e3f4a5b6"]]
+  },
+  {
+    "id": "a7b8c1d2e3f4a5b6",
+    "type": "function",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Check Feeding Time Approaching",
+    "func": "// Simulate feeding time check (replace with real logic as needed)\n// For demo, always return true\nmsg.feedingTimeApproaching = true;\nif (msg.feedingTimeApproaching) {\n    return msg;\n} else {\n    return null;\n}",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 100,
+    "wires": [["b8c1d2e3f4a5b6c7","c1d2e3f4a5b6c7d8","d2e3f4a5b6c7d8e9","e3f4a5b6c7d8e9f0"]]
+  },
+  {
+    "id": "b8c1d2e3f4a5b6c7",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Turn On Main Room Light",
+    "topic": "",
+    "thing": "b2c3d4e5f6a7b8c1",
+    "action": "lightOn",
+    "uriVariables": "{}",
+    "x": 700,
+    "y": 40,
+    "wires": [["f4a5b6c7d8e9f0a1"]]
+  },
+  {
+    "id": "c1d2e3f4a5b6c7d8",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Adjust Aquarium Lighting Profile",
+    "topic": "",
+    "thing": "c3d4e5f6a7b8c1d2",
+    "action": "alterLightingProfile",
+    "uriVariables": "{}",
+    "x": 700,
+    "y": 100,
+    "wires": [["f4a5b6c7d8e9f0a2"]],
+    "inputOverrides": {
+      "profile": "FeedingTime" // Example profile, adjust as needed
+    }
+  },
+  {
+    "id": "d2e3f4a5b6c7d8e9",
+    "type": "read-property",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Read All Tank Data",
+    "topic": "",
+    "thing": "d4e5f6a7b8c1d2e3",
+    "property": "",
+    "uriVariables": "{}",
+    "observe": false,
+    "x": 700,
+    "y": 160,
+    "wires": [["f4a5b6c7d8e9f0a3"]]
+  },
+  {
+    "id": "e3f4a5b6c7d8e9f0",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Notify Owner Manual Food Dispensing",
+    "topic": "",
+    "thing": "e5f6a7b8c1d2e3f4",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 700,
+    "y": 220,
+    "wires": [["f4a5b6c7d8e9f0a4"]],
+    "inputOverrides": {
+      "phrase": "Manual food dispensing is available now."
+    }
+  },
+  {
+    "id": "f4a5b6c7d8e9f0a1",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Main Room Light On Output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 950,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "f4a5b6c7d8e9f0a2",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Aquarium Lighting Adjusted Output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 950,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "f4a5b6c7d8e9f0a3",
+    "type": "function",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Format Tank Data Notification",
+    "func": "// Format tank data for notification\nvar tankData = msg.payload;\nmsg.payload = {\n    phrase: \"Tank data: pH \" + tankData.pHLevel + \", Temp \" + tankData.temperature + \"°C, Salinity \" + tankData.salinity + \", Nitrate \" + tankData.nitrateLevel\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 950,
+    "y": 160,
+    "wires": [["f4a5b6c7d8e9f0a5"]]
+  },
+  {
+    "id": "f4a5b6c7d8e9f0a4",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Manual Food Dispense Notification Output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 950,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "f4a5b6c7d8e9f0a5",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Send Tank Data Notification",
+    "topic": "",
+    "thing": "e5f6a7b8c1d2e3f4",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 1200,
+    "y": 160,
+    "wires": [["f4a5b6c7d8e9f0a6"]]
+  },
+  {
+    "id": "f4a5b6c7d8e9f0a6",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Tank Data Notification Output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1450,
+    "y": 160,
+    "wires": []
+  }
+]
+
+
+You:  When power outage occurs: Aquarium switches to backup power, Smart assistant announces outage, Reduce speaker volume to minimum, Disable non-essential heating (cancel 30°C boost if active),Suspend non-critical lighting adjustments.
+
+🔄 Processing your request...
+
+
+📝 Generated Node-RED Workflow:
+
+[
+  {
+    "id": "b1a2c3d4e5f6a7b8",
+    "type": "tab",
+    "label": "Aquarium Power Outage Response",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "a18841fe05744488",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:9107/outagedetector",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b4095040a5c62735",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:9102/backuppower",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "3d119e9be140c070",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8089/smartassistant",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "20471e6eba41b344",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:8090/speaker",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "43081033b21b82c6",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:9109/tankactuators",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "022cd6e3b9b5d636",
+    "type": "consumed-thing",
+    "tdLink": "http://169.254.4.168:9111/tanklighting",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c1b2a3d4e5f6a7b9",
+    "type": "subscribe-event",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Power Outage Detected",
+    "topic": "",
+    "thing": "a18841fe05744488",
+    "event": "powerOutage",
+    "x": 160,
+    "y": 100,
+    "wires": [
+      [
+        "d2b3a4c5e6f7a8b0",
+        "e3c4b5d6f7a8b9c1",
+        "f4d5c6e7a8b9c0d2",
+        "a5e6d7c8b9a0c1d3",
+        "b6f7e8d9c0a1b2c4"
+      ]
+    ]
+  },
+  {
+    "id": "d2b3a4c5e6f7a8b0",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Enable Backup Power",
+    "topic": "",
+    "thing": "b4095040a5c62735",
+    "action": "enableBackupPower",
+    "uriVariables": "{}",
+    "x": 420,
+    "y": 40,
+    "wires": [
+      [
+        "c2d3e4f5a6b7c8d9"
+      ]
+    ]
+  },
+  {
+    "id": "e3c4b5d6f7a8b9c1",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Announce Outage",
+    "topic": "",
+    "thing": "3d119e9be140c070",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 420,
+    "y": 100,
+    "wires": [
+      [
+        "d3e4f5a6b7c8d9e0"
+      ]
+    ]
+  },
+  {
+    "id": "f4d5c6e7a8b9c0d2",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Set Speaker Volume to Minimum",
+    "topic": "",
+    "thing": "20471e6eba41b344",
+    "action": "setVolume",
+    "uriVariables": "{}",
+    "x": 420,
+    "y": 160,
+    "wires": [
+      [
+        "e4f5a6b7c8d9e0f1"
+      ]
+    ]
+  },
+  {
+    "id": "a5e6d7c8b9a0c1d3",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Disable Non-Essential Heating",
+    "topic": "",
+    "thing": "43081033b21b82c6",
+    "action": "heaterOff",
+    "uriVariables": "{}",
+    "x": 420,
+    "y": 220,
+    "wires": [
+      [
+        "f5a6b7c8d9e0f1a2"
+      ]
+    ]
+  },
+  {
+    "id": "b6f7e8d9c0a1b2c4",
+    "type": "invoke-action",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Suspend Lighting Adjustments",
+    "topic": "",
+    "thing": "022cd6e3b9b5d636",
+    "action": "resetLightingProfile",
+    "uriVariables": "{}",
+    "x": 420,
+    "y": 280,
+    "wires": [
+      [
+        "a6b7c8d9e0f1a2b3"
+      ]
+    ]
+  },
+  {
+    "id": "c2d3e4f5a6b7c8d9",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Backup Power Enabled",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 690,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "d3e4f5a6b7c8d9e0",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Outage Announced",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 690,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "e4f5a6b7c8d9e0f1",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Speaker Volume Set",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 690,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "f5a6b7c8d9e0f1a2",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Heating Disabled",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 690,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "a6b7c8d9e0f1a2b3",
+    "type": "debug",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Lighting Adjustments Suspended",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 690,
+    "y": 280,
+    "wires": []
+  },
+  {
+    "id": "e7f8a9b0c1d2e3f4",
+    "type": "function",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Set Outage Announcement",
+    "func": "msg.payload = { phrase: \"Attention: Power outage detected. Switching to backup power. Non-essential systems are being suspended.\" };\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 320,
+    "y": 100,
+    "wires": [
+      [
+        "e3c4b5d6f7a8b9c1"
+      ]
+    ]
+  },
+  {
+    "id": "f9e8d7c6b5a4e3d2",
+    "type": "function",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Set Volume Minimum",
+    "func": "msg.payload = { percentage: 0 };\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 320,
+    "y": 160,
+    "wires": [
+      [
+        "f4d5c6e7a8b9c0d2"
+      ]
+    ]
+  },
+  {
+    "id": "c1d2e3f4a5b6c7d8",
+    "type": "comment",
+    "z": "b1a2c3d4e5f6a7b8",
+    "name": "Aquarium Power Outage Response Flow",
+    "info": "Responds to power outage by enabling backup power, announcing outage, minimizing speaker volume, disabling non-essential heating, and suspending lighting adjustments.",
+    "x": 320,
+    "y": 20,
+    "wires": []
+  }
+]
+
+
+You: When morning alarm triggers: Turn heating to 30°C for 20 mins, Adjust aquarium lighting to simulate sunrise profile, Dispense scheduled food if within feeding time window, Smart assistant announces tank conditions summary.
+
+🔄 Processing your request...
+
+
+📝 Generated Node-RED Workflow:
+
+[
+  {
+    "id": "a18841fe05744488",
+    "type": "tab",
+    "label": "Morning Routine",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "b1e2c3d4e5f60718",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8084/alarm",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c2f3e4d5a6b70819",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8086/heater",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "d3a4b5c6e7f80920",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:9111/tanklighting",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "e4b5c6d7a8f91021",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:9105/fooddispensor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "f5c6d7e8a9b01122",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8089/smartassistant",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "a6d7e8f9b0c11223",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:9112/tanksensors",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b7e8f9a0c1d21324",
+    "type": "subscribe-event",
+    "z": "a18841fe05744488",
+    "name": "When alarm rings",
+    "topic": "",
+    "thing": "b1e2c3d4e5f60718",
+    "event": "alarmRinging",
+    "x": 160,
+    "y": 100,
+    "wires": [
+      [
+        "c8f9a0b1d2e31425",
+        "d9a0b1c2e3f41526",
+        "e0b1c2d3f4a51627",
+        "f1c2d3e4a5b61728"
+      ]
+    ]
+  },
+  {
+    "id": "c8f9a0b1d2e31425",
+    "type": "invoke-action",
+    "z": "a18841fe05744488",
+    "name": "Start heater 30\u00b0C for 20min",
+    "topic": "",
+    "thing": "c2f3e4d5a6b70819",
+    "action": "startHeater",
+    "uriVariables": "{}",
+    "x": 420,
+    "y": 60,
+    "wires": [
+      [
+        "a2b3c4d5e6f71829"
+      ]
+    ]
+  },
+  {
+    "id": "d9a0b1c2e3f41526",
+    "type": "invoke-action",
+    "z": "a18841fe05744488",
+    "name": "Set sunrise lighting profile",
+    "topic": "",
+    "thing": "d3a4b5c6e7f80920",
+    "action": "alterLightingProfile",
+    "uriVariables": "{}",
+    "x": 420,
+    "y": 120,
+    "wires": [
+      [
+        "b3c4d5e6f7a81930"
+      ]
+    ]
+  },
+  {
+    "id": "e0b1c2d3f4a51627",
+    "type": "function",
+    "z": "a18841fe05744488",
+    "name": "Check feeding time window",
+    "func": "// Example: Only dispense food between 7:00 and 9:00\nconst now = new Date();\nconst hour = now.getHours();\nif (hour >= 7 && hour < 9) {\n    msg.payload = 1; // Amount of food to dispense\n    return msg;\n}\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 180,
+    "wires": [
+      [
+        "c4d5e6f7a8b93131"
+      ]
+    ]
+  },
+  {
+    "id": "c4d5e6f7a8b93131",
+    "type": "invoke-action",
+    "z": "a18841fe05744488",
+    "name": "Dispense scheduled food",
+    "topic": "",
+    "thing": "e4b5c6d7a8f91021",
+    "action": "dispenseFood",
+    "uriVariables": "{}",
+    "x": 670,
+    "y": 180,
+    "wires": [
+      [
+        "d5e6f7a8b9c03232"
+      ]
+    ]
+  },
+  {
+    "id": "f1c2d3e4a5b61728",
+    "type": "function",
+    "z": "a18841fe05744488",
+    "name": "Format tank summary",
+    "func": "// Compose a summary from tank sensor readings\nconst pH = flow.get('tank_pH');\nconst temp = flow.get('tank_temp');\nconst sal = flow.get('tank_sal');\nconst nitrate = flow.get('tank_nitrate');\nmsg.payload = {\n    phrase: `Tank summary: pH ${pH}, Temp ${temp}\u00b0C, Salinity ${sal}, Nitrate ${nitrate}`\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 240,
+    "wires": [
+      [
+        "e6f7a8b9c0d13333"
+      ]
+    ]
+  },
+  {
+    "id": "e6f7a8b9c0d13333",
+    "type": "invoke-action",
+    "z": "a18841fe05744488",
+    "name": "Announce tank summary",
+    "topic": "",
+    "thing": "f5c6d7e8a9b01122",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 670,
+    "y": 240,
+    "wires": [
+      [
+        "f7a8b9c0d1e23434"
+      ]
+    ]
+  },
+  {
+    "id": "a2b3c4d5e6f71829",
+    "type": "debug",
+    "z": "a18841fe05744488",
+    "name": "Heater started",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "b3c4d5e6f7a81930",
+    "type": "debug",
+    "z": "a18841fe05744488",
+    "name": "Lighting set",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "d5e6f7a8b9c03232",
+    "type": "debug",
+    "z": "a18841fe05744488",
+    "name": "Food dispensed",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "f7a8b9c0d1e23434",
+    "type": "debug",
+    "z": "a18841fe05744488",
+    "name": "Tank summary announced",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "c9d0e1f2a3b43535",
+    "type": "read-property",
+    "z": "a18841fe05744488",
+    "name": "Read pH",
+    "topic": "",
+    "thing": "a6d7e8f9b0c11223",
+    "property": "pHLevel",
+    "uriVariables": "{}",
+    "observe": false,
+    "x": 160,
+    "y": 320,
+    "wires": [
+      [
+        "d0e1f2a3b4c53636"
+      ]
+    ]
+  },
+  {
+    "id": "d0e1f2a3b4c53636",
+    "type": "function",
+    "z": "a18841fe05744488",
+    "name": "Store pH",
+    "func": "flow.set('tank_pH', msg.payload);\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 320,
+    "wires": [
+      [
+        "e1f2a3b4c5d63737"
+      ]
+    ]
+  },
+  {
+    "id": "e1f2a3b4c5d63737",
+    "type": "read-property",
+    "z": "a18841fe05744488",
+    "name": "Read temperature",
+    "topic": "",
+    "thing": "a6d7e8f9b0c11223",
+    "property": "temperature",
+    "uriVariables": "{}",
+    "observe": false,
+    "x": 160,
+    "y": 380,
+    "wires": [
+      [
+        "f2a3b4c5d6e73838"
+      ]
+    ]
+  },
+  {
+    "id": "f2a3b4c5d6e73838",
+    "type": "function",
+    "z": "a18841fe05744488",
+    "name": "Store temp",
+    "func": "flow.set('tank_temp', msg.payload);\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 380,
+    "wires": [
+      [
+        "a3b4c5d6e7f83939"
+      ]
+    ]
+  },
+  {
+    "id": "a3b4c5d6e7f83939",
+    "type": "read-property",
+    "z": "a18841fe05744488",
+    "name": "Read salinity",
+    "topic": "",
+    "thing": "a6d7e8f9b0c11223",
+    "property": "salinity",
+    "uriVariables": "{}",
+    "observe": false,
+    "x": 160,
+    "y": 440,
+    "wires": [
+      [
+        "b4c5d6e7f8a94040"
+      ]
+    ]
+  },
+  {
+    "id": "b4c5d6e7f8a94040",
+    "type": "function",
+    "z": "a18841fe05744488",
+    "name": "Store salinity",
+    "func": "flow.set('tank_sal', msg.payload);\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 440,
+    "wires": [
+      [
+        "c5d6e7f8a9b04141"
+      ]
+    ]
+  },
+  {
+    "id": "c5d6e7f8a9b04141",
+    "type": "read-property",
+    "z": "a18841fe05744488",
+    "name": "Read nitrate",
+    "topic": "",
+    "thing": "a6d7e8f9b0c11223",
+    "property": "nitrateLevel",
+    "uriVariables": "{}",
+    "observe": false,
+    "x": 160,
+    "y": 500,
+    "wires": [
+      [
+        "d6e7f8a9b0c14242"
+      ]
+    ]
+  },
+  {
+    "id": "d6e7f8a9b0c14242",
+    "type": "function",
+    "z": "a18841fe05744488",
+    "name": "Store nitrate",
+    "func": "flow.set('tank_nitrate', msg.payload);\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 500,
+    "wires": []
+  }
+]
+
+
+You: If no motion is detected in main room between 11 PM - 6 AM (owner sleeping), aquarium system automatically postpones any non-emergency alerts until morning alarm triggers. During this period, if abnormal aquarium behavior or health issues are detected, only the main room light blinks (silent alert) rather than using the smart assistant. All postponed alerts are announced via smart assistant immediately after morning alarm.
+
+🔄 Processing your request...
+
+
+📝 Generated Node-RED Workflow:
+
+[
+  {
+    "id": "a1b2c3d4e5f6a7b8",
+    "type": "tab",
+    "label": "Aquarium Night Alert Management",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "b1c2d3e4f5a6b7c8",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8088/motionsensor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c1d2e3f4a5b6c7d8",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8084/alarm",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "d1e2f3a4b5c6d7e8",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8089/smartassistant",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "e1f2a3b4c5d6e7f8",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:8087/mainroomlight",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "f1a2b3c4d5e6f7a8",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:9104/filtermonitor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "a2b3c4d5e6f7a8b9",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.1.141:9106/lifeformmonitor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b2c3d4e5f6a7b8c9",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Motion Detected",
+    "topic": "",
+    "thing": "b1c2d3e4f5a6b7c8",
+    "event": "motionDetected",
+    "x": 160,
+    "y": 100,
+    "wires": [
+      [
+        "c2d3e4f5a6b7c8d9"
+      ]
+    ]
+  },
+  {
+    "id": "c2d3e4f5a6b7c8d9",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Update Last Motion Time",
+    "func": "flow.set('lastMotion', Date.now());\nreturn null;",
+    "outputs": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "d2e3f4a5b6c7d8e9",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Alarm Ringing",
+    "topic": "",
+    "thing": "c1d2e3f4a5b6c7d8",
+    "event": "alarmRinging",
+    "x": 160,
+    "y": 180,
+    "wires": [
+      [
+        "e2f3a4b5c6d7e8f9"
+      ]
+    ]
+  },
+  {
+    "id": "e2f3a4b5c6d7e8f9",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Release Postponed Alerts",
+    "func": "// Get postponed alerts\nvar alerts = flow.get('postponedAlerts') || [];\nflow.set('postponedAlerts', []);\nif(alerts.length > 0) {\n    return alerts.map(alert => ({payload: {phrase: alert}}));\n}\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 180,
+    "wires": [
+      [
+        "f2a3b4c5d6e7f8a9"
+      ]
+    ]
+  },
+  {
+    "id": "f2a3b4c5d6e7f8a9",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Announce Postponed Alert",
+    "topic": "",
+    "thing": "d1e2f3a4b5c6d7e8",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 690,
+    "y": 180,
+    "wires": [
+      [
+        "a3b4c5d6e7f8a9b0"
+      ]
+    ]
+  },
+  {
+    "id": "a3b4c5d6e7f8a9b0",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Announced Alert",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "b3c4d5e6f7a8b9c0",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Filter Issue",
+    "topic": "",
+    "thing": "f1a2b3c4d5e6f7a8",
+    "event": "filterIssue",
+    "x": 160,
+    "y": 300,
+    "wires": [
+      [
+        "c3d4e5f6a7b8c9d0"
+      ]
+    ]
+  },
+  {
+    "id": "c3d4e5f6a7b8c9d0",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Handle Filter Issue",
+    "func": "// Night hours: 23:00-06:00\nvar now = new Date();\nvar hour = now.getHours();\nvar lastMotion = flow.get('lastMotion') || 0;\nvar sleeping = (hour >= 23 || hour < 6) && (Date.now() - lastMotion > 10*60*1000); // 10 min no motion\nif(sleeping) {\n    // Postpone alert\n    var alerts = flow.get('postponedAlerts') || [];\n    alerts.push('Aquarium filter issue detected.');\n    flow.set('postponedAlerts', alerts);\n    return null;\n} else {\n    // Announce immediately\n    return {payload: {phrase: 'Aquarium filter issue detected.'}};\n}",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 300,
+    "wires": [
+      [
+        "d3e4f5a6b7c8d9e0"
+      ]
+    ]
+  },
+  {
+    "id": "d3e4f5a6b7c8d9e0",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Say Filter Issue",
+    "topic": "",
+    "thing": "d1e2f3a4b5c6d7e8",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 690,
+    "y": 300,
+    "wires": [
+      [
+        "b4c5d6e7f8a9b0c1"
+      ]
+    ]
+  },
+  {
+    "id": "b4c5d6e7f8a9b0c1",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Filter Issue Alert",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 300,
+    "wires": []
+  },
+  {
+    "id": "c4d5e6f7a8b9c0d1",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Abnormal Activity",
+    "topic": "",
+    "thing": "a2b3c4d5e6f7a8b9",
+    "event": "abnormalActivity",
+    "x": 160,
+    "y": 400,
+    "wires": [
+      [
+        "d4e5f6a7b8c9d0e1"
+      ]
+    ]
+  },
+  {
+    "id": "d4e5f6a7b8c9d0e1",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Handle Abnormal Activity",
+    "func": "// Night hours: 23:00-06:00\nvar now = new Date();\nvar hour = now.getHours();\nvar lastMotion = flow.get('lastMotion') || 0;\nvar sleeping = (hour >= 23 || hour < 6) && (Date.now() - lastMotion > 10*60*1000); // 10 min no motion\nif(sleeping) {\n    // Blink main room light (silent alert)\n    return {payload: {}};\n} else {\n    // Announce immediately\n    var details = msg.payload && msg.payload.details ? msg.payload.details : 'Abnormal aquarium activity detected.';\n    return {payload: {phrase: details}};\n}",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 400,
+    "wires": [
+      [
+        "e4f5a6b7c8d9e0f1",
+        "f4a5b6c7d8e9f0a1"
+      ]
+    ]
+  },
+  {
+    "id": "e4f5a6b7c8d9e0f1",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Blink Main Room Light",
+    "topic": "",
+    "thing": "e1f2a3b4c5d6e7f8",
+    "action": "lightOn",
+    "uriVariables": "{}",
+    "x": 690,
+    "y": 380,
+    "wires": [
+      [
+        "c5d6e7f8a9b0c1d2"
+      ]
+    ]
+  },
+  {
+    "id": "c5d6e7f8a9b0c1d2",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Silent Alert (Light)",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 380,
+    "wires": []
+  },
+  {
+    "id": "f4a5b6c7d8e9f0a1",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Say Abnormal Activity",
+    "topic": "",
+    "thing": "d1e2f3a4b5c6d7e8",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 690,
+    "y": 420,
+    "wires": [
+      [
+        "d5e6f7a8b9c0d1e2"
+      ]
+    ]
+  },
+  {
+    "id": "d5e6f7a8b9c0d1e2",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Abnormal Activity Alert",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 420,
+    "wires": []
+  },
+  {
+    "id": "e5f6a7b8c9d0e1f2",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Health Issues Detected",
+    "topic": "",
+    "thing": "a2b3c4d5e6f7a8b9",
+    "event": "healthIssuesDetected",
+    "x": 160,
+    "y": 500,
+    "wires": [
+      [
+        "f5a6b7c8d9e0f1a2"
+      ]
+    ]
+  },
+  {
+    "id": "f5a6b7c8d9e0f1a2",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Handle Health Issue",
+    "func": "// Night hours: 23:00-06:00\nvar now = new Date();\nvar hour = now.getHours();\nvar lastMotion = flow.get('lastMotion') || 0;\nvar sleeping = (hour >= 23 || hour < 6) && (Date.now() - lastMotion > 10*60*1000); // 10 min no motion\nif(sleeping) {\n    // Blink main room light (silent alert)\n    return {payload: {}};\n} else {\n    var details = msg.payload && msg.payload.details ? msg.payload.details : 'Aquarium health issue detected.';\n    return {payload: {phrase: details}};\n}",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 500,
+    "wires": [
+      [
+        "e6f7a8b9c0d1e2f3",
+        "f6a7b8c9d0e1f2a3"
+      ]
+    ]
+  },
+  {
+    "id": "e6f7a8b9c0d1e2f3",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Blink Main Room Light",
+    "topic": "",
+    "thing": "e1f2a3b4c5d6e7f8",
+    "action": "lightOn",
+    "uriVariables": "{}",
+    "x": 690,
+    "y": 480,
+    "wires": [
+      [
+        "c6d7e8f9a0b1c2d3"
+      ]
+    ]
+  },
+  {
+    "id": "c6d7e8f9a0b1c2d3",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Silent Alert (Light)",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 480,
+    "wires": []
+  },
+  {
+    "id": "f6a7b8c9d0e1f2a3",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Say Health Issue",
+    "topic": "",
+    "thing": "d1e2f3a4b5c6d7e8",
+    "action": "say",
+    "uriVariables": "{}",
+    "x": 690,
+    "y": 520,
+    "wires": [
+      [
+        "d6e7f8a9b0c1d2e3"
+      ]
+    ]
+  },
+  {
+    "id": "d6e7f8a9b0c1d2e3",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Health Issue Alert",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 520,
+    "wires": []
+  }
+]

@@ -1,0 +1,1523 @@
+[
+    {
+        "id": "8caf317999bf1a9c",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "pH Level Event",
+        "topic": "",
+        "thing": "db1e2230b68cdf4f",
+        "event": "pHLevel",
+        "x": 200,
+        "y": 120,
+        "wires": [
+            [
+                "9766883ff9c81435"
+            ]
+        ]
+    },
+    {
+        "id": "9766883ff9c81435",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Check pH Range",
+        "func": "// Acceptable pH range\nconst minPH = 6.5;\nconst maxPH = 7.5;\nconst pH = msg.payload;\nif (pH < minPH) {\n    // Too acidic, add crushed coral\n    msg.payload = { chemical: \"crushed coral\", amount: 1 };\n    msg.action = \"raise\";\n    return [msg, null];\n} else if (pH > maxPH) {\n    // Too alkaline, add CO2\n    msg.payload = { chemical: \"CO2\", amount: 1 };\n    msg.action = \"lower\";\n    return [null, msg];\n}\n// In range, do nothing\nreturn [null, null];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 120,
+        "wires": [
+            [
+                "4d5c8cfbd1fee5ee"
+            ],
+            [
+                "ea99bcd552fe2320"
+            ]
+        ]
+    },
+    {
+        "id": "4d5c8cfbd1fee5ee",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Dispense Crushed Coral",
+        "topic": "",
+        "thing": "a79f6be8cb446366",
+        "action": "dispenseChemical",
+        "uriVariables": "{}",
+        "x": 710,
+        "y": 80,
+        "wires": [
+            [
+                "e8a1318b3a41ea62"
+            ]
+        ]
+    },
+    {
+        "id": "ea99bcd552fe2320",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Dispense CO2",
+        "topic": "",
+        "thing": "a79f6be8cb446366",
+        "action": "dispenseChemical",
+        "uriVariables": "{}",
+        "x": 710,
+        "y": 160,
+        "wires": [
+            [
+                "4e6d090b12cb99f9"
+            ]
+        ]
+    },
+    {
+        "id": "e8a1318b3a41ea62",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Crushed Coral Dispensed",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4e6d090b12cb99f9",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "CO2 Dispensed",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "d4e5f6a7b8c90004",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Subscribe Tank Temp",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "event": "temperature",
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "e5f6a7b8c9da0005"
+            ]
+        ]
+    },
+    {
+        "id": "e5f6a7b8c9da0005",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Check Temp Range",
+        "func": "// Optimum temperature (example: 25°C)\nconst optimum = 25;\nconst min = 23;\nconst max = 27;\nconst temp = msg.payload;\nif (typeof temp !== 'number') return null;\nif (temp < min) {\n    // Too cold, turn on heater to optimum\n    return [{\n        payload: optimum\n    }, null];\n} else if (temp > max) {\n    // Too hot, turn on cooler to optimum\n    return [null, {\n        payload: optimum\n    }];\n}\n// In range, do nothing\nreturn [null, null];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 280,
+        "wires": [
+            [
+                "f6a7b8c9dab00006"
+            ],
+            [
+                "a7b8c9dab0bc0007"
+            ]
+        ]
+    },
+    {
+        "id": "f6a7b8c9dab00006",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Heater On (to optimum)",
+        "topic": "",
+        "thing": "c3d4e5f6a7b80003",
+        "action": "heaterOn",
+        "uriVariables": "{}",
+        "x": 700,
+        "y": 240,
+        "wires": [
+            [
+                "b8c9dab0bcbd0008"
+            ]
+        ]
+    },
+    {
+        "id": "a7b8c9dab0bc0007",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Cooler On (to optimum)",
+        "topic": "",
+        "thing": "c3d4e5f6a7b80003",
+        "action": "coolerOn",
+        "uriVariables": "{}",
+        "x": 700,
+        "y": 320,
+        "wires": [
+            [
+                "c9dab0bcbdbe0009"
+            ]
+        ]
+    },
+    {
+        "id": "b8c9dab0bcbd0008",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Heater Action Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "c9dab0bcbdbe0009",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Cooler Action Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "5ccaf76864908dfd",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Salinity Event",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "event": "salinity",
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [
+                "f294bd05710867eb"
+            ]
+        ]
+    },
+    {
+        "id": "f294bd05710867eb",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Check Low Salinity",
+        "func": "// Assume threshold for low salinity is 30 (example units)\nconst LOW_SALINITY_THRESHOLD = 30;\nif (msg.payload < LOW_SALINITY_THRESHOLD) {\n    return {\n        payload: {\n            chemical: \"salt\",\n            amount: 5 // example amount\n        }\n    };\n}\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 400,
+        "wires": [
+            [
+                "a0e63087794558db"
+            ]
+        ]
+    },
+    {
+        "id": "a0e63087794558db",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Dispense Salt",
+        "topic": "",
+        "thing": "c3d4e5f6a7b80003",
+        "action": "dispenseChemical",
+        "uriVariables": "{}",
+        "x": 600,
+        "y": 400,
+        "wires": [
+            [
+                "51c1c06e6e9393d7"
+            ]
+        ]
+    },
+    {
+        "id": "51c1c06e6e9393d7",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Salt Dispense Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "94946be9d5294167",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Nitrate Level Event",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "event": "nitrateLevel",
+        "x": 140,
+        "y": 440,
+        "wires": [
+            [
+                "42fb125b92a4e4eb"
+            ]
+        ]
+    },
+    {
+        "id": "42fb125b92a4e4eb",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Check Low Nitrate",
+        "func": "// Assume threshold for low nitrate is 10 (example units)\nconst LOW_NITRATE_THRESHOLD = 10;\nif (msg.payload < LOW_NITRATE_THRESHOLD) {\n    return {\n        payload: {\n            chemical: \"potassium nitrate\",\n            amount: 5 // example amount\n        }\n    };\n}\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 440,
+        "wires": [
+            [
+                "648392988340d59e"
+            ]
+        ]
+    },
+    {
+        "id": "648392988340d59e",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Dispense Potassium Nitrate",
+        "topic": "",
+        "thing": "c3d4e5f6a7b80003",
+        "action": "dispenseChemical",
+        "uriVariables": "{}",
+        "x": 660,
+        "y": 440,
+        "wires": [
+            [
+                "23e0c4d28ee239f0"
+            ]
+        ]
+    },
+    {
+        "id": "23e0c4d28ee239f0",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Nitrate Dispense Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4e7ac9b6a82f48fe",
+        "type": "inject",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Scheduled Feed (5 units)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "5",
+        "payloadType": "num",
+        "x": 170,
+        "y": 500,
+        "wires": [
+            [
+                "4bcba1b4990962a0"
+            ]
+        ]
+    },
+    {
+        "id": "4bcba1b4990962a0",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Dispense Food",
+        "topic": "",
+        "thing": "c221585f02c1260c",
+        "action": "dispenseFood",
+        "uriVariables": "{}",
+        "x": 410,
+        "y": 500,
+        "wires": [
+            [
+                "c5fe093df34f7c87"
+            ]
+        ]
+    },
+    {
+        "id": "c5fe093df34f7c87",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Food Dispensed Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "0b52b3b585231ca1",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Low Food Level Event",
+        "topic": "",
+        "thing": "c221585f02c1260c",
+        "event": "lowFoodLevel",
+        "x": 140,
+        "y": 560,
+        "wires": [
+            [
+                "b574ce2d6e8e3326"
+            ]
+        ]
+    },
+    {
+        "id": "b574ce2d6e8e3326",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Owner: Low Food",
+        "topic": "",
+        "thing": "e9ee9f9eeca10079",
+        "action": "receiveWaterConditions",
+        "uriVariables": "{}",
+        "x": 400,
+        "y": 560,
+        "wires": [
+            [
+                "41584cb3e405a328"
+            ]
+        ]
+    },
+    {
+        "id": "41584cb3e405a328",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Low Food Alert Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "ef5041d4af74e0e5",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Low Food Alert Message",
+        "func": "msg.payload = \"Feeder food storage is running low. Please refill soon.\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 150,
+        "y": 600,
+        "wires": [
+            [
+                "b574ce2d6e8e3326"
+            ]
+        ]
+    },
+    {
+        "id": "69c93fcf81e744fa",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Clock: time event",
+        "topic": "",
+        "thing": "26bf7d1b0034546a",
+        "event": "time",
+        "x": 120,
+        "y": 640,
+        "wires": [
+            [
+                "705cf9524efe9b2b"
+            ]
+        ]
+    },
+    {
+        "id": "705cf9524efe9b2b",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Notify Lighting Of Time",
+        "topic": "",
+        "thing": "9bf5412c47a63c95",
+        "action": "notifyLightingOfTime",
+        "uriVariables": "{}",
+        "x": 380,
+        "y": 640,
+        "wires": [
+            [
+                "35ef60f4c263ee56"
+            ]
+        ]
+    },
+    {
+        "id": "35ef60f4c263ee56",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Lighting Time Sync Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "a7f5a200398fbad7",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "User: uploadLightingProfile",
+        "topic": "",
+        "thing": "a333333333333333",
+        "event": "uploadLightingProfile",
+        "x": 140,
+        "y": 680,
+        "wires": [
+            [
+                "fc0cb6e8d56d3b4a"
+            ]
+        ]
+    },
+    {
+        "id": "fc0cb6e8d56d3b4a",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alter Lighting Profile",
+        "topic": "",
+        "thing": "9bf5412c47a63c95",
+        "action": "alterLightingProfile",
+        "uriVariables": "{}",
+        "x": 410,
+        "y": 680,
+        "wires": [
+            [
+                "750a233c3e303fbd"
+            ]
+        ]
+    },
+    {
+        "id": "750a233c3e303fbd",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Lighting Profile Change Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "e290e5e1e8b58409",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Filter Issue Detected",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "event": "filterIssue",
+        "x": 130,
+        "y": 780,
+        "wires": [
+            [
+                "6ca56aaca54f6bb0"
+            ]
+        ]
+    },
+    {
+        "id": "6ca56aaca54f6bb0",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Prepare Alert Payload",
+        "func": "msg.payload = {\n    role: \"owner\",\n    message: \"Tank filter issue detected. Please check and clean or replace the filter as soon as possible.\"\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 760,
+        "wires": [
+            [
+                "7043b6a044d7d288"
+            ]
+        ]
+    },
+    {
+        "id": "7043b6a044d7d288",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Owner",
+        "topic": "",
+        "thing": "c3d4e5f6a7b80003",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 620,
+        "y": 740,
+        "wires": [
+            [
+                "4d3241bc2a4cfc07"
+            ]
+        ]
+    },
+    {
+        "id": "4d3241bc2a4cfc07",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "ee13acd99507225c",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Prepare Schedule Payload",
+        "func": "msg.payload = {\n    role: \"maintenance\",\n    task: \"Clean or replace tank filter due to detected issue.\"\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 820,
+        "wires": [
+            [
+                "5dbcc6a153190810"
+            ]
+        ]
+    },
+    {
+        "id": "5dbcc6a153190810",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Schedule Filter Cleaning/Replacement",
+        "topic": "",
+        "thing": "d4e5f6a7b8c90004",
+        "action": "scheduleTask",
+        "uriVariables": "{}",
+        "x": 680,
+        "y": 820,
+        "wires": [
+            [
+                "6a748f1fc417b105"
+            ]
+        ]
+    },
+    {
+        "id": "6a748f1fc417b105",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Task Scheduled",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "51233fc3f04cf0ef",
+        "type": "link out",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "To Schedule",
+        "mode": "link",
+        "links": [
+            "48b62c6657e17efc"
+        ],
+        "x": 95,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "48b62c6657e17efc",
+        "type": "link in",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "From Alert",
+        "links": [
+            "51233fc3f04cf0ef"
+        ],
+        "x": 170,
+        "y": 820,
+        "wires": [
+            [
+                "ee13acd99507225c"
+            ]
+        ]
+    },
+    {
+        "id": "e3c4d5e6f7a8b1c2",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Abnormal Activity Detected",
+        "topic": "",
+        "thing": "c1a2b3c4d5e6f7a9",
+        "event": "abnormalActivity",
+        "x": 150,
+        "y": 900,
+        "wires": [
+            [
+                "f4d5e6f7a8b1c2d3"
+            ]
+        ]
+    },
+    {
+        "id": "f4d5e6f7a8b1c2d3",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Format Alert for Abnormal Activity",
+        "func": "msg.payload = {\n    role: \"owner\",\n    message: `Abnormal activity detected: Lifeform '${msg.payload.lifeform}', Details: ${msg.payload.details}`\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 900,
+        "wires": [
+            [
+                "a5e6f7a8b1c2d3e4"
+            ]
+        ]
+    },
+    {
+        "id": "a5e6f7a8b1c2d3e4",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Owner (Abnormal Activity)",
+        "topic": "",
+        "thing": "d2b3c4d5e6f7a8b1",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 700,
+        "y": 900,
+        "wires": [
+            [
+                "b6f7a8b1c2d3e4f5"
+            ]
+        ]
+    },
+    {
+        "id": "b6f7a8b1c2d3e4f5",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Sent (Abnormal Activity)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "c7a8b1c2d3e4f5a6",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Health Issues Detected",
+        "topic": "",
+        "thing": "c1a2b3c4d5e6f7a9",
+        "event": "healthIssuesDetected",
+        "x": 150,
+        "y": 940,
+        "wires": [
+            [
+                "d8b1c2d3e4f5a6c7"
+            ]
+        ]
+    },
+    {
+        "id": "d8b1c2d3e4f5a6c7",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Format Alert for Health Issue",
+        "func": "msg.payload = {\n    role: \"owner\",\n    message: `Health issue detected: Lifeform '${msg.payload.lifeform}', Details: ${msg.payload.details}`\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 940,
+        "wires": [
+            [
+                "e9c2d3e4f5a6c7b8"
+            ]
+        ]
+    },
+    {
+        "id": "e9c2d3e4f5a6c7b8",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Owner (Health Issue)",
+        "topic": "",
+        "thing": "d2b3c4d5e6f7a8b1",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 700,
+        "y": 940,
+        "wires": [
+            [
+                "f0d3e4f5a6c7b8c9"
+            ]
+        ]
+    },
+    {
+        "id": "f0d3e4f5a6c7b8c9",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Sent (Health Issue)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "563e20429fbefc0e",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Maintenance Required",
+        "topic": "",
+        "thing": "5472b678a30df435",
+        "event": "regularMaintenanceRequired",
+        "x": 160,
+        "y": 1020,
+        "wires": [
+            [
+                "dedd30db5c840d98"
+            ]
+        ]
+    },
+    {
+        "id": "dedd30db5c840d98",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Format Reminder Message",
+        "func": "// Compose a reminder message for the user\nconst task = msg.payload.task;\nconst dueDate = msg.payload.dueDate;\nmsg.payload = {\n    message: `Reminder: Maintenance task \"${task}\" is due by ${new Date(dueDate * 1000).toLocaleString()}.`,\n    task: task,\n    dueDate: dueDate\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 1020,
+        "wires": [
+            [
+                "279a984484981d7a"
+            ]
+        ]
+    },
+    {
+        "id": "279a984484981d7a",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Send Reminder to User",
+        "topic": "",
+        "thing": "a5cb706373dc23f2",
+        "action": "receiveWaterConditions",
+        "uriVariables": "{}",
+        "x": 670,
+        "y": 1020,
+        "wires": [
+            [
+                "cde3b8bc0906015e"
+            ]
+        ]
+    },
+    {
+        "id": "cde3b8bc0906015e",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "User Reminder Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "155d401fb561f1db",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Power Outage Detected",
+        "topic": "",
+        "thing": "1879a2ebe44c3349",
+        "event": "powerOutage",
+        "x": 200,
+        "y": 1100,
+        "wires": [
+            [
+                "9ddd83ef7f156fc7"
+            ]
+        ]
+    },
+    {
+        "id": "9ddd83ef7f156fc7",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Enable Backup Power",
+        "topic": "",
+        "thing": "1e03fb6ff842083c",
+        "action": "enableBackupPower",
+        "uriVariables": "{}",
+        "x": 450,
+        "y": 1100,
+        "wires": [
+            [
+                "92b8edee6497b6e1"
+            ]
+        ]
+    },
+    {
+        "id": "92b8edee6497b6e1",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Owner",
+        "topic": "",
+        "thing": "a333333333333333",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 690,
+        "y": 1100,
+        "wires": [
+            [
+                "f8ecd81fff358fe6"
+            ]
+        ]
+    },
+    {
+        "id": "f8ecd81fff358fe6",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Alert Sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "ef68e3951b573cb4",
+        "type": "function",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Prepare Alert Payload",
+        "func": "msg.payload = {\n    role: \"owner\",\n    message: \"Power outage detected. Backup power enabled.\"\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 1140,
+        "wires": [
+            [
+                "92b8edee6497b6e1"
+            ]
+        ]
+    },
+    {
+        "id": "b4999af76381b8bb",
+        "type": "inject",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Request Water Conditions",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 1220,
+        "wires": [
+            [
+                "68b5654523320a3a"
+            ]
+        ]
+    },
+    {
+        "id": "68b5654523320a3a",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "User requests water conditions",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "event": "requestWaterConditions",
+        "x": 420,
+        "y": 1220,
+        "wires": [
+            [
+                "6a525d40ce139a85"
+            ]
+        ]
+    },
+    {
+        "id": "6a525d40ce139a85",
+        "type": "read-property",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Read all tank sensor properties",
+        "topic": "",
+        "thing": "c3d4e5f6a7b80003",
+        "property": "",
+        "uriVariables": "{}",
+        "observe": false,
+        "x": 710,
+        "y": 1220,
+        "wires": [
+            [
+                "e202cd7a82f2c67f"
+            ]
+        ]
+    },
+    {
+        "id": "e202cd7a82f2c67f",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Send water conditions to user",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "action": "receiveWaterConditions",
+        "uriVariables": "{}",
+        "x": 1000,
+        "y": 1220,
+        "wires": [
+            [
+                "b3685a3d7307115f"
+            ]
+        ]
+    },
+    {
+        "id": "b3685a3d7307115f",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Water conditions sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1250,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "1189a2ccb8c1d4d2",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "User requests camera feed",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "event": "accessCameraFeed",
+        "x": 220,
+        "y": 1340,
+        "wires": [
+            [
+                "f30cf4c927e520fa"
+            ]
+        ]
+    },
+    {
+        "id": "f30cf4c927e520fa",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Get camera connection",
+        "topic": "",
+        "thing": "d4e5f6a7b8c90004",
+        "action": "getCameraConnection",
+        "uriVariables": "{}",
+        "x": 510,
+        "y": 1340,
+        "wires": [
+            [
+                "e28f7058dc27d2e1"
+            ]
+        ]
+    },
+    {
+        "id": "e28f7058dc27d2e1",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Send camera connection to user",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "action": "receiveCameraConnection",
+        "uriVariables": "{}",
+        "x": 810,
+        "y": 1340,
+        "wires": [
+            [
+                "db163b0054eb1649"
+            ]
+        ]
+    },
+    {
+        "id": "db163b0054eb1649",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Camera connection sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "893078f23603729b",
+        "type": "subscribe-event",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "User forces food dispense",
+        "topic": "",
+        "thing": "b2c3d4e5f6a70002",
+        "event": "forceFoodDispense",
+        "x": 220,
+        "y": 1460,
+        "wires": [
+            [
+                "fa628f85e5691652"
+            ]
+        ]
+    },
+    {
+        "id": "fa628f85e5691652",
+        "type": "invoke-action",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Dispense food",
+        "topic": "",
+        "thing": "e5f6a7b8c9da0005",
+        "action": "dispenseFood",
+        "uriVariables": "{}",
+        "x": 510,
+        "y": 1460,
+        "wires": [
+            [
+                "b65c4a4ea69b66c0"
+            ]
+        ]
+    },
+    {
+        "id": "b65c4a4ea69b66c0",
+        "type": "debug",
+        "z": "cc4a58076f1acbc3",
+        "d": true,
+        "name": "Food dispensed",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 1460,
+        "wires": []
+    },
+    {
+        "id": "db1e2230b68cdf4f",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9112/tanksensors",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "a79f6be8cb446366",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9109/tankactuators",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "b2c3d4e5f6a70002",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9112/tanksensors",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "c3d4e5f6a7b80003",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9109/tankactuators",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "c221585f02c1260c",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9105/fooddispensor",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "e9ee9f9eeca10079",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9113/userdevice",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "26bf7d1b0034546a",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9103/clock",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "9bf5412c47a63c95",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9111/tanklighting",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "c1a2b3c4d5e6f7a9",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9106/lifeformmonitor",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "d2b3c4d5e6f7a8b1",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9101/alertsystem",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "5472b678a30df435",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9108/scheduler",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "a5cb706373dc23f2",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9113/userdevice",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "1879a2ebe44c3349",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9107/outagedetector",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "1e03fb6ff842083c",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9102/backuppower",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "91562b7bddb4f0a0",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@thingweb/node-red-node-wot": "1.2.4"
+        }
+    }
+]

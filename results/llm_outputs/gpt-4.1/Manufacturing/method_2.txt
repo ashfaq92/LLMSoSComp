@@ -1,0 +1,828 @@
+🤖 Node-RED Workflow Generator ready!
+Describe the workflow you want (e.g., 'Blink LEDs when washing machine finishes')
+Type 'bye' or 'exit' to exit.
+
+You: When a quality, temperature, or vibration alert is made, send this data for analysis. Once data analysis is complete log the result as well as analysing it for indications that maintenance is needed. If maintenance is needed, alert the manager of this.
+
+🔄 Processing your request...
+
+
+📝 Generated Node-RED Workflow:
+
+[
+  {
+    "id": "a1b2c3d4e5f6a7b8",
+    "type": "tab",
+    "label": "Alert-Analysis-Maintenance",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "b1c2d3e4f5a6b7c8",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9006/qualityinspector",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c2d3e4f5a6b7c8d9",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9008/temperaturetracker",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "d3e4f5a6b7c8d9e0",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9009/vibrationmonitor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "e4f5a6b7c8d9e0f1",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9007/sensorhub",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "f5a6b7c8d9e0f1a2",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9001/database",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "a6b7c8d9e0f1a2b3",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9004/maintenancemonitor",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b7c8d9e0f1a2b3c4",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9005/managersdevice",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c8d9e0f1a2b3c4d5",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Quality Alert",
+    "topic": "",
+    "thing": "b1c2d3e4f5a6b7c8",
+    "event": "newQualityData",
+    "x": 160,
+    "y": 100,
+    "wires": [
+      [
+        "e0f1a2b3c4d5e6f7"
+      ]
+    ]
+  },
+  {
+    "id": "d9e0f1a2b3c4d5e6",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Temperature Alert",
+    "topic": "",
+    "thing": "c2d3e4f5a6b7c8d9",
+    "event": "temperatureAlert",
+    "x": 160,
+    "y": 180,
+    "wires": [
+      [
+        "e0f1a2b3c4d5e6f7"
+      ]
+    ]
+  },
+  {
+    "id": "e0f1a2b3c4d5e6f7",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Format Sensor Data",
+    "func": "// Identify source and format for SensorHub\nlet sensorName = '';\nif (msg.event === 'newQualityData') sensorName = 'quality';\nelse if (msg.event === 'temperatureAlert') sensorName = 'temperature';\nelse if (msg.event === 'vibrationAlert') sensorName = 'vibration';\nmsg.payload = {\n    sensorName: sensorName,\n    data: msg.payload\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 140,
+    "wires": [
+      [
+        "f1a2b3c4d5e6f7a8"
+      ]
+    ]
+  },
+  {
+    "id": "f1a2b3c4d5e6f7a8",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Send Data for Analysis",
+    "topic": "",
+    "thing": "e4f5a6b7c8d9e0f1",
+    "action": "processSensorData",
+    "uriVariables": "{}",
+    "x": 650,
+    "y": 140,
+    "wires": [
+      [
+        "a2b3c4d5e6f7a8b9"
+      ]
+    ]
+  },
+  {
+    "id": "a2b3c4d5e6f7a8b9",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Analysis Complete",
+    "topic": "",
+    "thing": "e4f5a6b7c8d9e0f1",
+    "event": "dataProcessingComplete",
+    "x": 900,
+    "y": 140,
+    "wires": [
+      [
+        "b3c4d5e6f7a8b9c0"
+      ]
+    ]
+  },
+  {
+    "id": "b3c4d5e6f7a8b9c0",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Prepare Log and Maintenance Check",
+    "func": "// Log the result and prepare for maintenance check\nmsg.logData = msg.payload;\nmsg.maintenanceCheck = msg.payload;\nreturn [msg, msg];",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1150,
+    "y": 140,
+    "wires": [
+      [
+        "c4d5e6f7a8b9c0d1"
+      ],
+      [
+        "d5e6f7a8b9c0d1e2"
+      ]
+    ]
+  },
+  {
+    "id": "c4d5e6f7a8b9c0d1",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Log Analysis Result",
+    "topic": "",
+    "thing": "f5a6b7c8d9e0f1a2",
+    "action": "logData",
+    "uriVariables": "{}",
+    "x": 1400,
+    "y": 100,
+    "wires": [
+      [
+        "e6f7a8b9c0d1e2f3"
+      ]
+    ]
+  },
+  {
+    "id": "d5e6f7a8b9c0d1e2",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Check for Maintenance",
+    "topic": "",
+    "thing": "a6b7c8d9e0f1a2b3",
+    "action": "reviewForMaintenance",
+    "uriVariables": "{}",
+    "x": 1400,
+    "y": 180,
+    "wires": [
+      [
+        "f7a8b9c0d1e2f3a4"
+      ]
+    ]
+  },
+  {
+    "id": "e6f7a8b9c0d1e2f3",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Log Output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1650,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "f7a8b9c0d1e2f3a4",
+    "type": "function",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "If Maintenance Needed",
+    "func": "// If maintenance is needed, alert manager\nif (msg.payload === true) {\n    return {\n        payload: {\n            alertType: \"maintenance\",\n            alertContent: \"Maintenance required based on analysis.\"\n        }\n    };\n}\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1650,
+    "y": 180,
+    "wires": [
+      [
+        "a8b9c0d1e2f3a4b5"
+      ]
+    ]
+  },
+  {
+    "id": "a8b9c0d1e2f3a4b5",
+    "type": "invoke-action",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Alert Manager",
+    "topic": "",
+    "thing": "b7c8d9e0f1a2b3c4",
+    "action": "alertManager",
+    "uriVariables": "{}",
+    "x": 1900,
+    "y": 180,
+    "wires": [
+      [
+        "b9c0d1e2f3a4b5c6"
+      ]
+    ]
+  },
+  {
+    "id": "b9c0d1e2f3a4b5c6",
+    "type": "debug",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Manager Alert Output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 2150,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "e5f6a7b8c9d0e1f2",
+    "type": "subscribe-event",
+    "z": "a1b2c3d4e5f6a7b8",
+    "name": "Vibration Alert",
+    "topic": "",
+    "thing": "d3e4f5a6b7c8d9e0",
+    "event": "vibrationAlert",
+    "x": 160,
+    "y": 260,
+    "wires": [
+      [
+        "e0f1a2b3c4d5e6f7"
+      ]
+    ]
+  }
+]
+You: Additionally, send the result of data analysis to be analysed for efficiency and alert the manager of this too.
+
+🔄 Processing your request...
+
+
+📝 Generated Node-RED Workflow:
+
+[
+  {
+    "id": "b1e2a1c3d4e5f607",
+    "type": "tab",
+    "label": "Sensor Data Analysis & Manager Alert",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "a1b2c3d4e5f60718",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9007/sensorhub",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b2c3d4e5f6071829",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9002/efficiencyanalyser",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c3d4e5f6071829a1",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9005/managersdevice",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "d4e5f6071829a1b2",
+    "type": "inject",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "Trigger sensor data processing",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"sensorName\":\"sensor1\",\"data\":\"sample_data\"}",
+    "payloadType": "json",
+    "x": 180,
+    "y": 100,
+    "wires": [
+      [
+        "e5f6071829a1b2c3"
+      ]
+    ]
+  },
+  {
+    "id": "e5f6071829a1b2c3",
+    "type": "invoke-action",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "Process Sensor Data",
+    "topic": "",
+    "thing": "a1b2c3d4e5f60718",
+    "action": "processSensorData",
+    "uriVariables": "{}",
+    "x": 430,
+    "y": 100,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "f6071829a1b2c3d4",
+    "type": "subscribe-event",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "On Data Processing Complete",
+    "topic": "",
+    "thing": "a1b2c3d4e5f60718",
+    "event": "dataProcessingComplete",
+    "x": 210,
+    "y": 220,
+    "wires": [
+      [
+        "071829a1b2c3d4e5"
+      ]
+    ]
+  },
+  {
+    "id": "071829a1b2c3d4e5",
+    "type": "invoke-action",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "Calculate Efficiency",
+    "topic": "",
+    "thing": "b2c3d4e5f6071829",
+    "action": "calculateEfficiency",
+    "uriVariables": "{}",
+    "x": 470,
+    "y": 220,
+    "wires": [
+      [
+        "1829a1b2c3d4e5f6",
+        "29a1b2c3d4e5f607"
+      ]
+    ]
+  },
+  {
+    "id": "1829a1b2c3d4e5f6",
+    "type": "debug",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "Efficiency Result",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 730,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "29a1b2c3d4e5f607",
+    "type": "function",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "Prepare Manager Alert",
+    "func": "msg.payload = {\n    alertType: \"EfficiencyAnalysis\",\n    alertContent: \"Efficiency result: \" + msg.payload\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 730,
+    "y": 260,
+    "wires": [
+      [
+        "3a1b2c3d4e5f6071"
+      ]
+    ]
+  },
+  {
+    "id": "3a1b2c3d4e5f6071",
+    "type": "invoke-action",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "Alert Manager",
+    "topic": "",
+    "thing": "c3d4e5f6071829a1",
+    "action": "alertManager",
+    "uriVariables": "{}",
+    "x": 990,
+    "y": 260,
+    "wires": [
+      [
+        "4b2c3d4e5f607182"
+      ]
+    ]
+  },
+  {
+    "id": "4b2c3d4e5f607182",
+    "type": "debug",
+    "z": "b1e2a1c3d4e5f607",
+    "name": "Manager Alert Sent",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1230,
+    "y": 260,
+    "wires": []
+  }
+]
+You: Send quality alerts directly to the manager.
+
+🔄 Processing your request...
+
+
+🤖 Agent Response:
+```json
+[
+  {
+    "id": "b1e2c3d4e5f60718",
+    "type": "tab",
+    "label": "Quality Alert to Manager",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "a1b2c3d4e5f60718",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9006/qualityinspector",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "b2c3d4e5f6a10718",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9005/managersdevice",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "c3d4e5f6a1b20718",
+    "type": "subscribe-event",
+    "z": "b1e2c3d4e5f60718",
+    "name": "Subscribe to newQualityData",
+    "topic": "",
+    "thing": "a1b2c3d4e5f60718",
+    "event": "newQualityData",
+    "x": 180,
+    "y": 180,
+    "wires": [["d4e5f6a1b2c30718"]]
+  },
+  {
+    "id": "d4e5f6a1b2c30718",
+    "type": "function",
+    "z": "b1e2c3d4e5f60718",
+    "name": "Format Alert for Manager",
+    "func": "msg.payload = {\n    alertType: \"quality\",\n    alertContent: msg.payload\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 430,
+    "y": 180,
+    "wires": [["e5f6a1b2c3d40718"]]
+  },
+  {
+    "id": "e5f6a1b2c3d40718",
+    "type": "invoke-action",
+    "z": "b1e2c3d4e5f60718",
+    "name": "Alert Manager",
+    "topic": "",
+    "thing": "b2c3d4e5f6a10718",
+    "action": "alertManager",
+    "uriVariables": "{}",
+    "x": 670,
+    "y": 180,
+    "wires": [["f6a1b2c3d4e50817"]]
+  },
+  {
+    "id": "f6a1b2c3d4e50817",
+    "type": "debug",
+    "z": "b1e2c3d4e5f60718",
+    "name": "Manager Alert Output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 180,
+    "wires": []
+  }
+]
+```
+You: When resources are used, alert the manager of the usage, and log it in the database.
+
+🔄 Processing your request...
+
+
+🤖 Agent Response:
+```json
+[
+  {
+    "id": "b1e2a3c4d5e6f789",
+    "type": "tab",
+    "label": "Resource Usage Alert and Log",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "c1274570aabbccdd",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9003/inventorymanager",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "0ef4c514aabbccdd",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9001/database",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "82b26db6aabbccdd",
+    "type": "consumed-thing",
+    "tdLink": "http://192.168.0.172:9005/managersdevice",
+    "td": "",
+    "http": true,
+    "ws": false,
+    "coap": false,
+    "mqtt": false,
+    "opcua": false,
+    "modbus": false,
+    "basicAuth": false,
+    "username": "",
+    "password": ""
+  },
+  {
+    "id": "e1f2d3c4b5a69788",
+    "type": "subscribe-event",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "On Resource Used",
+    "topic": "",
+    "thing": "c1274570aabbccdd",
+    "event": "resourceUsed",
+    "x": 180,
+    "y": 180,
+    "wires": [["f1e2d3c4b5a69788","a1b2c3d4e5f69788"]]
+  },
+  {
+    "id": "f1e2d3c4b5a69788",
+    "type": "function",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "Format Manager Alert",
+    "func": "// Prepare alert for manager\nmsg.payload = {\n  alertType: \"ResourceUsed\",\n  alertContent: `Resource '${msg.payload.resourceName}' used, quantity: ${msg.payload.quantity}`\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 140,
+    "wires": [["b1c2d3e4f5a69788"]]
+  },
+  {
+    "id": "b1c2d3e4f5a69788",
+    "type": "invoke-action",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "Alert Manager",
+    "topic": "",
+    "thing": "82b26db6aabbccdd",
+    "action": "alertManager",
+    "uriVariables": "{}",
+    "x": 670,
+    "y": 140,
+    "wires": [["c1d2e3f4a5b69788"]]
+  },
+  {
+    "id": "c1d2e3f4a5b69788",
+    "type": "debug",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "Manager Alert Result",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 140,
+    "wires": []
+  },
+  {
+    "id": "a1b2c3d4e5f69788",
+    "type": "function",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "Format Log Data",
+    "func": "// Prepare log string for database\nmsg.payload = `Resource '${msg.payload.resourceName}' used, quantity: ${msg.payload.quantity}`;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 220,
+    "wires": [["d1e2f3a4b5c69788"]]
+  },
+  {
+    "id": "d1e2f3a4b5c69788",
+    "type": "invoke-action",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "Log Resource Usage",
+    "topic": "",
+    "thing": "0ef4c514aabbccdd",
+    "action": "logData",
+    "uriVariables": "{}",
+    "x": 670,
+    "y": 220,
+    "wires": [["e1f2a3b4c5d69788"]]
+  },
+  {
+    "id": "e1f2a3b4c5d69788",
+    "type": "debug",
+    "z": "b1e2a3c4d5e6f789",
+    "name": "Database Log Result",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 900,
+    "y": 220,
+    "wires": []
+  }
+]
+```

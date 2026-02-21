@@ -1,0 +1,11 @@
+1. If: pH out of range OR temperature out of range OR salinity/nitrate abnormal OR abnormal fish behavior detected, Then: Reduce speaker volume, Smart assistant announces critical aquarium alert, Turn on main room light (if off), If morning alarm triggers during this condition → override heating automation.
+
+2. If: Aquarium is in abnormal condition AND Morning alarm triggers, Then: Do NOT activate 30°C heating boost, Reduce speaker volume, Announce critical aquarium alert, Turn on main room light
+
+3. If: Motion detected in aquarium room AND Feeding time is approaching, Then: Turn on main room light, Adjust aquarium lighting profile, Send notification with real-time tank data, Notify owner that manual food dispensing is available
+
+4. When power outage occurs: Aquarium switches to backup power, Smart assistant announces outage, Reduce speaker volume to minimum, Disable non-essential heating (cancel 30°C boost if active),Suspend non-critical lighting adjustments.
+
+5. When morning alarm triggers: Turn heating to 30°C for 20 mins, Adjust aquarium lighting to simulate sunrise profile, Dispense scheduled food if within feeding time window, Smart assistant announces tank conditions summary.
+
+6. If no motion is detected in main room between 11 PM - 6 AM (owner sleeping), aquarium system automatically postpones any non-emergency alerts until morning alarm triggers. During this period, if abnormal aquarium behavior or health issues are detected, only the main room light blinks (silent alert) rather than using the smart assistant. All postponed alerts are announced via smart assistant immediately after morning alarm.

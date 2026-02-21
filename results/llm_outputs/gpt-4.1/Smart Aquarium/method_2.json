@@ -1,0 +1,1783 @@
+[
+    {
+        "id": "2a5db3da8b8f347a",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "pH Level Event",
+        "topic": "",
+        "thing": "db1e2230b68cdf4f",
+        "event": "pHLevel",
+        "x": 160,
+        "y": 100,
+        "wires": [
+            [
+                "e2c49d52fb3d3472"
+            ]
+        ]
+    },
+    {
+        "id": "e2c49d52fb3d3472",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Check pH Range",
+        "func": "// Acceptable pH range\nconst minPH = 6.5;\nconst maxPH = 7.5;\nconst pH = msg.payload;\nif (pH < minPH) {\n    // Too acidic, add crushed coral\n    msg.payload = { chemical: \"crushed coral\", amount: 1 };\n    msg.action = \"raise\";\n    return [msg, null];\n} else if (pH > maxPH) {\n    // Too alkaline, add CO2\n    msg.payload = { chemical: \"CO2\", amount: 1 };\n    msg.action = \"lower\";\n    return [null, msg];\n}\n// In range, do nothing\nreturn [null, null];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 100,
+        "wires": [
+            [
+                "654b8263d49e6a06"
+            ],
+            [
+                "5e77657252af6fdb"
+            ]
+        ]
+    },
+    {
+        "id": "654b8263d49e6a06",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Dispense Crushed Coral",
+        "topic": "",
+        "thing": "a79f6be8cb446366",
+        "action": "dispenseChemical",
+        "uriVariables": "{}",
+        "x": 670,
+        "y": 60,
+        "wires": [
+            [
+                "28627e088d484555"
+            ]
+        ]
+    },
+    {
+        "id": "5e77657252af6fdb",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Dispense CO2",
+        "topic": "",
+        "thing": "a79f6be8cb446366",
+        "action": "dispenseChemical",
+        "uriVariables": "{}",
+        "x": 670,
+        "y": 140,
+        "wires": [
+            [
+                "c9924b13019574cc"
+            ]
+        ]
+    },
+    {
+        "id": "28627e088d484555",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Crushed Coral Dispensed",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "c9924b13019574cc",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "CO2 Dispensed",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "58a93d5839f33e7c",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Temperature Event",
+        "topic": "",
+        "thing": "acb240960352f808",
+        "event": "temperature",
+        "x": 190,
+        "y": 260,
+        "wires": [
+            [
+                "debe93cf714f7e98"
+            ]
+        ]
+    },
+    {
+        "id": "debe93cf714f7e98",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Check Temp Range",
+        "func": "// Optimum temperature range\nconst optimum = 25; // Example optimum value\nconst min = 23;\nconst max = 27;\nconst temp = msg.payload;\nif (temp < min) {\n    // Too cold, turn heater on to optimum\n    return [{payload: optimum}, null];\n} else if (temp > max) {\n    // Too hot, turn cooler on to optimum\n    return [null, {payload: optimum}];\n} else {\n    // In range, do nothing\n    return [null, null];\n}\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 260,
+        "wires": [
+            [
+                "b8542d84e11bf2bb"
+            ],
+            [
+                "5db11e19ca18f936"
+            ]
+        ]
+    },
+    {
+        "id": "b8542d84e11bf2bb",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Heater On (to optimum)",
+        "topic": "",
+        "thing": "d0839877cf008987",
+        "action": "heaterOn",
+        "uriVariables": "{}",
+        "x": 710,
+        "y": 220,
+        "wires": [
+            [
+                "7cd9030b63adf40a"
+            ]
+        ]
+    },
+    {
+        "id": "5db11e19ca18f936",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Cooler On (to optimum)",
+        "topic": "",
+        "thing": "d0839877cf008987",
+        "action": "coolerOn",
+        "uriVariables": "{}",
+        "x": 710,
+        "y": 300,
+        "wires": [
+            [
+                "7cd9030b63adf40a"
+            ]
+        ]
+    },
+    {
+        "id": "7cd9030b63adf40a",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Action Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "9f742dabd28f524b",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Salinity Event",
+        "topic": "",
+        "thing": "3d62e4f508715af3",
+        "event": "salinity",
+        "x": 130,
+        "y": 380,
+        "wires": [
+            [
+                "015189203ca7518d"
+            ]
+        ]
+    },
+    {
+        "id": "015189203ca7518d",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Check Salinity Level",
+        "func": "// Assume threshold for low salinity is 30 (example)\nconst LOW_SALINITY_THRESHOLD = 30;\nif (msg.payload < LOW_SALINITY_THRESHOLD) {\n    return {\n        payload: {\n            chemical: \"salt\",\n            amount: 1 // Example amount, adjust as needed\n        }\n    };\n}\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 380,
+        "wires": [
+            [
+                "f48f2fa3cfaea828"
+            ]
+        ]
+    },
+    {
+        "id": "f48f2fa3cfaea828",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Dispense Salt",
+        "topic": "",
+        "thing": "de5e71837f335dba",
+        "action": "dispenseChemical",
+        "uriVariables": "{}",
+        "x": 600,
+        "y": 380,
+        "wires": [
+            [
+                "2ab42355c2d011fc"
+            ]
+        ]
+    },
+    {
+        "id": "2ab42355c2d011fc",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Salt Dispense Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "2cb4a89375da6ca9",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Nitrate Level Event",
+        "topic": "",
+        "thing": "3d62e4f508715af3",
+        "event": "nitrateLevel",
+        "x": 150,
+        "y": 420,
+        "wires": [
+            [
+                "5c23ee6d54382723"
+            ]
+        ]
+    },
+    {
+        "id": "5c23ee6d54382723",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Check Nitrate Level",
+        "func": "// Assume threshold for low nitrate is 10 (example)\nconst LOW_NITRATE_THRESHOLD = 10;\nif (msg.payload < LOW_NITRATE_THRESHOLD) {\n    return {\n        payload: {\n            chemical: \"potassium nitrate\",\n            amount: 1 // Example amount, adjust as needed\n        }\n    };\n}\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 420,
+        "wires": [
+            [
+                "a9305e0c27b997c5"
+            ]
+        ]
+    },
+    {
+        "id": "a9305e0c27b997c5",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Dispense Potassium Nitrate",
+        "topic": "",
+        "thing": "de5e71837f335dba",
+        "action": "dispenseChemical",
+        "uriVariables": "{}",
+        "x": 660,
+        "y": 420,
+        "wires": [
+            [
+                "a202274860e2d529"
+            ]
+        ]
+    },
+    {
+        "id": "a202274860e2d529",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Potassium Nitrate Dispense Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "c1d2e3f4a5b6c701",
+        "type": "inject",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Scheduled Feed (8am)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "0 8 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "5",
+        "payloadType": "num",
+        "x": 190,
+        "y": 480,
+        "wires": [
+            [
+                "e1f2a3b4c5d6e701"
+            ]
+        ]
+    },
+    {
+        "id": "e1f2a3b4c5d6e701",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Dispense Food (5 units)",
+        "topic": "",
+        "thing": "f2a1b3c4d5e6f701",
+        "action": "dispenseFood",
+        "uriVariables": "{}",
+        "x": 430,
+        "y": 480,
+        "wires": [
+            [
+                "f1e2d3c4b5a6f701"
+            ]
+        ]
+    },
+    {
+        "id": "f1e2d3c4b5a6f701",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Dispense Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "b2c3d4e5f6a7b801",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Low Food Level Event",
+        "topic": "",
+        "thing": "f2a1b3c4d5e6f701",
+        "event": "lowFoodLevel",
+        "x": 120,
+        "y": 540,
+        "wires": [
+            [
+                "c2d3e4f5a6b7c801"
+            ]
+        ]
+    },
+    {
+        "id": "c2d3e4f5a6b7c801",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Prepare Alert Payload",
+        "func": "msg.payload = {\n  role: \"owner\",\n  message: \"Food storage is running low in the feeder. Please refill soon.\"\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 540,
+        "wires": [
+            [
+                "d3e4f5a6b7c8d901"
+            ]
+        ]
+    },
+    {
+        "id": "d3e4f5a6b7c8d901",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Owner",
+        "topic": "",
+        "thing": "a1b2c3d4e5f6a701",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 590,
+        "y": 540,
+        "wires": [
+            [
+                "e4f5a6b7c8d9e001"
+            ]
+        ]
+    },
+    {
+        "id": "e4f5a6b7c8d9e001",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "f4d5e6f7a8b9c001",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Clock: time event",
+        "topic": "",
+        "thing": "d2b3c4d5e6f7a801",
+        "event": "time",
+        "x": 120,
+        "y": 600,
+        "wires": [
+            [
+                "a5e6f7a8b9c0d101"
+            ]
+        ]
+    },
+    {
+        "id": "a5e6f7a8b9c0d101",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Notify Lighting Of Time",
+        "topic": "",
+        "thing": "c1a2b3c4d5e6f701",
+        "action": "notifyLightingOfTime",
+        "uriVariables": "{}",
+        "x": 380,
+        "y": 600,
+        "wires": [
+            [
+                "b6f7a8b9c0d1e201"
+            ]
+        ]
+    },
+    {
+        "id": "b6f7a8b9c0d1e201",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Lighting Time Sync Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "c7a8b9c0d1e2f301",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "User: uploadLightingProfile",
+        "topic": "",
+        "thing": "e3c4d5e6f7a8b901",
+        "event": "uploadLightingProfile",
+        "x": 130,
+        "y": 640,
+        "wires": [
+            [
+                "d8b9c0d1e2f3a401"
+            ]
+        ]
+    },
+    {
+        "id": "d8b9c0d1e2f3a401",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alter Lighting Profile",
+        "topic": "",
+        "thing": "c1a2b3c4d5e6f701",
+        "action": "alterLightingProfile",
+        "uriVariables": "{}",
+        "x": 390,
+        "y": 640,
+        "wires": [
+            [
+                "e9c0d1e2f3a4b501"
+            ]
+        ]
+    },
+    {
+        "id": "e9c0d1e2f3a4b501",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Lighting Profile Change Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "3fc0a5f1ba30d895",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Filter Issue Detected",
+        "topic": "",
+        "thing": "f1a2b3c4d5e6f7a8",
+        "event": "filterIssue",
+        "x": 170,
+        "y": 720,
+        "wires": [
+            [
+                "7248bf535d68611d"
+            ]
+        ]
+    },
+    {
+        "id": "7248bf535d68611d",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Prepare Alert Message",
+        "func": "msg.payload = {\n  role: \"owner\",\n  message: \"Tank filter is clogged or not working efficiently. Please check and clean or replace the filter.\"\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 720,
+        "wires": [
+            [
+                "2413f6e002521136"
+            ]
+        ]
+    },
+    {
+        "id": "2413f6e002521136",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Owner",
+        "topic": "",
+        "thing": "fd7d889cada96968",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 610,
+        "y": 720,
+        "wires": [
+            [
+                "11e2473e619a402a"
+            ]
+        ]
+    },
+    {
+        "id": "11e2473e619a402a",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "d996ba207095aeec",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Prepare Schedule Task",
+        "func": "msg.payload = {\n  role: \"maintenance\",\n  task: \"Clean or replace tank filter due to detected issue.\"\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 780,
+        "wires": [
+            [
+                "d64356684d693852"
+            ]
+        ]
+    },
+    {
+        "id": "d64356684d693852",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Schedule Filter Cleaning/Replacement",
+        "topic": "",
+        "thing": "d598f8b56a08040e",
+        "action": "scheduleTask",
+        "uriVariables": "{}",
+        "x": 720,
+        "y": 780,
+        "wires": [
+            [
+                "c9c9d0ab1f0de7c5"
+            ]
+        ]
+    },
+    {
+        "id": "c9c9d0ab1f0de7c5",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Schedule Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "68b1343a556146a4",
+        "type": "link out",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "",
+        "mode": "link",
+        "links": [
+            "d204949051248090"
+        ],
+        "x": 135,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "d204949051248090",
+        "type": "link in",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "",
+        "links": [
+            "68b1343a556146a4"
+        ],
+        "x": 205,
+        "y": 780,
+        "wires": [
+            [
+                "d996ba207095aeec"
+            ]
+        ]
+    },
+    {
+        "id": "ea78b95ad6215bed",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Abnormal Activity Detected",
+        "topic": "",
+        "thing": "c1a2b3c4d5e6f7a8",
+        "event": "abnormalActivity",
+        "x": 170,
+        "y": 840,
+        "wires": [
+            [
+                "d999178d0528b235"
+            ]
+        ]
+    },
+    {
+        "id": "d999178d0528b235",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Format Alert (Abnormal Activity)",
+        "func": "msg.payload = {\n    role: \"owner\",\n    message: `Abnormal activity detected for ${msg.payload.lifeform}: ${msg.payload.details}`\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 840,
+        "wires": [
+            [
+                "6207c0da1221e42e"
+            ]
+        ]
+    },
+    {
+        "id": "6207c0da1221e42e",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Owner (Abnormal Activity)",
+        "topic": "",
+        "thing": "d2b3c4d5e6f7a8b9",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 710,
+        "y": 840,
+        "wires": [
+            [
+                "5abace7547a69ed1"
+            ]
+        ]
+    },
+    {
+        "id": "5abace7547a69ed1",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Sent (Abnormal Activity)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "21de6e3678be77b9",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Health Issues Detected",
+        "topic": "",
+        "thing": "c1a2b3c4d5e6f7a8",
+        "event": "healthIssuesDetected",
+        "x": 170,
+        "y": 880,
+        "wires": [
+            [
+                "b1cf227ba7cb9eab"
+            ]
+        ]
+    },
+    {
+        "id": "b1cf227ba7cb9eab",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Format Alert (Health Issue)",
+        "func": "msg.payload = {\n    role: \"owner\",\n    message: `Health issue detected for ${msg.payload.lifeform}: ${msg.payload.details}`\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 880,
+        "wires": [
+            [
+                "0813df6ef2ec2763"
+            ]
+        ]
+    },
+    {
+        "id": "0813df6ef2ec2763",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Owner (Health Issue)",
+        "topic": "",
+        "thing": "d2b3c4d5e6f7a8b9",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 710,
+        "y": 880,
+        "wires": [
+            [
+                "333229ef4b881d44"
+            ]
+        ]
+    },
+    {
+        "id": "333229ef4b881d44",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Sent (Health Issue)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "f2e3d4c5b6a79801",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "On Maintenance Required",
+        "topic": "",
+        "thing": "c1f2e3d4a5b6c7d8",
+        "event": "regularMaintenanceRequired",
+        "x": 150,
+        "y": 940,
+        "wires": [
+            [
+                "a1b2c3d4e5f60718"
+            ]
+        ]
+    },
+    {
+        "id": "a1b2c3d4e5f60718",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Format Reminder Message",
+        "func": "// Format the reminder message for the owner\nconst task = msg.payload.task || \"maintenance task\";\nconst due = msg.payload.dueDate ? new Date(msg.payload.dueDate * 1000).toLocaleString() : \"soon\";\nmsg.payload = {\n    role: \"owner\",\n    message: `Reminder: '${task}' is due by ${due}.`\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 940,
+        "wires": [
+            [
+                "b3c4d5e6f7a80910"
+            ]
+        ]
+    },
+    {
+        "id": "b3c4d5e6f7a80910",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Send Reminder to Owner",
+        "topic": "",
+        "thing": "e4f5a6b7c8d9e0f1",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 670,
+        "y": 940,
+        "wires": [
+            [
+                "c5d6e7f8a9b00112"
+            ]
+        ]
+    },
+    {
+        "id": "c5d6e7f8a9b00112",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Reminder Sent Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "0344bfe0962e9864",
+        "type": "subscribe-event",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Detect Power Outage",
+        "topic": "",
+        "thing": "c1a2b3c4d5e6f7a8",
+        "event": "powerOutage",
+        "x": 160,
+        "y": 1060,
+        "wires": [
+            [
+                "6a5b669919024dd5",
+                "4f5552d1807d8619"
+            ]
+        ]
+    },
+    {
+        "id": "6a5b669919024dd5",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Enable Backup Power",
+        "topic": "",
+        "thing": "d2b3c4d5e6f7a8b9",
+        "action": "enableBackupPower",
+        "uriVariables": "{}",
+        "x": 410,
+        "y": 1040,
+        "wires": [
+            [
+                "c5aec13a177d5c42"
+            ]
+        ]
+    },
+    {
+        "id": "4f5552d1807d8619",
+        "type": "function",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Prepare Alert Payload",
+        "func": "msg.payload = {\n  role: \"owner\",\n  message: \"Power outage detected. Backup power supply enabled.\"\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 1080,
+        "wires": [
+            [
+                "0113e04c4b2c9bee"
+            ]
+        ]
+    },
+    {
+        "id": "0113e04c4b2c9bee",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Owner",
+        "topic": "",
+        "thing": "3f8e3d0b9c8be344",
+        "action": "alertRole",
+        "uriVariables": "{}",
+        "x": 670,
+        "y": 1080,
+        "wires": [
+            [
+                "e36e43e8d07b76a0"
+            ]
+        ]
+    },
+    {
+        "id": "c5aec13a177d5c42",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Backup Power Enabled Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "e36e43e8d07b76a0",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Alert Sent Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "cbef6d6cdf18a11e",
+        "type": "inject",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Get Water pH",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 1180,
+        "wires": [
+            [
+                "80b14f610baebc58"
+            ]
+        ]
+    },
+    {
+        "id": "80b14f610baebc58",
+        "type": "read-property",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Read pH Level",
+        "topic": "",
+        "thing": "904ec35640f53b5e",
+        "property": "pHLevel",
+        "uriVariables": "{}",
+        "observe": false,
+        "x": 470,
+        "y": 1180,
+        "wires": [
+            [
+                "33aa171ba8dc6695"
+            ]
+        ]
+    },
+    {
+        "id": "33aa171ba8dc6695",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Show pH Level",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "b67f5c6c323a98bd",
+        "type": "inject",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Get Water Temp",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 1240,
+        "wires": [
+            [
+                "1555ce5b58abcb2b"
+            ]
+        ]
+    },
+    {
+        "id": "1555ce5b58abcb2b",
+        "type": "read-property",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Read Temperature",
+        "topic": "",
+        "thing": "904ec35640f53b5e",
+        "property": "temperature",
+        "uriVariables": "{}",
+        "observe": false,
+        "x": 470,
+        "y": 1240,
+        "wires": [
+            [
+                "2f3b21c4082ad513"
+            ]
+        ]
+    },
+    {
+        "id": "2f3b21c4082ad513",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Show Temperature",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "00c98b7b345eb757",
+        "type": "inject",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Get Salinity",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 1300,
+        "wires": [
+            [
+                "560d6c7c9abcab6d"
+            ]
+        ]
+    },
+    {
+        "id": "560d6c7c9abcab6d",
+        "type": "read-property",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Read Salinity",
+        "topic": "",
+        "thing": "904ec35640f53b5e",
+        "property": "salinity",
+        "uriVariables": "{}",
+        "observe": false,
+        "x": 470,
+        "y": 1300,
+        "wires": [
+            [
+                "cfc7be5e9d7ebf45"
+            ]
+        ]
+    },
+    {
+        "id": "cfc7be5e9d7ebf45",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Show Salinity",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "371c76a662b5c8c6",
+        "type": "inject",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Get Nitrate Level",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 1360,
+        "wires": [
+            [
+                "20dd72eb61c91296"
+            ]
+        ]
+    },
+    {
+        "id": "20dd72eb61c91296",
+        "type": "read-property",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Read Nitrate Level",
+        "topic": "",
+        "thing": "904ec35640f53b5e",
+        "property": "nitrateLevel",
+        "uriVariables": "{}",
+        "observe": false,
+        "x": 470,
+        "y": 1360,
+        "wires": [
+            [
+                "fbd57de176283c90"
+            ]
+        ]
+    },
+    {
+        "id": "fbd57de176283c90",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Show Nitrate Level",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "99b73af05d5215d4",
+        "type": "inject",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Get Camera Feed",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 1420,
+        "wires": [
+            [
+                "8ea2f0a18f510505"
+            ]
+        ]
+    },
+    {
+        "id": "8ea2f0a18f510505",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Get Camera Connection",
+        "topic": "",
+        "thing": "6fd5a9cf229bb562",
+        "action": "getCameraConnection",
+        "uriVariables": "{}",
+        "x": 470,
+        "y": 1420,
+        "wires": [
+            [
+                "b889a8b1d82143a1"
+            ]
+        ]
+    },
+    {
+        "id": "b889a8b1d82143a1",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Show Camera Feed Info",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 1420,
+        "wires": []
+    },
+    {
+        "id": "7d47da8c41b18673",
+        "type": "inject",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Dispense Food",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "10",
+        "payloadType": "num",
+        "x": 250,
+        "y": 1480,
+        "wires": [
+            [
+                "fa0e11f418e2fb7f"
+            ]
+        ]
+    },
+    {
+        "id": "fa0e11f418e2fb7f",
+        "type": "invoke-action",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Dispense Food",
+        "topic": "",
+        "thing": "6af4ab33201ae9a4",
+        "action": "dispenseFood",
+        "uriVariables": "{}",
+        "x": 470,
+        "y": 1480,
+        "wires": [
+            [
+                "426da6fc8297cf7a"
+            ]
+        ]
+    },
+    {
+        "id": "426da6fc8297cf7a",
+        "type": "debug",
+        "z": "b78af40c8f0186b4",
+        "d": true,
+        "name": "Show Food Dispense Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "db1e2230b68cdf4f",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9112/tanksensors",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "a79f6be8cb446366",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9109/tankactuators",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "acb240960352f808",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9112/tanksensors",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "d0839877cf008987",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9109/tankactuators",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "3d62e4f508715af3",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9112/tanksensors",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "de5e71837f335dba",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9109/tankactuators",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "f2a1b3c4d5e6f701",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9105/fooddispensor",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "a1b2c3d4e5f6a701",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9101/alertsystem",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "d2b3c4d5e6f7a801",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9103/clock",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "c1a2b3c4d5e6f701",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9111/tanklighting",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "e3c4d5e6f7a8b901",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9113/userdevice",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "fd7d889cada96968",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9101/alertsystem",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "d598f8b56a08040e",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9108/scheduler",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "c1a2b3c4d5e6f7a8",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9112/tanksensors",
+        "td": "{\"@context\":[\"https://www.w3.org/2022/wot/td/v1.1\",{\"@language\":\"en\"}],\"@type\":[\"Thing\"],\"title\":\"TankSensors\",\"securityDefinitions\":{\"no_sec\":{\"scheme\":\"nosec\"}},\"security\":[\"no_sec\"],\"properties\":{\"pHLevel\":{\"type\":\"number\",\"title\":\"pH level\",\"description\":\"The pH Level of the water in the tank\",\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/properties/pHLevel\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/properties/pHLevel\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/pHLevel\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/pHLevel\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties/pHLevel\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties/pHLevel\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/pHLevel\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/pHLevel\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]}],\"readOnly\":false,\"writeOnly\":false,\"observable\":false},\"temperature\":{\"type\":\"number\",\"title\":\"Temperature\",\"description\":\"The temperature of the water in the tank\",\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/properties/temperature\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/properties/temperature\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/temperature\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/temperature\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties/temperature\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties/temperature\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/temperature\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/temperature\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]}],\"readOnly\":false,\"writeOnly\":false,\"observable\":false},\"salinity\":{\"type\":\"number\",\"title\":\"Salinity\",\"description\":\"The salinity of the water in the tank\",\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/properties/salinity\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/properties/salinity\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/salinity\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/salinity\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties/salinity\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties/salinity\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/salinity\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/salinity\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]}],\"readOnly\":false,\"writeOnly\":false,\"observable\":false},\"nitrateLevel\":{\"type\":\"number\",\"title\":\"Nitrate Level\",\"description\":\"The amount of nitrates in the tank's water\",\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/properties/nitrateLevel\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/properties/nitrateLevel\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/nitrateLevel\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/nitrateLevel\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties/nitrateLevel\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties/nitrateLevel\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/nitrateLevel\",\"contentType\":\"application/json\",\"op\":[\"readproperty\",\"writeproperty\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties/nitrateLevel\",\"contentType\":\"application/cbor\",\"op\":[\"readproperty\",\"writeproperty\"]}],\"readOnly\":false,\"writeOnly\":false,\"observable\":false}},\"events\":{\"pHLevel\":{\"title\":\"pH Level\",\"description\":\"A periodic report of the pH level of the tank's water\",\"data\":{\"type\":\"number\",\"description\":\"The pH level\"},\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/events/pHLevel\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/events/pHLevel\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/pHLevel\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/pHLevel\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/events/pHLevel\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/events/pHLevel\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/pHLevel\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/pHLevel\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]}]},\"temperature\":{\"title\":\"Temperature\",\"description\":\"A periodic notification of the current water temperature of the tank\",\"data\":{\"type\":\"number\",\"description\":\"The temperature of the water\"},\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/events/temperature\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/events/temperature\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/temperature\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/temperature\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/events/temperature\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/events/temperature\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/temperature\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/temperature\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]}]},\"salinity\":{\"title\":\"Salinity\",\"description\":\"The current concentration of salt in the tank's water\",\"data\":{\"type\":\"number\",\"description\":\"The concentration of salt in the water\"},\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/events/salinity\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/events/salinity\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/salinity\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/salinity\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/events/salinity\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/events/salinity\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/salinity\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/salinity\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]}]},\"nitrateLevel\":{\"title\":\"Nitrate Level\",\"description\":\"Notification of the current amount of nitrate in the tank water\",\"data\":{\"type\":\"number\",\"description\":\"The amount of nitrates\"},\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/events/nitrateLevel\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/events/nitrateLevel\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/nitrateLevel\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/nitrateLevel\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/events/nitrateLevel\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/events/nitrateLevel\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/nitrateLevel\",\"contentType\":\"application/json\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/events/nitrateLevel\",\"contentType\":\"application/cbor\",\"subprotocol\":\"longpoll\",\"op\":[\"subscribeevent\",\"unsubscribeevent\"]}]}},\"id\":\"urn:uuid:d18e5139-06b8-49d4-8627-0d3e5ce8ea27\",\"forms\":[{\"href\":\"http://192.168.0.172:9112/tanksensors/properties\",\"contentType\":\"application/json\",\"op\":[\"readallproperties\",\"readmultipleproperties\",\"writeallproperties\",\"writemultipleproperties\"]},{\"href\":\"http://192.168.0.172:9112/tanksensors/properties\",\"contentType\":\"application/cbor\",\"op\":[\"readallproperties\",\"readmultipleproperties\",\"writeallproperties\",\"writemultipleproperties\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties\",\"contentType\":\"application/json\",\"op\":[\"readallproperties\",\"readmultipleproperties\",\"writeallproperties\",\"writemultipleproperties\"]},{\"href\":\"http://192.168.0.172:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties\",\"contentType\":\"application/cbor\",\"op\":[\"readallproperties\",\"readmultipleproperties\",\"writeallproperties\",\"writemultipleproperties\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties\",\"contentType\":\"application/json\",\"op\":[\"readallproperties\",\"readmultipleproperties\",\"writeallproperties\",\"writemultipleproperties\"]},{\"href\":\"http://192.168.56.1:9112/tanksensors/properties\",\"contentType\":\"application/cbor\",\"op\":[\"readallproperties\",\"readmultipleproperties\",\"writeallproperties\",\"writemultipleproperties\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties\",\"contentType\":\"application/json\",\"op\":[\"readallproperties\",\"readmultipleproperties\",\"writeallproperties\",\"writemultipleproperties\"]},{\"href\":\"http://192.168.56.1:9112/urn%3Auuid%3Ad18e5139-06b8-49d4-8627-0d3e5ce8ea27/properties\",\"contentType\":\"application/cbor\",\"op\":[\"readallproperties\",\"readmultipleproperties\",\"writeallproperties\",\"writemultipleproperties\"]}]}",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "d2b3c4d5e6f7a8b9",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9109/tankactuators",
+        "td": "{\"@context\":[\"https://www.w3.org/2022/wot/td/v1.1\",{\"@language\":\"en\"}],\"@type\":[\"Thing\"],\"title\":\"TankActuators\",\"securityDefinitions\":{\"no_sec\":{\"scheme\":\"nosec\"}},\"security\":[\"no_sec\"],\"actions\":{\"heaterOn\":{\"title\":\"Heater On\",\"description\":\"Turns the water heater on\",\"input\":{\"type\":\"number\",\"description\":\"The target temperature of the water\"},\"forms\":[{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/heaterOn\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/heaterOn\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/heaterOn\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/heaterOn\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/heaterOn\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/heaterOn\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/heaterOn\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/heaterOn\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"}],\"safe\":false,\"idempotent\":false},\"heaterOff\":{\"title\":\"Heater Off\",\"description\":\"Turns the water heater off\",\"forms\":[{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/heaterOff\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/heaterOff\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/heaterOff\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/heaterOff\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/heaterOff\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/heaterOff\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/heaterOff\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/heaterOff\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"}],\"safe\":false,\"idempotent\":false},\"coolerOn\":{\"title\":\"Cooler On\",\"description\":\"Turns the water cooler on\",\"input\":{\"type\":\"number\",\"description\":\"The target temperature of the water\"},\"forms\":[{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/coolerOn\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/coolerOn\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/coolerOn\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/coolerOn\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/coolerOn\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/coolerOn\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/coolerOn\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/coolerOn\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"}],\"safe\":false,\"idempotent\":false},\"coolerOff\":{\"title\":\"Cooler Off\",\"description\":\"Turns the water cooler off\",\"forms\":[{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/coolerOff\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/coolerOff\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/coolerOff\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/coolerOff\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/coolerOff\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/coolerOff\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/coolerOff\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/coolerOff\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"}],\"safe\":false,\"idempotent\":false},\"dispenseChemical\":{\"title\":\"Dispense Chemical\",\"description\":\"Dispenses the specified chemical into the water tank\",\"input\":{\"type\":\"object\",\"properties\":{\"chemical\":{\"type\":\"string\",\"description\":\"The chemical to release into the water\"},\"amount\":{\"type\":\"number\",\"description\":\"The amount of the specified chamical to be released\"}}},\"forms\":[{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/dispenseChemical\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/tankactuators/actions/dispenseChemical\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/dispenseChemical\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.0.172:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/dispenseChemical\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/dispenseChemical\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/tankactuators/actions/dispenseChemical\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/dispenseChemical\",\"contentType\":\"application/json\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"},{\"href\":\"http://192.168.56.1:9109/urn%3Auuid%3A2b33e593-8649-46be-8d8f-1733e1621d6b/actions/dispenseChemical\",\"contentType\":\"application/cbor\",\"op\":[\"invokeaction\"],\"htv:methodName\":\"POST\"}],\"safe\":false,\"idempotent\":false}},\"id\":\"urn:uuid:2b33e593-8649-46be-8d8f-1733e1621d6b\"}",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "c1f2e3d4a5b6c7d8",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9108/scheduler",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "e4f5a6b7c8d9e0f1",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9101/alertsystem",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "3f8e3d0b9c8be344",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9101/alertsystem",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "904ec35640f53b5e",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9112/tanksensors",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "6fd5a9cf229bb562",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9110/tankcameras",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "6af4ab33201ae9a4",
+        "type": "consumed-thing",
+        "tdLink": "http://192.168.0.172:9105/fooddispensor",
+        "td": "",
+        "http": true,
+        "ws": false,
+        "coap": false,
+        "mqtt": false,
+        "opcua": false,
+        "modbus": false,
+        "basicAuth": false,
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "1ea01a9ebfafed55",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@thingweb/node-red-node-wot": "1.2.4"
+        }
+    }
+]
