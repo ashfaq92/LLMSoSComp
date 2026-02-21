@@ -1,9 +1,6 @@
 # Getting Started
 
 This repository consists of three main components:  
-- **smart-home**: IoT device simulators  
-- **wot-mcp**: WoT-MCP server  
-- **agent-python**: Python agent to control the devices
 
 1. Start the device simulators in `smart-home`  
 2. Start the WoT-MCP server in `wot-mcp`  
@@ -11,19 +8,17 @@ This repository consists of three main components:
 
 Follow these steps to run the full system:
 
----
 
 ## 1. Start the Smart Home IoT Devices
 
 ```sh
-cd smart-home
+cd simulated-systems/smart-home-09-devices
 npm install
 npm start
 ```
 This will launch all the device simulators.  
 See [smart-home/README.md](smart-home/README.md) for more details.
 
----
 
 ## 2. Start the WoT-MCP Server
 
@@ -37,14 +32,13 @@ npm run build      # if required
 Then start the WoT-MCP server.  
 See [wot-mcp/README.md](wot-mcp/README.md) for more details.
 
----
 
 ## 3. Run the Python Agent
 
 Open another terminal:
 
 ```sh
-cd agent-python
+cd llm-agents
 python -m venv venv
 venv\Scripts\activate   # On Windows
 # or
@@ -52,10 +46,34 @@ source venv/bin/activate  # On macOS/Linux
 
 pip install -r requirements.txt
 
-python wot_mcp_agent_simple.py
+To run the Python agent, use the controllers or workflow generators:
+
+For controllers:
+```sh
+python controllers/wot_mcp_agent_simple.py
 # or
-python wot_mcp_agent_reactive.py
+python controllers/wot_mcp_agent_reactive.py
+```
+
+For workflow generators (choose mcp or vanilla):
+```sh
+# MCP
+python workflow_generators/mcp/mcp_generator.py
+# or
+python workflow_generators/mcp/mcp_generator_lmstudio.py
+
+# Vanilla
+python workflow_generators/vanilla/vanilla_generator.py
+# or
+python workflow_generators/vanilla/vanilla_generator_lmstudio.py
+```
 ```
 See [agent-python/README.md](agent-python/README.md) for more details and options.
 
----
+
+## Acknowledgements
+
+This project makes use of the following repositories:
+
+- [wot-mcp](https://github.com/macc-n/wot-mcp)
+- [wot-mcp-examples](https://github.com/macc-n/wot-mcp-examples)
