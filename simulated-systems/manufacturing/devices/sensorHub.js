@@ -2,7 +2,7 @@ import { Servient } from '@node-wot/core';
 import * as httpBinding from '@node-wot/binding-http';
 const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
 const servient = new Servient();
-servient.addServer(new HttpServer({ port: 9007 }));
+servient.addServer(new HttpServer({ port: 9007 }));  // or maybe servient.addServer(new HttpServer({ port: 9007, address: "127.0.0.1" }));
 servient.start().then(async (WoT) => {
     console.log('Simulated SensorHub Device starting...');
     const thing = await WoT.produce({
