@@ -47,3 +47,67 @@ A smart lamp accessible via HTTP.
 cd smart-home/devices
 node thermostat.js
 ```
+
+
+
+
+## System thing
+```
+const DOORBELL_URL = 'http://localhost:8085/doorbell';
+// ...in main():
+let doorBellThing = await WoT.requestThingDescription(DOORBELL_URL);
+// In the TD:
+events: {
+  ...,
+  bellRung: {
+    title: 'Bell rung',
+    description: 'The bell was rung',
+    data: { type: 'null' }
+  }
+}
+// Handler:
+doorBellThing.subscribeEvent('bellRung', (data) => {
+  systemThing.emitEvent('bellRung', data);
+});
+
+
+const ALARM_URL = 'http://localhost:8084/alarm';
+// ...in main():
+let alarmThing = await WoT.requestThingDescription(ALARM_URL);
+// In the TD:
+events: {
+  ...,
+  alarmRinging: {
+    title: 'Alarm Ringing',
+    description: 'This alarm has started ringing',
+    data: { type: 'null' }
+  }
+}
+// Handler:
+alarmThing.subscribeEvent('alarmRinging', (data) => {
+  systemThing.emitEvent('alarmRinging', data);
+});
+
+
+
+const HEATER_URL = 'http://localhost:8086/heater';
+// ...in main():
+let heaterThing = await WoT.requestThingDescription(HEATER_URL);
+// In the TD:
+actions: {
+  ...,
+  startHeater: {
+    title: 'Start heater',
+    description: 'Starts the heater at the given temperature for the given time',
+    input: {
+      type: 'object',
+      properties: {
+        temperature: { type: 'integer', description: 'Temperature in °C' },
+        timeHeating: { type: 'integer', description: 'Heating time in minutes' }
+      }
+    }
+  }
+}
+// Handler:
+systemThing.setActionHandler('startHeater', proxyActionHandler(heaterThing, 'startHeater'));
+```

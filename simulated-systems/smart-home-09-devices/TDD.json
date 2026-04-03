@@ -1,0 +1,13 @@
+{
+  "things": [
+    { "deviceName": "washingMachine", "protocol": "http", "url": "http://localhost:8082/washingmachine" },
+    { "deviceName": "leds", "protocol": "http", "url": "http://localhost:8083/leds" },
+    { "deviceName": "alarm", "protocol": "http", "url": "http://localhost:8084/alarm" },
+    { "deviceName": "doorBell", "protocol": "http", "url": "http://localhost:8085/doorbell" },
+    { "deviceName": "heater", "protocol": "http", "url": "http://localhost:8086/heater" },
+    { "deviceName": "mainRoomLight", "protocol": "http", "url": "http://localhost:8087/mainroomlight" },
+    { "deviceName": "motionSensor", "protocol": "http", "url": "http://localhost:8088/motionsensor" },
+    { "deviceName": "smartAssistant", "protocol": "http", "url": "http://localhost:8089/smartassistant" },
+    { "deviceName": "speaker", "protocol": "http", "url": "http://localhost:8090/speaker" }
+  ]
+}

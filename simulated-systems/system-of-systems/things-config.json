@@ -3,6 +3,10 @@
     {
       "protocol": "http", 
       "url": "http://localhost:9010/manufacturingsystem"
+    },
+    {
+      "protocol": "http", 
+      "url": "http://localhost:9090/smarthomesystem"
     }
   ]
 }

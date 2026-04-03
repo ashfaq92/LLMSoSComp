@@ -21,6 +21,7 @@
     "@node-wot/binding-mqtt": "^0.9.1",
     "@node-wot/core": "^0.9.1",
     "concurrently": "^9.2.1",
+    "node-fetch": "^3.3.2",
     "wot-typescript-definitions": "^0.8.0-SNAPSHOT.26"
   },
   "devDependencies": {
@@ -29,4 +30,3 @@
     "typescript": "^5.3.3"
   }
 }
-

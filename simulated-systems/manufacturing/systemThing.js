@@ -28,7 +28,7 @@ async function main() {
     // Define system-level Thing
     const systemThing = await WoT.produce({
         title: 'ManufacturingSystem',
-        description: 'System-level WoT Thing for manufacturing, proxies device affordances',
+        description: 'System-level WoT Thing for manufacturing',
         '@context': ['https://www.w3.org/2022/wot/td/v1.1'],
         '@type': ['Thing'],
         securityDefinitions: { no_sec: { scheme: 'nosec' } },
@@ -36,8 +36,8 @@ async function main() {
         properties: {},
         actions: {
             processSensorData: {
-                title: 'Proxy: Process sensor data',
-                description: 'Proxies to SensorHub.processSensorData',
+                title: 'Process sensor data',
+                description: 'Process sensor data for a named sensor',
                 input: {
                     type: 'object',
                     properties: {
@@ -58,11 +58,11 @@ async function main() {
             if (!input || typeof input.sensorName !== 'string' || typeof input.data !== 'string') {
                 throw new Error('Invalid input: must provide { sensorName: string, data: string }');
             }
-            // Forward to SensorHub
+            // Forward to SensorHub (internal detail, not exposed to user)
             await sensorHubThing.invokeAction('processSensorData', input);
-            return { status: 'ok', proxied: true };
+            return { status: 'ok' };
         } catch (err) {
-            console.error('ManufacturingSystem: Proxy processSensorData failed:', err);
+            console.error('ManufacturingSystem: processSensorData failed:', err);
             return { status: 'error', error: err.message || String(err) };
         }
     });
