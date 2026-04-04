@@ -20,7 +20,8 @@ servient.start().then(async (WoT) => {
         actions: {
             blink: {
                 title: "Blink LEDs",
-                description: "Blinks the LEDs"
+                description: "Blinks the LEDs",
+                output: { type: 'string' }
             },
             LEDsOn: {
                 title: "Turn LEDs on",
@@ -37,14 +38,13 @@ servient.start().then(async (WoT) => {
     let state = false;
 
     thing.setActionHandler("blink", async () => {
-        console.log("Action: blink");
         state = true;
         console.log("LEDs are BLINKING");
         setTimeout(() => {
             state = false;
             console.log("LEDs stopped BLINKING");
         }, 1000);
-        return undefined;
+        return "blinked";
     });
 
     thing.setActionHandler("LEDsOn", async () => {

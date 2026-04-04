@@ -25,6 +25,10 @@ servient.start().then(async (WoT) => {
                 input: {
                     type: "string",
                     description: "The new lighting profile"
+                },
+                output: {
+                    type: "string",
+                    description: "The applied lighting profile"
                 }
             },
             resetLightingProfile: {
@@ -43,18 +47,18 @@ servient.start().then(async (WoT) => {
         events: {}
     });
 
+
+
     thing.setActionHandler("alterLightingProfile", async (profile) => {
-        lightingProfile = profile;
-        console.log(`💡 Lighting profile changed to: ${profile}`);
-        return null;
+        const value = profile && typeof profile.value === "function"
+            ? await profile.value()
+            : profile;
+
+        lightingProfile = value;
+        console.log(`Lighting profile changed to: ${lightingProfile}`);
+        return lightingProfile;
     });
 
-    thing.setActionHandler("resetLightingProfile", async () => {
-        lightingProfile = "natural";
-        brightness = 50;
-        console.log(`🔄 Lighting profile reset to default (natural)`);
-        return null;
-    });
 
     thing.setActionHandler("notifyLightingOfTime", async (time) => {
         // Simulate brightness changes based on time of day

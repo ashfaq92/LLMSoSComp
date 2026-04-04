@@ -1,21 +1,21 @@
 import { Servient } from '@node-wot/core';
 import * as httpBinding from '@node-wot/binding-http';
-import { getDeviceUrlFromTDD, proxyActionHandler, proxyNodeRedActionHandler } from '.././utils.js';
+// import { getDeviceUrlFromTDD, proxyActionHandler, proxyNodeRedActionHandler } from '.././utils.js';
+
+import * as utils from '.././utils.js';
+
+
 
 const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
 const HttpClientFactory = httpBinding.HttpClientFactory || httpBinding.default?.HttpClientFactory;
 
 const SYSTEM_PORT = 8000;
 
-// Read LEDs URL from TDD.json by deviceName using helper
 const TDD_PATH = './TDD.json';
-let LEDS_URL = null;
-try {
-    LEDS_URL = getDeviceUrlFromTDD(TDD_PATH, 'leds');
-} catch (err) {
-    console.error(err.message);
-    process.exit(1);
-}
+
+const LEDS_URL = utils.getDeviceUrl(TDD_PATH, 'leds');
+const SPEAKER_URL = utils.getDeviceUrl(TDD_PATH, 'speaker');
+const ASSISTANT_URL = utils.getDeviceUrl(TDD_PATH, 'smartAssistant');
 
 async function main() {
     const servient = new Servient();
@@ -25,18 +25,12 @@ async function main() {
     const WoT = await servient.start();
 
     // Consume LEDs Thing
-    let ledsThing;
-    try {
-        // ledsThing = await WoT.requestThingDescription(LEDS_URL);
-        const td = await WoT.requestThingDescription(LEDS_URL);
-        ledsThing = await WoT.consume(td);
-        console.log('SmartHomeSystem: Consumed LEDs at', LEDS_URL);
-    } catch (err) {
-        console.error('SmartHomeSystem: Failed to consume LEDs:', err);
-        process.exit(1);
-    }
+    const ledsThing = await utils.consumeThing(WoT, LEDS_URL, 'LEDs');
+    // Consume Speaker Thing
+    const speakerThing = await utils.consumeThing(WoT, SPEAKER_URL, 'Speaker');
+    // Consume Smart Assistant Thing
+    const smartAssistantThing = await utils.consumeThing(WoT, ASSISTANT_URL, 'Smart Assistant');
 
-    // Define system-level Thing
     const systemThing = await WoT.produce({
         title: 'SmartHomeSystem',
         description: 'System-level WoT Thing for smart home',
@@ -46,26 +40,56 @@ async function main() {
         security: ['no_sec'],
         properties: {},
         actions: {
-            LEDsOn: {
-                title: 'Turn LEDs on',
-                description: 'Turns on the LEDs'
+            BlinkLEDs: {
+                title: 'Blink LEDs',
+                description: 'Blinks LEDs once',
+                output: { type: 'string' }
             },
-            LEDsOff: {
-                title: 'Turn LEDs off',
-                description: 'Turns off the LEDs'
+            setVolume: {
+                title: "Set volume",
+                description: "Sets the volume of this speaker",
+                input: {
+                    type: "object",
+                    properties: {
+                        percentage: {
+                            type: "integer",
+                            description: "The volume percentage to set this speaker to"
+                        }
+                    }
+                },
+                output: { type: 'integer' }
+            },
+            SayCriticalAlert: {
+                title: "Say phrase",
+                description: "Makes the assistant say the given phrase",
+                input: {
+                    type: "object",
+                    properties: {
+                        phrase: {
+                            type: "string",
+                            description: "The phrase to be spoken by this assistant"
+                        }
+                    }
+                },
             },
             WelcomeHome: {
                 title: 'Welcome Home',
-                description: 'Triggers the Welcome Home workflow in Node-RED'
+                description: 'Workflow: Triggers the Welcome Home workflow in Node-RED'
+            },
+            handleAlert: {
+                title: 'Handle Alert',
+                description: 'Workflow: Triggers the critical water alert workflow in Node-RED'
             }
         },
         events: {}
     });
 
-    // Use the generic proxy helper for both actions
-    systemThing.setActionHandler('LEDsOn', proxyActionHandler(ledsThing, 'LEDsOn'));
-    systemThing.setActionHandler('LEDsOff', proxyActionHandler(ledsThing, 'LEDsOff'));
-    systemThing.setActionHandler('WelcomeHome', proxyNodeRedActionHandler('http://localhost:1880/WelcomeHome'));
+    systemThing.setActionHandler('BlinkLEDs', utils.proxyActionHandler(ledsThing, 'blink'));
+    systemThing.setActionHandler('setVolume', utils.proxyActionHandler(speakerThing, 'setVolume'));
+    systemThing.setActionHandler('SayCriticalAlert', utils.proxyActionHandler(smartAssistantThing, 'say'));
+
+    systemThing.setActionHandler('WelcomeHome', utils.proxyNodeRedActionHandler('http://localhost:1880/WelcomeHome'));
+    systemThing.setActionHandler('handleAlert', utils.proxyNodeRedActionHandler('http://localhost:1880/handleAlert'));
 
     await systemThing.expose();
     console.log(`SmartHomeSystem exposed at http://localhost:${SYSTEM_PORT}/smarthomesystem`);
@@ -75,3 +99,4 @@ main().catch((err) => {
     console.error('SmartHomeSystem: Fatal error:', err);
     process.exit(1);
 });
+

@@ -29,6 +29,15 @@ servient.start().then(async (WoT) => {
                             description: "The phrase to be spoken by this assistant"
                         }
                     }
+                },
+                output: {
+                    type: "object",
+                    properties: {
+                        phrase: {
+                            type: "string",
+                            description: "The phrase spoken by this assistant"
+                        }
+                    }
                 }
             }
         },
@@ -39,9 +48,9 @@ servient.start().then(async (WoT) => {
     console.log('SmartAssistant exposed at http://localhost:8089/smartassistant');
 
     thing.setActionHandler("say", async (params) => {
-        const input = await params.value();
-        const phrase = input.phrase;
-        console.log(`🗣️ SmartAssistant says: "${phrase}"`);
-        return undefined;
+        const input = params && typeof params.value === "function" ? await params.value() : params;
+        const phrase = input?.phrase || '';
+        console.log(`SmartAssistant says: "${phrase}"`);
+        return { "phrase": phrase };
     });
 });

@@ -2,6 +2,28 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 
 
+export function getDeviceUrl(tddPath, deviceName) {
+    try {
+        return getDeviceUrlFromTDD(tddPath, deviceName);
+    } catch (err) {
+        console.error(err.message);
+        process.exit(1);
+    }
+}
+
+
+export async function consumeThing(WoT, url, label) {
+    try {
+        const td = await WoT.requestThingDescription(url);
+        const thing = await WoT.consume(td);
+        console.log(`SmartHomeSystem: Consumed ${label} at`, url);
+        return thing;
+    } catch (err) {
+        console.error(`SmartHomeSystem: Failed to consume ${label}:`, err);
+        process.exit(1);
+    }
+}
+
 export function getDeviceUrlFromTDD(tddPath, deviceName) {
     /**
      * Get the URL for a device by deviceName from a TDD (Thing Description Directory) JSON file.
@@ -29,16 +51,29 @@ export function getDeviceUrlFromTDD(tddPath, deviceName) {
     }
 }
 
+async function unwrapWotData(maybeWrapped) {
+    if (maybeWrapped && typeof maybeWrapped.value === 'function') {
+        return await maybeWrapped.value();
+    }
+    return maybeWrapped;
+}
 
-
-// Generic helper to proxy an action from the system Thing to a device Thing
 export function proxyActionHandler(targetThing, targetAction) {
     return async (input) => {
-        // console.log(`Proxy handler called for action: ${targetAction} with input:`, input);
         try {
-            await targetThing.invokeAction(targetAction, input);
-            console.log(`Proxied action ${targetAction} to device successfully`);
-            return { status: 'ok' };
+            // Unwrap incoming action input from exposed Thing
+            const realInput = await unwrapWotData(input);
+
+            // Invoke consumed Thing action
+            const interactionOutput = await targetThing.invokeAction(targetAction, realInput);
+
+            // Unwrap ActionInteractionOutput to primitive/object value
+            const realOutput = await unwrapWotData(interactionOutput);
+
+            console.log('Proxied action', targetAction, 'input:', realInput);
+            console.log('Proxied action', targetAction, 'output:', realOutput);
+
+            return realOutput;
         } catch (err) {
             console.error(`Proxying action ${targetAction} failed:`, err);
             return { status: 'error', error: err.message || String(err) };

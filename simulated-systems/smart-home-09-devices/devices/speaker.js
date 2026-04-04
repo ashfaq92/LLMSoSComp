@@ -29,7 +29,8 @@ servient.start().then(async (WoT) => {
                             description: "The volume percentage to set this speaker to"
                         }
                     }
-                }
+                },
+                output: { type: 'integer' }
             },
             getVolume: {
                 title: "Get volume",
@@ -48,14 +49,13 @@ servient.start().then(async (WoT) => {
     console.log('Speaker exposed at http://localhost:8090/speaker');
 
     thing.setActionHandler("setVolume", async (params) => {
-        const input = await params.value();
-        if (typeof input.percentage === "number" && input.percentage >= 0 && input.percentage <= 100) {
+        const input = params && typeof params.value === "function" ? await params.value() : params;
+        if (typeof input?.percentage === "number" && input.percentage >= 0 && input.percentage <= 100) {
             volume = input.percentage;
-            console.log(`🔊 Speaker volume set to ${volume}%`);
-        } else {
-            console.log("Invalid volume percentage received.");
+            console.log(`Speaker volume set to ${volume}%`);
+            return volume;
         }
-        return undefined;
+        throw new Error("Invalid volume percentage");
     });
 
     thing.setActionHandler("getVolume", async () => {
