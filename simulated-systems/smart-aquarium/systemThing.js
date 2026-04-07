@@ -1,28 +1,18 @@
 import { Servient } from '@node-wot/core';
 import * as httpBinding from '@node-wot/binding-http';
 import * as utils from '../utils.js';
+import TankLighting from './devices/tankLighting.js';
 
 const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
-const HttpClientFactory = httpBinding.HttpClientFactory || httpBinding.default?.HttpClientFactory;
-
 const SYSTEM_PORT = 9100;
-const TDD_PATH = './TDD.json';
 
-// Get device URLs
-const TANK_LIGHTING_URL = utils.getDeviceUrl(TDD_PATH, 'tankLighting');
-// Add more devices as needed, e.g.:
-// const TANK_SENSORS_URL = utils.getDeviceUrl(TDD_PATH, 'tankSensors');
+const tankLighting = new TankLighting();
 
 async function main() {
     const servient = new Servient();
     servient.addServer(new HttpServer({ port: SYSTEM_PORT }));
-    servient.addClientFactory(new HttpClientFactory());
 
     const WoT = await servient.start();
-
-    // DRY: Consume device Things
-    const tankLightingThing = await utils.consumeThing(WoT, TANK_LIGHTING_URL, 'tankLighting');
-    // const tankSensorsThing = await utils.consumeThing(WoT, TANK_SENSORS_URL, 'tankSensors');
 
     const systemThing = await WoT.produce({
         title: 'SmartAquariumSystem',
@@ -37,25 +27,23 @@ async function main() {
                 title: 'Alter Lighting Profile',
                 description: 'Alters the profile of the tank lighting',
                 input: { type: 'string' },
-                output: {
-                    type: "string",
-                    description: "The applied lighting profile"
-                }
+                output: { type: "string" }
             },
             HandleCriticalWaterAlert: {
                 title: 'Handle Critical Water Alert',
                 description: 'Workflow: Triggers the critical water alert workflow in Node-RED',
-                output: {
-                    type: "string",
-                    description: "The message returned by the alert handling workflow"
-                }
+                output: { type: "string" }
             }
         },
         events: {}
     });
 
-    // Set action handlers
-    systemThing.setActionHandler('alterLightingProfile', utils.proxyActionHandler(tankLightingThing, 'alterLightingProfile'));
+    systemThing.setActionHandler('alterLightingProfile', async (input) => {
+        const value = await input.value();
+        return tankLighting.alterLightingProfile(value);
+    });
+
+    // Node-RED workflow
     systemThing.setActionHandler('HandleCriticalWaterAlert', utils.proxyNodeRedActionHandler('http://localhost:1880/HandleCriticalWaterAlert'));
 
     await systemThing.expose();

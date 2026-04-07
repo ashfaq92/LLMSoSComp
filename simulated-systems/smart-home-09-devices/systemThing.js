@@ -1,21 +1,21 @@
 import { Servient } from '@node-wot/core';
 import * as httpBinding from '@node-wot/binding-http';
-// import { getDeviceUrlFromTDD, proxyActionHandler, proxyNodeRedActionHandler } from '.././utils.js';
-
 import * as utils from '.././utils.js';
-
-
+import LEDs from './devices/leds.js';
+import Speaker from './devices/speaker.js';
+import SmartAssistant from './devices/smartAssistant.js';
 
 const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
 const HttpClientFactory = httpBinding.HttpClientFactory || httpBinding.default?.HttpClientFactory;
 
 const SYSTEM_PORT = 8000;
 
-const TDD_PATH = './TDD.json';
 
-const LEDS_URL = utils.getDeviceUrl(TDD_PATH, 'leds');
-const SPEAKER_URL = utils.getDeviceUrl(TDD_PATH, 'speaker');
-const ASSISTANT_URL = utils.getDeviceUrl(TDD_PATH, 'smartAssistant');
+const leds = new LEDs();
+const speaker = new Speaker();
+const smartAssistant = new SmartAssistant();
+
+
 
 async function main() {
     const servient = new Servient();
@@ -24,12 +24,6 @@ async function main() {
 
     const WoT = await servient.start();
 
-    // Consume LEDs Thing
-    const ledsThing = await utils.consumeThing(WoT, LEDS_URL, 'LEDs');
-    // Consume Speaker Thing
-    const speakerThing = await utils.consumeThing(WoT, SPEAKER_URL, 'Speaker');
-    // Consume Smart Assistant Thing
-    const smartAssistantThing = await utils.consumeThing(WoT, ASSISTANT_URL, 'Smart Assistant');
 
     const systemThing = await WoT.produce({
         title: 'SmartHomeSystem',
@@ -84,9 +78,18 @@ async function main() {
         events: {}
     });
 
-    systemThing.setActionHandler('BlinkLEDs', utils.proxyActionHandler(ledsThing, 'blink'));
-    systemThing.setActionHandler('setVolume', utils.proxyActionHandler(speakerThing, 'setVolume'));
-    systemThing.setActionHandler('SayCriticalAlert', utils.proxyActionHandler(smartAssistantThing, 'say'));
+    
+    systemThing.setActionHandler('BlinkLEDs', () => leds.blink());
+    systemThing.setActionHandler('setVolume', async (input) => {
+        const data = await input.value();
+        console.log('setVolume data:', data);
+        return speaker.setVolume(data);
+    });
+    systemThing.setActionHandler('SayCriticalAlert', async (input) => {
+        const data = await input.value();
+        console.log('SayCriticalAlert data:', data);
+        return smartAssistant.say(data);
+    });
 
     systemThing.setActionHandler('WelcomeHome', utils.proxyNodeRedActionHandler('http://localhost:1880/WelcomeHome'));
     systemThing.setActionHandler('handleAlert', utils.proxyNodeRedActionHandler('http://localhost:1880/handleAlert'));
