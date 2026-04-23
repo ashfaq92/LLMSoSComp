@@ -1,59 +1,72 @@
+
+// devices/motionSensor.js
 import { Servient } from '@node-wot/core';
 import * as httpBinding from '@node-wot/binding-http';
 
-class MotionSensor {
+const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
+
+class MotionSensorSimulator {
     constructor() {
-        this.thing = null;
-        this._interval = null;
+        this._timeout = null;
     }
-
-    startEmittingMotion(thing) {
-        this.thing = thing;
-        const emitMotion = () => {
-            const randomDelay = Math.random() * 10000 + 5000;
-            this._interval = setTimeout(() => {
-                thing.emitEvent("motionDetected", null);
-                console.log("🚶 Motion detected! Event 'motionDetected' emitted.");
-                emitMotion();
-            }, randomDelay);
+    start(emitFn) {
+        const schedule = () => {
+            const delay = Math.random() * 10000 + 5000;
+            this._timeout = setTimeout(() => {
+                emitFn();
+                schedule();
+            }, delay);
         };
-        emitMotion();
+        schedule();
     }
-
-    stopEmittingMotion() {
-        if (this._interval) clearTimeout(this._interval);
+    stop() {
+        if (this._timeout) clearTimeout(this._timeout);
     }
 }
 
-export default MotionSensor;
+const port = 8107;
+const servient = new Servient();
+servient.addServer(new HttpServer({ port: port }));
 
-// Standalone WoT Thing mode for testing/ablation
-if (process.argv[1] && import.meta.url.endsWith(process.argv[1])) {
-    const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
-    const servient = new Servient();
-    servient.addServer(new HttpServer({ port: 8088 }));
-
-    servient.start().then(async (WoT) => {
-        console.log('Simulated MotionSensor Device starting...');
-        const motionSensor = new MotionSensor();
-        const thing = await WoT.produce({
-            title: "MotionSensor",
-            "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
-            "@type": ["Thing"],
-            securityDefinitions: { no_sec: { scheme: "nosec" } },
-            security: ["no_sec"],
-            properties: {},
-            actions: {},
-            events: {
-                motionDetected: {
-                    title: "Motion detected",
-                    description: "An event made when motion is detected",
-                    data: { type: "null" }
-                }
+servient.start().then(async (WoT) => {
+    const sim = new MotionSensorSimulator();
+    const thing = await WoT.produce({
+        title: "MotionSensor",
+        description: "Simulated motion sensor device",
+        "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
+        "@type": ["Thing"],
+        securityDefinitions: { no_sec: { scheme: "nosec" } },
+        security: ["no_sec"],
+        properties: {},
+        actions: {
+            startMotion: { description: "Start the motion simulation" },
+            stopMotion:  { description: "Stop the motion simulation" }
+        },
+        events: {
+            motionDetected: {
+                title: "Motion detected",
+                description: "An event made when motion is detected",
+                data: { type: "null" }
             }
-        });
-        await thing.expose();
-        console.log('MotionSensor exposed at http://localhost:8088/motionsensor');
-        motionSensor.startEmittingMotion(thing);
+        }
     });
-}
+    thing.setActionHandler("startMotion", async () => {
+        sim.start(() => {
+            thing.emitEvent("motionDetected", null);
+            console.log("🚶 motionDetected emitted");
+        });
+    });
+    thing.setActionHandler("stopMotion", async () => sim.stop());
+    await thing.expose();
+    console.log(`MotionSensor exposed at http://localhost:${port}/motionsensor`);
+    sim.start(() => {
+        thing.emitEvent("motionDetected", null);
+        console.log("🚶 motionDetected emitted");
+    });
+    const td = await thing.getThingDescription();
+    await fetch('http://localhost:8101/things', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(td)
+    });
+});

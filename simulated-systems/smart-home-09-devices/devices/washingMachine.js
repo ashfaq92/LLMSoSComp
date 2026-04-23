@@ -1,64 +1,80 @@
+
+// devices/washingMachine.js
 import { Servient } from '@node-wot/core';
 import * as httpBinding from '@node-wot/binding-http';
 
-class WashingMachine {
+const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
+
+class WashingMachineSimulator {
 	constructor() {
-		this.thing = null;
-		this._interval = null;
+		this._timeout = null;
 	}
-
-	startEmittingCycles(thing) {
-		this.thing = thing;
-		const emitCycle = () => {
-			const randomDelay = Math.random() * 10000 + 5000;
-			this._interval = setTimeout(() => {
-				const eventData = {
-					message: "Wash cycle finished!",
-					timestamp: new Date().toISOString()
-				};
-				thing.emitEvent("finishedCycle", eventData);
-				console.log("🧺 Wash cycle finished. Event 'finishedCycle' emitted with data:", eventData);
-				emitCycle();
-			}, randomDelay);
+	start(emitFn) {
+		const schedule = () => {
+			const delay = Math.random() * 10000 + 5000;
+			this._timeout = setTimeout(() => {
+				emitFn();
+				schedule();
+			}, delay);
 		};
-		emitCycle();
+		schedule();
 	}
-
-	stopEmittingCycles() {
-		if (this._interval) clearTimeout(this._interval);
+	stop() {
+		if (this._timeout) clearTimeout(this._timeout);
 	}
 }
 
-export default WashingMachine;
+const port = 8110;
+const servient = new Servient();
+servient.addServer(new HttpServer({ port: port }));
 
-// Standalone WoT Thing mode for testing/ablation
-if (process.argv[1] && import.meta.url.endsWith(process.argv[1])) {
-	const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
-	const servient = new Servient();
-	servient.addServer(new HttpServer({ port: 8082 }));
-
-	servient.start().then(async (WoT) => {
-		console.log('Simulated Washing Machine Device starting...');
-		const washingMachine = new WashingMachine();
-		const thing = await WoT.produce({
-			title: "WashingMachine",
-			description: "A simulated washing machine device",
-			"@context": ["https://www.w3.org/2022/wot/td/v1.1"],
-			"@type": ["Thing"],
-			securityDefinitions: { no_sec: { scheme: "nosec" } },
-			security: ["no_sec"],
-			properties: {},
-			actions: {},
-			events: {
-				finishedCycle: {
-					title: "Wash cycle complete",
-					description: "Sends a notification at the end of a wash cycle",
-					data: { type: "object" }
-				}
+servient.start().then(async (WoT) => {
+	const sim = new WashingMachineSimulator();
+	const thing = await WoT.produce({
+		title: "WashingMachine",
+		description: "A simulated washing machine device",
+		"@context": ["https://www.w3.org/2022/wot/td/v1.1"],
+		"@type": ["Thing"],
+		securityDefinitions: { no_sec: { scheme: "nosec" } },
+		security: ["no_sec"],
+		properties: {},
+		actions: {
+			startCycle: { description: "Start the washing machine simulation" },
+			stopCycle:  { description: "Stop the washing machine simulation" }
+		},
+		events: {
+			finishedCycle: {
+				title: "Wash cycle complete",
+				description: "Sends a notification at the end of a wash cycle",
+				data: { type: "object" }
 			}
-		});
-		await thing.expose();
-		console.log('WashingMachine exposed at http://localhost:8082/washingmachine');
-		washingMachine.startEmittingCycles(thing);
+		}
 	});
-}
+	thing.setActionHandler("startCycle", async () => {
+		sim.start(() => {
+			const eventData = {
+				message: "Wash cycle finished!",
+				timestamp: new Date().toISOString()
+			};
+			thing.emitEvent("finishedCycle", eventData);
+			console.log("🧺 finishedCycle emitted", eventData);
+		});
+	});
+	thing.setActionHandler("stopCycle", async () => sim.stop());
+	await thing.expose();
+	console.log(`WashingMachine exposed at http://localhost:${port}/washingmachine`);
+	sim.start(() => {
+		const eventData = {
+			message: "Wash cycle finished!",
+			timestamp: new Date().toISOString()
+		};
+		thing.emitEvent("finishedCycle", eventData);
+		console.log("🧺 finishedCycle emitted");
+	});
+	const td = await thing.getThingDescription();
+	await fetch('http://localhost:8101/things', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(td)
+	});
+});

@@ -1,6 +1,8 @@
 import { Servient } from '@node-wot/core';
 import * as httpBinding from '@node-wot/binding-http';
 
+const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
+
 class OutageDetector {
     constructor() {
         this.thing = null;
@@ -26,37 +28,42 @@ class OutageDetector {
         if (this._interval) clearTimeout(this._interval);
     }
 }
+const port = 9107
+const servient = new Servient();
+servient.addServer(new HttpServer({ port: port }));
 
-export default OutageDetector;
-
-// Standalone WoT Thing mode for testing/ablation
-if (process.argv[1] && import.meta.url.endsWith(process.argv[1])) {
-    const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
-    const servient = new Servient();
-    servient.addServer(new HttpServer({ port: 9107 }));
-
-    servient.start().then(async (WoT) => {
-        console.log('Simulated OutageDetector Device starting...');
-        const outageDetector = new OutageDetector();
-        const thing = await WoT.produce({
-            title: "OutageDetector",
-            "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
-            "@type": ["Thing"],
-            securityDefinitions: { no_sec: { scheme: "nosec" } },
-            security: ["no_sec"],
-            properties: {},
-            actions: {},
-            events: {
-                powerOutage: {
-                    title: "Power Outage",
-                    description: "Notification of a power outage",
-                    data: { type: "null" }
-                }
+servient.start().then(async (WoT) => {
+    console.log('Simulated OutageDetector Device starting...');
+    const outageDetector = new OutageDetector();
+    const thing = await WoT.produce({
+        title: "OutageDetector",
+        "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
+        "@type": ["Thing"],
+        securityDefinitions: { no_sec: { scheme: "nosec" } },
+        security: ["no_sec"],
+        properties: {},
+        actions: {},
+        events: {
+            powerOutage: {
+                title: "Power Outage",
+                description: "Notification of a power outage",
+                data: { type: "null" }
             }
-        });
-
-        await thing.expose();
-        console.log('OutageDetector exposed at http://localhost:9107/outagedetector');
-        outageDetector.startEmittingOutages(thing);
+        }
     });
-}
+
+    await thing.expose();
+    console.log(`OutageDetector exposed at http://localhost:${port}/outagedetector`);
+    outageDetector.startEmittingOutages(thing);
+    // Register TD with TDD
+    const td = await thing.getThingDescription();
+    try {
+        await fetch('http://localhost:9101/things', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(td)
+        });
+    } catch (err) {
+        console.warn('Could not register TD with TDD:', err.message);
+    }
+});

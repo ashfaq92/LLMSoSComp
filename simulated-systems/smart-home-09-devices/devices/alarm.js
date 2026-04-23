@@ -1,59 +1,77 @@
+// devices/alarm.js
 import { Servient } from '@node-wot/core';
 import * as httpBinding from '@node-wot/binding-http';
 
-class Alarm {
+const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
+
+class AlarmSimulator {
     constructor() {
-        this.thing = null;
-        this._interval = null;
+        this._timeout = null;
     }
 
-    startEmittingAlarm(thing) {
-        this.thing = thing;
-        const emitAlarm = () => {
-            const randomDelay = Math.random() * 10000 + 5000;
-            this._interval = setTimeout(() => {
-                thing.emitEvent("alarmRinging", null);
-                console.log("🔔 Alarm is ringing! Event 'alarmRinging' emitted.");
-                emitAlarm();
-            }, randomDelay);
+    start(emitFn) {
+        const schedule = () => {
+            const delay = Math.random() * 10000 + 5000;
+            this._timeout = setTimeout(() => {
+                emitFn();
+                schedule();
+            }, delay);
         };
-        emitAlarm();
+        schedule();
     }
 
-    stopEmittingAlarm() {
-        if (this._interval) clearTimeout(this._interval);
+    stop() {
+        if (this._timeout) clearTimeout(this._timeout);
     }
 }
 
-export default Alarm;
+const port = 8102
+const servient = new Servient();
+servient.addServer(new HttpServer({ port: port }));
 
-// Standalone WoT Thing mode for testing/ablation
-if (process.argv[1] && import.meta.url.endsWith(process.argv[1])) {
-    const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
-    const servient = new Servient();
-    servient.addServer(new HttpServer({ port: 8084 }));
+servient.start().then(async (WoT) => {
+    const sim = new AlarmSimulator();
 
-    servient.start().then(async (WoT) => {
-        console.log('Simulated Alarm Device starting...');
-        const alarm = new Alarm();
-        const thing = await WoT.produce({
-            title: "Alarm",
-            "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
-            "@type": ["Thing"],
-            securityDefinitions: { no_sec: { scheme: "nosec" } },
-            security: ["no_sec"],
-            properties: {},
-            actions: {},
-            events: {
-                alarmRinging: {
-                    title: "Alarm Ringing",
-                    description: "This alarm has started ringing",
-                    data: { type: "null" }
-                }
+    const thing = await WoT.produce({
+        title: "Alarm",
+        description: "Simulated alarm that emits alarmRinging events",
+        "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
+        "@type": ["Thing"],
+        securityDefinitions: { no_sec: { scheme: "nosec" } },
+        security: ["no_sec"],
+        properties: {},
+        actions: {
+            startAlarm: { description: "Start the alarm simulation" },
+            stopAlarm:  { description: "Stop the alarm simulation" }
+        },
+        events: {
+            alarmRinging: {
+                title: "Alarm Ringing",
+                data: { type: "null" }
             }
-        });
-        await thing.expose();
-        console.log('Alarm exposed at http://localhost:8084/alarm');
-        alarm.startEmittingAlarm(thing);
+        }
     });
-}
+
+    thing.setActionHandler("startAlarm", async () => {
+        sim.start(() => {
+            thing.emitEvent("alarmRinging", null);
+            console.log("🔔 alarmRinging emitted");
+        });
+    });
+
+    thing.setActionHandler("stopAlarm", async () => sim.stop());
+
+    await thing.expose();
+    console.log(`Alarm exposed at http://localhost:${port}/alarm`);
+    sim.start(() => {
+        thing.emitEvent("alarmRinging", null);
+        console.log("🔔 alarmRinging emitted");
+    });
+
+    const td = await thing.getThingDescription();
+    await fetch('http://localhost:8101/things', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(td)
+});
+});

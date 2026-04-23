@@ -4,7 +4,7 @@ import * as httpBinding from '@node-wot/binding-http';
 const HttpServer = httpBinding.HttpServer || httpBinding.default?.HttpServer;
 const HttpClientFactory = httpBinding.HttpClientFactory || httpBinding.default?.HttpClientFactory;
 
-async function getTDsFromTDD(tddUrl = 'http://localhost:8101/things') {
+async function getTDsFromTDD(tddUrl = 'http://localhost:8081/things') {
     const { things } = await fetch(tddUrl).then(r => r.json());
     return things; // array of full TDs
 }
@@ -36,13 +36,11 @@ async function main() {
             occupancyStatus: {
                 type: "string",
                 enum: ["home", "away"],
-                description: "Current occupancy status of the home",
-                value: "home"
+                description: "Current occupancy status of the home"
             },
             currentHeatingTemp: {
                 type: "number",
-                description: "Current temperature set for the heating system",
-                value: 20
+                description: "Current temperature set for the heating system"
             }
         },
         actions: {
@@ -69,26 +67,97 @@ async function main() {
             }
         },
         events: {
-            doorbellPressed: {
-                description: "Emitted when the doorbell is pressed"
+            washingCycleCompleted: {
+                description: "Emitted when washing machine finishes and LEDs have been notified",
+                data: { type: "object" }
             },
-            motionDetected: {
-                description: "Emitted when motion is detected in a room",
-                data: {
-                    type: "object",
-                    properties: {
-                        room: { type: "string" }
-                    }
-                }
+            motionEntryHandled: {
+                description: "Emitted when motion is detected and main room light is turned on",
+                data: { type: "object" }
             },
-            morningAlarmTriggered: {
-                description: "Emitted when the morning alarm is triggered"
-            }
+            doorbellHandled: {
+                description: "Emitted when the doorbell is pressed and the workflow (speaker mute, assistant alert, restore volume) is completed",
+                data: { type: "object" }
+            },
+            morningRoutineHandled: {
+                description: "Emitted when the morning alarm triggers and heating is set to 30°C for 20 minutes",
+                data: { type: "object" }
+            },
         }
     });
 
 
+    // After producing systemThing
+    await systemThing.writeProperty("occupancyStatus", "home");
+    await systemThing.writeProperty("currentHeatingTemp", 20); // or your default temp
 
+    if (devices.washingmachine && devices.leds) {
+
+        devices.washingmachine.subscribeEvent('finishedCycle', async () => {
+            await devices.leds.invokeAction('blink');
+            const eventData = {
+                message: "finishedCycle event from smart home systemThing!",
+                timestamp: new Date().toISOString()
+            };
+            await systemThing.emitEvent('washingCycleCompleted', eventData);
+            console.log("🧺🚥 washingCycleCompleted emitted", eventData);
+
+        });
+    }
+
+    if (devices.motionsensor && devices.mainroomlight) {
+        devices.motionsensor.subscribeEvent('motionDetected', async () => {
+            await devices.mainroomlight.invokeAction('lightOn');
+            const eventData = {
+                message: "Motion detected and main room light turned on!",
+                timestamp: new Date().toISOString()
+            };
+            await systemThing.emitEvent('motionEntryHandled', eventData);
+            console.log("🚶💡 motionEntryHandled emitted", eventData);
+        });
+    }
+
+
+    if (devices.doorbell && devices.speaker && devices.smartassistant) {
+        devices.doorbell.subscribeEvent('bellRung', async () => {
+            try {
+                const originalVolume = await (await devices.speaker.invokeAction('getVolume')).value();
+
+                // Setting volume to 10%
+                await devices.speaker.invokeAction('setVolume', { percentage: 10 });
+                // Smart assistant alert...
+                await devices.smartassistant.invokeAction('say', { phrase: "Someone is at the door!" });
+                // Restoring original volume...
+                await devices.speaker.invokeAction('setVolume', { percentage: originalVolume });
+                const eventData = {
+                    message: "Doorbell pressed, homeowner alerted, speaker volume restored.",
+                    timestamp: new Date().toISOString()
+                };
+                await systemThing.emitEvent('doorbellHandled', eventData);
+                console.log("🔔🤖 doorbellHandled emitted", eventData);
+            } catch (err) {
+                console.error('Failed to handle doorbell workflow:', err);
+            }
+        });
+    }
+
+
+    if (devices.alarm && devices.heater) {
+        devices.alarm.subscribeEvent('alarmRinging', async () => {
+            try {
+                // Start heater at 30°C for 20 minutes
+                await devices.heater.invokeAction('startHeater', { temperature: 30, timeHeating: 20 });
+                const eventData = {
+                    message: "Morning alarm triggered, heater set to 30°C for 20 minutes.",
+                    timestamp: new Date().toISOString()
+                };
+                await systemThing.emitEvent('morningRoutineHandled', eventData);
+                console.log("⏰🔥 morningRoutineHandled emitted", eventData);
+            } catch (err) {
+                console.error('Failed to handle morning routine workflow:', err);
+            }
+        });
+    }
 
     // Action: notifyWashingComplete
     systemThing.setActionHandler("notifyWashingComplete", async () => {
@@ -146,31 +215,8 @@ async function main() {
         }
     });
 
-    // Doorbell pressed event
-    if (devices.doorbell) {
-        devices.doorbell.subscribeEvent('bellRung', async () => {
-            await systemThing.emitEvent('doorbellPressed');
-        });
-    }
-
-    // Motion detected event (example for main room, extend for other rooms as needed)
-    if (devices.motionsensor) {
-        devices.motionsensor.subscribeEvent('motionDetected', async () => {
-            await systemThing.emitEvent('motionDetected', { room: "main" });
-            console.log("Motion detected in main room, emitted motionDetected event");
-        });
-    }
-
-    // Morning alarm triggered event
-    if (devices.alarm) {
-        devices.alarm.subscribeEvent('alarmRinging', async () => {
-            await systemThing.emitEvent('morningAlarmTriggered');
-        });
-    }
-
     await systemThing.expose();
     console.log(`SmartHomeThing exposed at http://localhost:${port}/smarthomething`);
-
 }
 
 main().catch((err) => {
