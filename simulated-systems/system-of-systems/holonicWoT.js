@@ -31,6 +31,7 @@ async function consumeThingWithRetry(WoT, tdUrl, retries = 20, waitMs = 500) {
 async function main() {
     const servient = new Servient();
     const port = 9200;
+    const startedAt = Date.now();
 
     servient.addServer(new HttpServer({ port: port }));
     servient.addClientFactory(new HttpClientFactory());
@@ -104,13 +105,19 @@ async function main() {
         const severity = params?.severity || 'warning';
         const parameter = params?.parameter || 'unknown';
 
+        console.log(`[SoS] handleCriticalWaterHealth called with parameter=${parameter}, severity=${severity}`);
+
         sosState.lastWaterHealthSeverity = severity;
 
         if (severity !== 'critical') {
+            console.log('[SoS] Severity is not critical, no action taken.');
             return;
         }
 
+        console.log(`⚠️  Critical water health detected: ${parameter} (${severity})`);
+
         // Alert occupant via smart home system
+        console.log('[SoS] Invoking homeSystem.triggerAlert...');
         await homeSystem.invokeAction('triggerAlert', {
             message: `Critical aquarium water health detected (${parameter}). Reducing home heating to save energy.`,
             severity: 'critical'
@@ -118,13 +125,16 @@ async function main() {
 
         // Lower non-essential home energy use: reduce heating
         const reducedHeatingTemp = 18;
+        console.log(`[SoS] Invoking homeSystem.setHeating to ${reducedHeatingTemp}C for 30 mins...`);
         await homeSystem.invokeAction('setHeating', {
             temperature: reducedHeatingTemp,
             duration_mins: 30
         });
+        console.log('Heater set to energy-saving mode.');
 
         sosState.energySavingMode = true;
 
+        console.log('[SoS] Emitting crossSystemMitigationApplied event...');
         await sosThing.emitEvent('crossSystemMitigationApplied', {
             parameter,
             severity,
@@ -141,6 +151,8 @@ async function main() {
         const severity = payload?.severity || 'warning';
         const parameter = payload?.parameter || 'unknown';
 
+        console.log(`[SoS] Received waterHealthDegraded event: parameter=${parameter}, severity=${severity}`);
+
         sosState.lastWaterHealthSeverity = severity;
 
         if (severity === 'critical') {
@@ -148,8 +160,76 @@ async function main() {
         }
     });
 
+    // Subscribe to occupancyStatus changes on the home system
+    async function readPropertyValue(thing, propertyName) {
+        const output = await thing.readProperty(propertyName);
+        if (output && typeof output.value === 'function') {
+            try {
+                return await output.value();
+            } catch (err) {
+                // Some endpoints may return wrapped payloads that fail strict schema validation.
+                const wrapped = err?.value;
+                if (wrapped && typeof wrapped === 'object') {
+                    if (typeof wrapped.value === 'string') {
+                        return wrapped.value;
+                    }
+                    if (wrapped.schema && typeof wrapped.schema.value === 'string') {
+                        return wrapped.schema.value;
+                    }
+                    if (typeof wrapped[propertyName] === 'string') {
+                        return wrapped[propertyName];
+                    }
+                }
+                throw err;
+            }
+        }
+        return output;
+    }
+
+    async function monitorHomeOccupancy() {
+        // Polling approach (since WoT does not guarantee property change notifications)
+        let lastStatus = await readPropertyValue(homeSystem, 'occupancyStatus');
+        setInterval(async () => {
+            try {
+                const currentStatus = await readPropertyValue(homeSystem, 'occupancyStatus');
+                if (currentStatus !== lastStatus) {
+                    console.log(`[SoS] Home occupancyStatus changed: ${lastStatus} -> ${currentStatus}`);
+                    lastStatus = currentStatus;
+                    if (currentStatus === 'away') {
+                        console.log('🚪 Occupancy switched to AWAY');
+                        // Set aquarium lighting to energy-saving mode
+                        console.log('[SoS] Setting aquarium lighting to energy-saving mode...');
+                        await aquariumSystem.invokeAction('setLightingProfile', { profile: 'energy-saving' });
+                        console.log('Aquarium lighting set to energy-saving mode.');
+
+                        // Pause scheduled feeding in aquarium system.
+                        console.log('[SoS] Pausing aquarium scheduled feeding...');
+                        await aquariumSystem.invokeAction('pauseFeeding');
+                        console.log('Scheduled feeding paused.');
+                    }
+                }
+            } catch (err) {
+                console.error('[SoS] Error monitoring occupancyStatus:', err);
+            }
+        }, 2000); // Poll every 2 seconds
+    }
+
+    monitorHomeOccupancy();
+
     await sosThing.expose();
     console.log(`AquariumHomeSoS exposed at http://localhost:${port}/aquariumhomesos`);
+    console.log('[SoS] Waiting for events from SmartAquariumSystem...');
+
+    // Heartbeat to show orchestrator is alive even when no events arrive.
+    setInterval(async () => {
+        try {
+            const uptimeSeconds = Math.floor((Date.now() - startedAt) / 1000);
+            const occupancy = await readPropertyValue(homeSystem, 'occupancyStatus');
+            console.log(`Heartbeat: orchestrator alive | occupancy=${occupancy} | uptime=${uptimeSeconds}s`);
+        } catch (err) {
+            console.error('[SoS] Heartbeat read failed:', err.message || err);
+        }
+    }, 10000);
 }
 
 main().catch((err) => {

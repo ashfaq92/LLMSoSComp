@@ -96,6 +96,9 @@ async function main() {
                 description: "Schedules a maintenance task",
                 input: { type: "object", properties: { task: { type: "string" }, due_date: { type: "string" } } }
             },
+            pauseFeeding: {
+                description: "Pauses scheduled aquarium feeding"
+            },
             switchToBackupPower: {
                 description: "Activates backup power supply"
             }
@@ -191,6 +194,13 @@ async function main() {
     systemThing.setActionHandler("scheduleMaintenanceTask", async (params) => {
         if (devices.scheduler && params && params.task && params.due_date) {
             await devices.scheduler.invokeAction('scheduleTask', { task: params.task, due_date: params.due_date });
+        }
+    });
+
+    // Pause Feeding
+    systemThing.setActionHandler("pauseFeeding", async () => {
+        if (devices.scheduler) {
+            await devices.scheduler.invokeAction('scheduleTask', { role: 'aquarium', task: 'pause_feeding' });
         }
     });
 

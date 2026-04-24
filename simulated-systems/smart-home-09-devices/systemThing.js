@@ -88,7 +88,11 @@ async function main() {
     });
 
 
-
+    let occupancyStatus = "home"; 
+    systemThing.setPropertyReadHandler('occupancyStatus', async () => occupancyStatus);
+    systemThing.setPropertyWriteHandler('occupancyStatus', async (value) => {
+        occupancyStatus = value;
+    });
 
     // Action: notifyWashingComplete
     systemThing.setActionHandler("notifyWashingComplete", async () => {
