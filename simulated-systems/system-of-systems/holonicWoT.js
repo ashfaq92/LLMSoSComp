@@ -164,24 +164,7 @@ async function main() {
     async function readPropertyValue(thing, propertyName) {
         const output = await thing.readProperty(propertyName);
         if (output && typeof output.value === 'function') {
-            try {
-                return await output.value();
-            } catch (err) {
-                // Some endpoints may return wrapped payloads that fail strict schema validation.
-                const wrapped = err?.value;
-                if (wrapped && typeof wrapped === 'object') {
-                    if (typeof wrapped.value === 'string') {
-                        return wrapped.value;
-                    }
-                    if (wrapped.schema && typeof wrapped.schema.value === 'string') {
-                        return wrapped.schema.value;
-                    }
-                    if (typeof wrapped[propertyName] === 'string') {
-                        return wrapped[propertyName];
-                    }
-                }
-                throw err;
-            }
+            return await output.value();
         }
         return output;
     }
@@ -220,14 +203,14 @@ async function main() {
     console.log(`AquariumHomeSoS exposed at http://localhost:${port}/aquariumhomesos`);
     console.log('[SoS] Waiting for events from SmartAquariumSystem...');
 
-    // Heartbeat to show orchestrator is alive even when no events arrive.
+    // Heartbeat: confirms process is alive even when no goal events are incoming.
     setInterval(async () => {
         try {
             const uptimeSeconds = Math.floor((Date.now() - startedAt) / 1000);
             const occupancy = await readPropertyValue(homeSystem, 'occupancyStatus');
-            console.log(`Heartbeat: orchestrator alive | occupancy=${occupancy} | uptime=${uptimeSeconds}s`);
+            console.log(`[SoS] Heartbeat | uptime=${uptimeSeconds}s | occupancy=${occupancy}`);
         } catch (err) {
-            console.error('[SoS] Heartbeat read failed:', err.message || err);
+            console.error('[SoS] Heartbeat read failed:', err?.message || err);
         }
     }, 10000);
 }
