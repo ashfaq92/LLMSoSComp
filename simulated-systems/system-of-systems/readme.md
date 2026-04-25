@@ -1,30 +1,29 @@
 # Introduction
 
-Both `flatWoT` and `holonicWoT` implement two SoS-level (System of Systems) goals. 
-These goals are designed to require the combined capabilities of devices from both the `smart-home` and `smart-aquarium` systems.
+`flatWoT` and `holonicWoT` are two approaches for implementing SoS-level goals.
+These SoS goals require the combined capabilities of devices from both the `smart-home` and `smart-aquarium` systems.
 
-The `flatWoT` approach achieves these goals by directly accessing the IoT devices' Thing Descriptions (TDs) and orchestrating them to fulfill SoS-level objectives.
+In the `flatWoT` approach, a programmer implements these goals by directly accessing the IoT devices' Thing Descriptions (TDs) and orchestrating them.
 
-In contrast, the `holonicWoT` approach first generates a `systemThing` for each individual system (`smart-home` and `smart-aquarium`). Each `systemThing` is intentionally designed to achieve sub-goals that contribute to the overall SoS-level goals. 
+In the `holonicWoT` approach, the programmer breaks overall SoS-level goals into sub-goals for each individual system (`smart-home` and `smart-aquarium`), writes a `systemThing` for each system to implement these sub-goals, and then orchestrates the affordances of each `systemThing` to achieve the SoS-level goals.
 
 
 # Implemented SoS Goals
+
+So far, the following two goals have been implemented in both `flatWoT.js` and `holonicWoT.js`:
 
 - When aquarium water health degrades to a critical level, alert the home occupant and reduce non-essential home energy use (e.g., lower heating).
 - When home occupancy switches to "away", set aquarium lighting to energy-saving mode and pause scheduled feeding.
 
 
+# Empirical Study
 
-# Experiment Tasks
-
-## Implement New SoS Goals
+## Implementing New SoS Goals
 
 Implement at least one new SoS-level goal in both `flatWoT` and `holonicWoT`. You may implement more if you wish.
 
 - For `flatWoT`, examine the relevant TDs from `smart-home` and `smart-aquarium` and orchestrate them directly to achieve the SoS-level goal.
 - For `holonicWoT`, break the new SoS goal into sub-goals and implement them within the respective `systemThing` of each system. Then, orchestrate these sub-goals in `holonicWoT`.
-
-You may use any coding tools, including LLMs, but ensure you use the same settings for both approaches (`flatWoT` and `holonicWoT`).
 
 You can choose from the following sample goals, or define your own:
 
@@ -32,12 +31,26 @@ You can choose from the following sample goals, or define your own:
 - Morning routine coordination: when the morning alarm triggers at home, also set aquarium lighting to the daytime profile.
 - If abnormal fish behavior is detected, alert the home occupant and log a maintenance task in the aquarium system.
 
-Record your experiences in natural language: note any differences you observed, which approach felt easier, etc.
+You may use any coding tools, including LLMs, but ensure you use the same settings for both approaches (`flatWoT` and `holonicWoT`).
+
+Record your experiences in natural language: note any differences you observed, which approach felt easier, and so on.
 
 ## Maintenance Test
 
 - Simulate device replacement:
   - Swap one device (e.g., replace the speaker with a different model or TD).
-  - Count how many files and lines break in flatWoT vs holonicWoT.
+  - Count how many files and lines break in `flatWoT` vs. `holonicWoT`.
+
+
+## Quantitative Evaluation Metrics
+- Workflow generation time
+- Error rate
+- Complexity
+
+
+## Qualitative Evaluation Metrics
+- OOP metrics: Coupling/cohesion (CBO, LCOM)?
+- Other?
+
 
 
