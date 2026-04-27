@@ -16,9 +16,9 @@ So far, the following two goals have been implemented in both `flatWoT.js` and `
 - When home occupancy switches to "away", set aquarium lighting to energy-saving mode and pause scheduled feeding.
 
 
-# Empirical Study
+# Empirical Studies
 
-## Implementing New SoS Goals
+## Experiment 1: Implementing New SoS Goals
 
 Implement at least one new SoS-level goal in both `flatWoT` and `holonicWoT`. You may implement more if you wish.
 
@@ -27,30 +27,36 @@ Implement at least one new SoS-level goal in both `flatWoT` and `holonicWoT`. Yo
 
 You can choose from the following sample goals, or define your own:
 
-- When a power outage is detected in the aquarium, trigger a home alert and switch the aquarium to backup power.
 - Morning routine coordination: when the morning alarm triggers at home, also set aquarium lighting to the daytime profile.
+- When a power outage is detected in the aquarium, trigger a home alert and switch the aquarium to backup power.
 - If abnormal fish behavior is detected, alert the home occupant and log a maintenance task in the aquarium system.
 
 You may use any coding tools, including LLMs, but ensure you use the same settings for both approaches (`flatWoT` and `holonicWoT`).
 
-Record your experiences in natural language: note any differences you observed, which approach felt easier, and so on.
+### Measurements
 
-## Maintenance Test
+- Count how many TDs a programmer needs to read and understand to implement each SoS goal. 
+- How many files/lines need to be changed for each approach after implementing each SoS goal.
+- Record time for each appraoch
+- Record your experiences in natural language, i.e., note any differences you observed, which approach felt easier, and so on.
+- OOP metrics: Coupling/cohesion (CBO, LCOM)?
+- Other?
 
-- Simulate device replacement:
-  - Swap one device (e.g., replace the speaker with a different model or TD).
-  - Count how many files and lines break in `flatWoT` vs. `holonicWoT`.
+## Simulate device replacement
 
+- Swap one device (e.g., replace the speaker with a different model or TD).
 
-## Quantitative Evaluation Metrics
-- Workflow generation time
-- Error rate
-- Complexity
+  
+### Measurements
 
-
-## Qualitative Evaluation Metrics
+- Count how many files and lines break in `flatWoT` vs. `holonicWoT`.
+- How many files/lines need to be changed for each approach after replacing each device.
+- Record your experiences in natural language, i.e., note any differences you observed, which approach felt easier, and so on.
 - OOP metrics: Coupling/cohesion (CBO, LCOM)?
 - Other?
 
 
+## Quantitative Evaluation Metrics
 
+- Error rate
+- Complexity
