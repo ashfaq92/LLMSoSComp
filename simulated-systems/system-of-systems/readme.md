@@ -18,7 +18,73 @@ So far, the following two goals have been implemented in both `flatWoT.js` and `
 
 # Empirical Studies
 
-## Experiment 1: Implementing New SoS Goals
+
+
+## Experiment: Simulated device replacement ✅
+
+- Swapped `smart-home heater` with a `SmartThermostat` that has a completely different action signature.
+- Heater was chosen because it appears in both flat WoT (`heater.invokeAction('startHeater', { temperature, timeHeating })`) and holonic home systemThing internals. 
+
+**Original Heater TD:**
+
+```json
+{
+  "title": "Heater",
+  "actions": {
+    "startHeater": {
+      "input": {
+        "type": "object",
+        "properties": {
+          "temperature": { "type": "number" },
+          "timeHeating": { "type": "number" }
+        }
+      }
+    }
+  }
+}
+```
+
+**Replacement SmartThermostat TD:**
+```json
+{
+  "title": "SmartThermostat",
+  "description": "A smart thermostat replacing the old heater",
+  "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
+  "@type": ["Thing"],
+  "securityDefinitions": { "no_sec": { "scheme": "nosec" } },
+  "security": ["no_sec"],
+  "actions": {
+    "setTemperature": {
+      "description": "Set target temperature and duration in seconds",
+      "input": {
+        "type": "object",
+        "properties": {
+          "targetCelsius": { "type": "number" },
+          "durationSeconds": { "type": "integer" }
+        },
+        "required": ["targetCelsius", "durationSeconds"]
+      }
+    }
+  }
+}
+```
+
+
+**Results:**
+
+- In `flatWoT.js`, 3-4 lines need to be changed:
+    - The TD URL changes → line 6 must change
+    - `heater.invokeAction('startHeater', { temperature: 16, timeHeating: 10 })` breaks → must become `smartThermostat.invokeAction('setTemperature', { targetCelsius: 16, durationSeconds: 600 })`
+    - The `const heater = await WoT.consume(...)` line changes
+- In `holonicWoT.js`, 2 lines change, none in the SoS file:
+    - The TD URL in the home systemThing changes → 1 line
+    - `devices.heater.invokeAction('startHeater', ...)` in `setHeating` handler changes → 1 line
+    - `sosThing.js` (the SoS orchestrator): **zero lines change**
+- `git diff --shortstat`: 
+  - flatWoT: 2 files changed, 22 insertions(+), 24 deletions(-)
+  - holonicWoT:  2 files changed, 20 insertions(+), 22 deletions(-)
+
+## Experiment: Implementing New SoS Goals
 
 Implement at least one new SoS-level goal in both `flatWoT` and `holonicWoT`. You may implement more if you wish.
 
@@ -42,21 +108,11 @@ You may use any coding tools, including LLMs, but ensure you use the same settin
 - OOP metrics: Coupling/cohesion (CBO, LCOM)?
 - Other?
 
-## Experiment 2: Simulate device replacement
-
-- Swap one device (e.g., replace the speaker with a different model or TD).
-
-  
-### Measurements
-
-- Count how many files and lines break in `flatWoT` vs. `holonicWoT`.
-- How many files/lines need to be changed for each approach after replacing each device.
-- Record your experiences in natural language, i.e., note any differences you observed, which approach felt easier, and so on.
-- OOP metrics: Coupling/cohesion (CBO, LCOM)?
-- Other?
 
 
-## Quantitative Evaluation Metrics
+
+## Other?
 
 - Error rate
 - Complexity
+- OOP metrics: Coupling/cohesion (CBO, LCOM)?
