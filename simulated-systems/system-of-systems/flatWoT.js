@@ -8,9 +8,10 @@ const { HttpClientFactory } = BindingHttpPkg;
 
 // TD URLs for the required devices (update if needed)
 const TANK_SENSORS_TD_URL = 'http://localhost:9112/tanksensors';
-const ALERT_SYSTEM_TD_URL = 'http://localhost:9102/alertsystem';
 const HEATER_TD_URL = 'http://localhost:8104/heater';
 const MOTION_SENSOR_TD_URL = 'http://localhost:8107/motionsensor';
+const SMART_ASSISTANT_TD_URL = 'http://localhost:8108/smartassistant';
+const LEDS_TD_URL = 'http://localhost:8105/leds';
 const TANK_LIGHTING_TD_URL = 'http://localhost:9111/tanklighting';
 const SCHEDULER_TD_URL = 'http://localhost:9108/scheduler';
 
@@ -26,9 +27,10 @@ async function main() {
 
 	// Consume Thing Descriptions
 	const tankSensors = await WoT.consume(await (await fetch(TANK_SENSORS_TD_URL)).json());
-	const alertSystem = await WoT.consume(await (await fetch(ALERT_SYSTEM_TD_URL)).json());
 	const heater = await WoT.consume(await (await fetch(HEATER_TD_URL)).json());
 	const motionSensor = await WoT.consume(await (await fetch(MOTION_SENSOR_TD_URL)).json());
+	const smartAssistant = await WoT.consume(await (await fetch(SMART_ASSISTANT_TD_URL)).json());
+	const leds = await WoT.consume(await (await fetch(LEDS_TD_URL)).json());
 	const tankLighting = await WoT.consume(await (await fetch(TANK_LIGHTING_TD_URL)).json());
 	const scheduler = await WoT.consume(await (await fetch(SCHEDULER_TD_URL)).json());
 
@@ -102,7 +104,12 @@ async function main() {
 	async function handleCriticalWaterHealth(reason) {
 		console.log('⚠️  Critical water health detected:', reason);
 		// 1. Alert the home occupant
-		await alertSystem.invokeAction('alertRole', { role: 'home_occupant', message: reason });
+		try {
+			await smartAssistant.invokeAction('say', { phrase: reason });
+			await leds.invokeAction('blink');
+		} catch (err) {
+			console.warn('Failed to trigger home alert devices:', err.message);
+		}
 		// 2. Reduce non-essential home energy use (lower heating)
 		// Example: set heater to lower temperature for 10 minutes
 		try {

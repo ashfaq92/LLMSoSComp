@@ -53,7 +53,9 @@ async function main() {
     });
 
 
-    let occupancyStatus = "home"; 
+    let occupancyStatus = "home";
+    let lastMotionTime = Date.now();
+    const AWAY_TIMEOUT = 30000;
     systemThing.setPropertyReadHandler('occupancyStatus', async () => occupancyStatus);
 
     systemThing.setPropertyWriteHandler('occupancyStatus', async (value) => {
@@ -68,6 +70,24 @@ async function main() {
         }
         occupancyStatus = normalized;
     });
+
+    // Track occupancy internally based on motion events + inactivity timeout.
+    if (devices.motionsensor) {
+        devices.motionsensor.subscribeEvent('motionDetected', () => {
+            lastMotionTime = Date.now();
+            if (occupancyStatus === 'away') {
+                occupancyStatus = 'home';
+                console.log('[SmartHomeThing] Occupancy -> home');
+            }
+        });
+    }
+
+    setInterval(() => {
+        if (occupancyStatus === 'home' && Date.now() - lastMotionTime > AWAY_TIMEOUT) {
+            occupancyStatus = 'away';
+            console.log('[SmartHomeThing] Occupancy -> away');
+        }
+    }, 5000);
 
     // Action: triggerAlert
     systemThing.setActionHandler("triggerAlert", async (params) => {

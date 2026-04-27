@@ -125,7 +125,7 @@ async function main() {
 
         // Lower non-essential home energy use: reduce heating
         const reducedHeatingTemp = 18;
-        console.log(`[SoS] Invoking homeSystem.setHeating to ${reducedHeatingTemp}C for 30 mins...`);
+        // console.log(`[SoS] Invoking homeSystem.setHeating to ${reducedHeatingTemp}C for 30 mins...`);
         await homeSystem.invokeAction('setHeating', {
             temperature: reducedHeatingTemp,
             duration_mins: 30
@@ -134,7 +134,7 @@ async function main() {
 
         sosState.energySavingMode = true;
 
-        console.log('[SoS] Emitting crossSystemMitigationApplied event...');
+        // console.log('[SoS] Emitting crossSystemMitigationApplied event...');
         await sosThing.emitEvent('crossSystemMitigationApplied', {
             parameter,
             severity,
@@ -151,7 +151,7 @@ async function main() {
         const severity = payload?.severity || 'warning';
         const parameter = payload?.parameter || 'unknown';
 
-        console.log(`[SoS] Received waterHealthDegraded event: parameter=${parameter}, severity=${severity}`);
+        // console.log(`[SoS] Received waterHealthDegraded event: parameter=${parameter}, severity=${severity}`);
 
         sosState.lastWaterHealthSeverity = severity;
 
@@ -176,17 +176,17 @@ async function main() {
             try {
                 const currentStatus = await readPropertyValue(homeSystem, 'occupancyStatus');
                 if (currentStatus !== lastStatus) {
-                    console.log(`[SoS] Home occupancyStatus changed: ${lastStatus} -> ${currentStatus}`);
+                    // console.log(`[SoS] Home occupancyStatus changed: ${lastStatus} -> ${currentStatus}`);
                     lastStatus = currentStatus;
                     if (currentStatus === 'away') {
                         console.log('🚪 Occupancy switched to AWAY');
                         // Set aquarium lighting to energy-saving mode
-                        console.log('[SoS] Setting aquarium lighting to energy-saving mode...');
+                        // console.log('[SoS] Setting aquarium lighting to energy-saving mode...');
                         await aquariumSystem.invokeAction('setLightingProfile', { profile: 'energy-saving' });
                         console.log('Aquarium lighting set to energy-saving mode.');
 
                         // Pause scheduled feeding in aquarium system.
-                        console.log('[SoS] Pausing aquarium scheduled feeding...');
+                        // console.log('[SoS] Pausing aquarium scheduled feeding...');
                         await aquariumSystem.invokeAction('pauseFeeding');
                         console.log('Scheduled feeding paused.');
                     }
@@ -201,7 +201,7 @@ async function main() {
 
     await sosThing.expose();
     console.log(`AquariumHomeSoS exposed at http://localhost:${port}/aquariumhomesos`);
-    console.log('[SoS] Waiting for events from SmartAquariumSystem...');
+    // console.log('[SoS] Waiting for events from SmartAquariumSystem...');
 
     // Heartbeat: confirms process is alive even when no goal events are incoming.
     setInterval(async () => {
