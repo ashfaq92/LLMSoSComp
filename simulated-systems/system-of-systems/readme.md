@@ -42,7 +42,7 @@ You may use any coding tools, including LLMs, but ensure you use the same settin
 - OOP metrics: Coupling/cohesion (CBO, LCOM)?
 - Other?
 
-## Simulate device replacement
+## Experiment 2: Simulate device replacement
 
 - Swap one device (e.g., replace the speaker with a different model or TD).
 
